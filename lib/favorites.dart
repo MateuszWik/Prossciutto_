@@ -41,7 +41,7 @@ class _HomePage extends State<HomePage>{
         page = Placeholder();
         break;
       case 1:
-        page = Placeholder();
+        page = Favorites();
         break;
       case 2:
         page = Placeholder();
@@ -130,4 +130,95 @@ class _HomePage extends State<HomePage>{
   }
 
 
+}
+class Favorites extends StatelessWidget {
+  const Favorites({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(40.0),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  'Favorites',
+                  style: TextStyle(
+                    fontFamily: 'LeagueSpartan',
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+              ),
+              SizedBox(height: 40),
+              Container(
+                width: 277,
+                height: 88,
+                decoration: BoxDecoration(
+                  color: Color(0xFF0C8C75),
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Stack(
+                  children: [
+                    // Tło: Row z obrazkiem i tekstem
+                    Row(
+                      children: [
+                        Container(
+                          width: 132,
+                          height: 88,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Nazwa\n\n',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Cena',
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Ikona w prawym górnym rogu
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: IconButton(
+                        icon: Icon(Icons.favorite),
+                        color: Colors.white,
+                        onPressed: () {
+                          // obsługa kliknięcia
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
 }
