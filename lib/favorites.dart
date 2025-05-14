@@ -148,7 +148,7 @@ class Favorites extends StatelessWidget {
                 child: Text(
                   'Favorites',
                   style: TextStyle(
-                    fontFamily: 'LeagueSpartan', // Zamiana GoogleFonts na fontFamily
+                    fontFamily: 'LeagueSpartan',
                     color: Colors.black,
                     fontSize: 30,
                   ),
