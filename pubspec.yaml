@@ -77,11 +77,11 @@ flutter:
     fonts:
       - family: LeagueSpartan
         fonts:
-          - asset: assets/fonts/LeagueSpartan-Regular.ttf
+          - asset: assets/fonts/LeagueSpartan-Medium.ttf
 
       - family: MontSerrat
         fonts:
-          - asset: assets/font/Montserrat-Light.ttf
+          - asset: assets/fonts/Montserrat-Light.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
