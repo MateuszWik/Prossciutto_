@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const MyApp());
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,56 +12,122 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: "Testowa",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
+
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class HomePage extends StatefulWidget {
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePage();
 }
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _HomePage extends State<HomePage>{
+  var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    var colorScheme = Theme.of(context).colorScheme;
+
+    Widget page;
+    switch (selectedIndex) {
+      case 0:
+        page = Placeholder();
+        break;
+      case 1:
+        page = Placeholder();
+        break;
+      case 2:
+        page = Placeholder();
+      case 3:
+        page = Placeholder();
+      default:
+        throw UnimplementedError('no widget for $selectedIndex');
+    }
+
+    var mainArea = ColoredBox(
+      color: colorScheme.surfaceContainerHighest,
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 200),
+        child: page,
+      ),
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: Stack(
+        children: [
+          Positioned.fill(child: mainArea),
+
+          // Pasek dolny jako warstwa
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 60,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Material(
+                elevation: 10,
+                child: Container(
+                  height: 60,
+                  color: Color(0xFF0C8C75),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined,),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 0;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 1;
+
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 2;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 3;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),);
+    );
+
+
   }
+
+
 }
