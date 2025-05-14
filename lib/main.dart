@@ -69,6 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit it
+          // fsdhjfasdijhsahlasdg
+          //Kaniak Czarnuch
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
