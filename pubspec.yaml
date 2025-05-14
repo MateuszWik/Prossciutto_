@@ -81,7 +81,7 @@ flutter:
 
       - family: MontSerrat
         fonts:
-          - asset: assets/font/Montserrat-Light.ttf
+          - asset: assets/fonts/Montserrat-Light.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
