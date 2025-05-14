@@ -37,7 +37,7 @@ class _MyMenuPageState extends State<MyMenuPage> {
         title: Text('Hi'),
         titleTextStyle: TextStyle(
           fontSize: 15,
-
+          fontFamily: 'LeagueSpartan',
         ),
       )
     );

@@ -77,7 +77,7 @@ flutter:
     fonts:
       - family: LeagueSpartan
         fonts:
-          - asset: assets/fonts/LeagueSpartan-Regular.ttf
+          - asset: assets/fonts/LeagueSpartan-Medium.ttf
 
       - family: MontSerrat
         fonts:
