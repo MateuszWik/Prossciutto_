@@ -41,7 +41,7 @@ class _HomePage extends State<HomePage>{
         page = Placeholder();
         break;
       case 1:
-        page = Placeholder();
+        page = Favorites();
         break;
       case 2:
         page = Placeholder();
