@@ -78,6 +78,10 @@ flutter:
       - family: LeagueSpartan
         fonts:
           - asset: assets/fonts/LeagueSpartan-Regular.ttf
+
+      - family: MontSerrat
+        fonts:
+          - asset: assets/font/Montserrat-Light.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
