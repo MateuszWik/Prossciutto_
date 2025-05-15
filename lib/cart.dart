@@ -46,9 +46,9 @@ class _HomePage extends State<HomePage>{
         page = Favorites();
         break;
       case 2:
-        page = Placeholder();
+        page = Cart();
       case 3:
-        page = Placeholder();
+        page = Account();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -81,32 +81,17 @@ class _HomePage extends State<HomePage>{
             top: 130,
           child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Color(0xFF0C8C75),
-                image: DecorationImage(
-                    image: AssetImage('assets/images/Macaroni.png'),
-                  alignment: Alignment.centerLeft,
-                ),
-              ),
-              height: 100,
-              width: 230,
-              alignment: Alignment.topRight,
-              padding: EdgeInsets.all(7.0),
-              child: Text(
-                'Macaroni \n Campania',
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                  fontFamily: 'MontSerrat',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-          ],
+            ClipRRect(
+      borderRadius: BorderRadius.circular(16), // Zaokrąglenie rogów
+        child: Image.asset('assets/images/Macaroni.png',
+      width: 200,  // Ustal szerokość obrazu
+      height: 100, // Ustal wysokość obrazu
+        fit: BoxFit.none, // Obrazek nie wypełnia kontenera
+    ),
           ),
-          ),
+        ],
+        ),
+        ),
           // Pasek dolny jako warstwa
           Positioned(
             left: 16,
@@ -173,4 +158,45 @@ class _HomePage extends State<HomePage>{
   }
 
 
+}
+class Cart extends StatelessWidget {
+  const Cart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color(0xFFF3ECE4),
+        title: Text(
+          'Cart',
+          style: TextStyle(
+            fontFamily: 'LeagueSpartan',
+            fontSize: 25,
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            left: 80,
+            top: 130,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16), // Zaokrąglenie rogów
+                  child: Image.asset(
+                    'assets/images/Macaroni.png',
+                    width: 200,  // Ustal szerokość obrazu
+                    height: 100, // Ustal wysokość obrazu
+                    fit: BoxFit.none, // Obrazek nie wypełnia kontenera
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
