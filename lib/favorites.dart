@@ -176,7 +176,7 @@ class Favorites extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(16.0), // Zaokrąglone rogi
                           child: Image.asset(
-                            'assets/images/Macaroni.png', // Ścieżka do lokalnego pliku
+                            'assets/images/Spaghetti -Sicily.png', // Ścieżka do lokalnego pliku
                             width: 132,
                             height: 88,
                             fit: BoxFit.cover,
@@ -186,7 +186,7 @@ class Favorites extends StatelessWidget {
                         Expanded(
                           child: RichText(
                             text: TextSpan(
-                              text: 'Nazwa\n\n',
+                              text: 'Spaghetti\nSicily\n',
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
@@ -194,7 +194,7 @@ class Favorites extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Cena',
+                                  text: "25",
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     color: Colors.white,
