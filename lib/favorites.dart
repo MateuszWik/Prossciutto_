@@ -42,10 +42,10 @@ class _HomePage extends State<HomePage>{
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = Placeholder();
+        page = Menu();
         break;
       case 1:
-        page = Menu();
+        page = Favorites();
         break;
       case 2:
         page = Placeholder();
