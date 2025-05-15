@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import './favorites.dart';
+import './account.dart';
+import './menu.dart';
 
 void main() {
 
@@ -29,7 +31,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePage();
 }
 class _HomePage extends State<HomePage>{
-  var selectedIndex = 0;
+  var selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +40,10 @@ class _HomePage extends State<HomePage>{
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = Placeholder();
+        page = Menu();
         break;
       case 1:
-        page = Placeholder();
+        page = Favorites();
         break;
       case 2:
         page = Placeholder();
@@ -63,7 +65,44 @@ class _HomePage extends State<HomePage>{
       body: Stack(
         children: [
           Positioned.fill(child: mainArea),
-
+          AppBar(
+            centerTitle: true,
+            backgroundColor: Color(0xFFF3ECE4),
+            title: Text(
+              'Cart',
+              style: TextStyle(
+                fontFamily: 'LeagueSpartan',
+                fontSize: 25,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 80,
+            top: 130,
+          child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Color(0xFF0C8C75),
+              ),
+              height: 100,
+              width: 230,
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.all(12.0),
+              child: Text(
+                'Macaroni \n Campania',
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                  fontFamily: 'MontSerrat',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+          ),
+          ),
           // Pasek dolny jako warstwa
           Positioned(
             left: 16,

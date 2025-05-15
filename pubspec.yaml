@@ -21,7 +21,18 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/domek.png
-    - assets/images/Macaroni.png
+    - assets/images/kupon.png
+    - assets/images/logo.png
+    - assets/images/Frantoio-Oil.png
+    - assets/images/Juice.png
+    - assets/images/Leccino-Oil.png
+    - assets/images/left_arrow.png
+    - assets/images/Margherita.png
+    - assets/images/Penne all’arrabbiata.png
+    - assets/images/Prosciutto e funghi.png
+    - assets/images/Quattro Formaggi.png
+    - assets/images/Spaghetti -Sicily.png
+    - assets/images/Water.png
   fonts:
     - family: LeagueSpartan
       fonts:
