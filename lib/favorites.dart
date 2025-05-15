@@ -173,13 +173,11 @@ class Favorites extends StatelessWidget {
                     // Tło: Row z obrazkiem i tekstem
                     Row(
                       children: [
-                        Container(
+                        Image.asset(
+                          'assets/images/Macaroni.png',
                           width: 132,
                           height: 88,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
+                          fit: BoxFit.cover,
                         ),
                         SizedBox(width: 10),
                         Expanded(
