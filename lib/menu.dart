@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 
 void main() {
 
-  runApp(Menu());
+  runApp(MyApp());
 }
 
-class Menu extends StatelessWidget {
-  const Menu({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +18,19 @@ class Menu extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
 
       ),
-      home: HomePage(),
+      home: Menu(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class Menu extends StatefulWidget {
 
   @override
-  State<HomePage> createState() => _HomePage();
+  State<Menu> createState() => _Menu();
 }
 
 
-class _HomePage extends State<HomePage>{
+class _Menu extends State<Menu>{
   var selectedIndex = 0;
 
   @override
@@ -129,11 +129,7 @@ class _HomePage extends State<HomePage>{
         ],
       ),
     );
-
-
   }
-
-
 }
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -141,18 +137,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Row: Hi and language icon
               Row(
                 children: [
                   Text(
                     'Hi',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 15),
                   ),
                   Spacer(),
                   Image.asset('assets/images/kupon.png'),
@@ -166,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                   text: "It's not just ",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
                   children: [
-                    TextSpan(text: "Food", style: TextStyle(color: Colors.green)),
+                    TextSpan(text: "Food", style: TextStyle(color: Colors.teal)),
                     TextSpan(text: "\nIt's an "),
                     TextSpan(text: "Experience", style: TextStyle(color: Colors.teal)),
                   ],
@@ -193,14 +189,14 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 24),
 
               // Pasta Section
-              Text('Pasta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Pasta', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
                     _buildFoodCard(
-                      imagePath: 'assets/images/',
+                      imagePath: 'assets/images/campania.png',
                       name: 'Macaroni\nCampania',
                       price: '20\$',
                     ),
@@ -238,7 +234,8 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildFoodCard({required String imagePath, required String name, required String price}) {
     return Container(
-      width: 140,
+      width: 130,
+      height: 184,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
