@@ -133,28 +133,59 @@ class _HomePage extends State<HomePage>{
   }
 }
 
-class Account extends StatelessWidget {
+class Account extends StatefulWidget {
   const Account({super.key});
 
+  @override
+  State<Account> createState() => _AccountState();
+}
+class _AccountState extends State<Account> {
+  String selectedImage = "assets/profile1.png"; // Domyślne zdjęcie profilowe
 
+  void selectImage(String imagePath) {
+    setState(() {
+      selectedImage = imagePath;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.only(top:15),
+          padding: EdgeInsets.only(top: 15),
           child: Align(
             alignment: Alignment.topCenter,
-            child: Text("Account",style: TextStyle(fontSize: 16,fontFamily: "LeagueSpartan",),),
+            child: Text("Account",
+              style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan",),),
           ),
         ),
         SizedBox(height: 15), // Odstęp między tekstem a kółkiem
         CircleAvatar(
           radius: 50, // Wielkość kółeczka
-          backgroundColor: Colors.grey[300], // Kolor tła kółeczka
-          child: Icon(Icons.person, size: 40, color: Colors.white), // Ikona wewnątrz kółeczka
+          backgroundImage: AssetImage(selectedImage), // Kolor tła kółeczka
+          backgroundColor: Colors.grey[300], // Ikona wewnątrz kółeczka
         ),
+        SizedBox(height: 15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (var image in [
+             // "assets/profil1.png",
+             // "assets/profil2.png",
+              //"assets/profil3.png",
+             // "assets/profil4.png"
+            ])
+              GestureDetector(
+                onTap: () => selectImage(image),
+                child: Padding(padding: EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage(image),
+                  ),),
+              )
+          ],
+        )
       ],
     );
   }
