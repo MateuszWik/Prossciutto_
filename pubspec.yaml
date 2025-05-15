@@ -22,7 +22,8 @@ flutter:
   assets:
     - assets/images/domek.png
     - assets/images/kupon.png
-#    - assets/images/campania.png
+    - assets/images/Spaghetti-Siciliy.png
+    - assets/images/Macaroni.png
   fonts:
     - family: LeagueSpartan
       fonts:
