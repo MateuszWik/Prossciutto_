@@ -207,6 +207,12 @@ class HomeScreen extends StatelessWidget {
                         name: 'Spaghetti\nSicily',
                         price: '25\$'
                     ),
+                    SizedBox(width: 12),
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Penne_all_arrabbiata.png',
+                        name: 'Penne all\'\nArrabbiata',
+                        price: '25\$'
+                    ),
                   ],
                 ),
               ),
