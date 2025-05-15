@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import './favorites.dart';
+import './coupons.dart';
+import './account.dart';
+import './cart.dart';
 
 void main() {
 
@@ -249,7 +253,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(imagePath, height: 100, width: double.infinity, fit: BoxFit.cover),
+            child: Image.asset(imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
           ),
           SizedBox(height: 8),
           Text(name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
