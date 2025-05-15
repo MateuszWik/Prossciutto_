@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/menu.dart';
+import 'package:mateusz/main.dart';
 import 'package:mateusz/cart.dart';
 import 'package:mateusz/account.dart';
 
@@ -176,7 +176,7 @@ class Favorites extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(16.0), // Zaokrąglone rogi
                           child: Image.asset(
-                            'assets/images/Spaghetti -Sicily.png', // Ścieżka do lokalnego pliku
+                            'assets/images/Spaghetti-Sicily.png', // Ścieżka do lokalnego pliku
                             width: 132,
                             height: 88,
                             fit: BoxFit.cover,

@@ -46,13 +46,13 @@ class _Menu extends State<Menu>{
         page = HomeScreen();
         break;
       case 1:
-        page = Placeholder();
+        page = Favorites();
         break;
       case 2:
-        page = Placeholder();
+        page = Cart();
         break;
       case 3:
-        page = Placeholder();
+        page = Account();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -209,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     SizedBox(width: 12),
                     _buildFoodCard(
-                      imagePath: 'assets/images/Spaghetti\-Sicily',
+                      imagePath: 'assets/images/Spaghetti-Sicily.png',
                       name: 'Spaghetti\nSicily',
                       price: '25\$',
                     ),
@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 100), // So it doesn’t get cut off by the nav bar
+              SizedBox(height: 100), // So it doesn't get cut off by the nav bar
             ],
           ),
         ),
