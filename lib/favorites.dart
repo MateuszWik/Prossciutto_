@@ -45,8 +45,10 @@ class _HomePage extends State<HomePage>{
         break;
       case 2:
         page = Placeholder();
+        break;
       case 3:
         page = Placeholder();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
