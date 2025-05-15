@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './favorites.dart';
 import './account.dart';
-import './menu.dart';
+import './main.dart';
 
 void main() {
 
