@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
+import './account.dart';
+import './cart.dart';
+import './coupons.dart';
+import './favorites.dart';
 void main() {
 
-  runApp(Menu());
+  runApp(MyApp());
 }
 
-class Menu extends StatelessWidget {
-  const Menu({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +21,19 @@ class Menu extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
 
       ),
-      home: HomePage(),
+      home: Menu(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class Menu extends StatefulWidget {
 
   @override
-  State<HomePage> createState() => _HomePage();
+  State<Menu> createState() => _Menu();
 }
 
 
-class _HomePage extends State<HomePage>{
+class _Menu extends State<Menu>{
   var selectedIndex = 0;
 
   @override
@@ -199,13 +203,13 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     _buildFoodCard(
-                      imagePath: 'assets/images/',
+                      imagePath: 'assets/images/Macaroni.png',
                       name: 'Macaroni\nCampania',
                       price: '20\$',
                     ),
                     SizedBox(width: 12),
                     _buildFoodCard(
-                      imagePath: 'assets/images/',
+                      imagePath: 'assets/images/Spaghetti\-Sicily',
                       name: 'Spaghetti\nSicily',
                       price: '25\$',
                     ),
@@ -238,6 +242,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildFoodCard({required String imagePath, required String name, required String price}) {
     return Container(
       width: 140,
+      height: 180,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -251,7 +256,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(imagePath, height: 100, width: double.infinity, fit: BoxFit.cover),
+            child: Image.asset(imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
           ),
           SizedBox(height: 8),
           Text(name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
