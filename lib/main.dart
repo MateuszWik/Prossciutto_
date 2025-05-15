@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import './account.dart';
 import './cart.dart';
 import './coupons.dart';
 import './favorites.dart';
-void main() {
 
+void main() {
   runApp(MyApp());
 }
 
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
       title: "Menu",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
-
       ),
       home: Menu(),
     );
@@ -27,13 +25,11 @@ class MyApp extends StatelessWidget {
 }
 
 class Menu extends StatefulWidget {
-
   @override
   State<Menu> createState() => _Menu();
 }
 
-
-class _Menu extends State<Menu>{
+class _Menu extends State<Menu> {
   var selectedIndex = 0;
 
   @override
@@ -43,7 +39,11 @@ class _Menu extends State<Menu>{
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = HomeScreen();
+        page = HomeScreen(onCouponTap: () {
+          setState(() {
+            selectedIndex = 4;
+          });
+        });
         break;
       case 1:
         page = Favorites();
@@ -53,6 +53,9 @@ class _Menu extends State<Menu>{
         break;
       case 3:
         page = Account();
+        break;
+      case 4:
+        page = Coupons();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -71,7 +74,6 @@ class _Menu extends State<Menu>{
         children: [
           Positioned.fill(child: mainArea),
 
-          // Pasek dolny jako warstwa
           Positioned(
             left: 16,
             right: 16,
@@ -87,7 +89,7 @@ class _Menu extends State<Menu>{
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined,),
+                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
                         color: Colors.white,
                         onPressed: () {
                           setState(() {
@@ -101,7 +103,6 @@ class _Menu extends State<Menu>{
                         onPressed: () {
                           setState(() {
                             selectedIndex = 1;
-
                           });
                         },
                       ),
@@ -132,14 +133,13 @@ class _Menu extends State<Menu>{
         ],
       ),
     );
-
-
   }
-
-
 }
+
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final VoidCallback onCouponTap;
+
+  const HomeScreen({super.key, required this.onCouponTap});
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +150,6 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Row: Hi and language icon
               Row(
                 children: [
                   Text(
@@ -158,27 +157,25 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   Spacer(),
-                  Image.asset('assets/images/kupon.png'),
+                  InkWell(
+                    onTap: onCouponTap,
+                    child: Image.asset('assets/images/kupon.png'),
+                  ),
                 ],
               ),
               SizedBox(height: 12),
-
-              // RichText
               RichText(
                 text: TextSpan(
                   text: "It's not just ",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
                   children: [
-                    TextSpan(text: "Food", style: TextStyle(color: Colors.green)),
+                    TextSpan(text: "Food", style: TextStyle(color: Colors.teal)),
                     TextSpan(text: "\nIt's an "),
                     TextSpan(text: "Experience", style: TextStyle(color: Colors.teal)),
                   ],
                 ),
               ),
-
               SizedBox(height: 16),
-
-              // Search Bar
               TextField(
                 decoration: InputDecoration(
                   hintText: 'search...',
@@ -192,10 +189,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: 24),
-
-              // Pasta Section
               Text('Pasta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
               SingleChildScrollView(
@@ -203,35 +197,30 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     _buildFoodCard(
-                      imagePath: 'assets/images/Macaroni.png',
-                      name: 'Macaroni\nCampania',
-                      price: '20\$',
+                        imagePath: 'assets/images/Macaroni.png',
+                        name: 'Macaroni\nCampania',
+                        price: '20\$'
                     ),
                     SizedBox(width: 12),
                     _buildFoodCard(
-                      imagePath: 'assets/images/Spaghetti-Sicily.png',
-                      name: 'Spaghetti\nSicily',
-                      price: '25\$',
+                        imagePath: 'assets/images/Spaghetti-Sicily.png',
+                        name: 'Spaghetti\nSicily',
+                        price: '25\$'
                     ),
                   ],
                 ),
               ),
-
               SizedBox(height: 24),
-
-              // Pizza Section
               Text('Pizza', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
               Row(
                 children: [
-                  // Empty slots for now
                   _buildEmptyCard(),
                   SizedBox(width: 12),
                   _buildEmptyCard(),
                 ],
               ),
-
-              SizedBox(height: 100), // So it doesn't get cut off by the nav bar
+              SizedBox(height: 100),
             ],
           ),
         ),
