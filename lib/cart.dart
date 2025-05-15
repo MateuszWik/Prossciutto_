@@ -83,13 +83,17 @@ class _HomePage extends State<HomePage>{
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
                 color: Color(0xFF0C8C75),
+                image: DecorationImage(
+                    image: AssetImage('assets/images/Macaroni.png'),
+                  alignment: Alignment.centerLeft,
+                ),
               ),
               height: 100,
               width: 230,
               alignment: Alignment.topRight,
-              padding: EdgeInsets.all(12.0),
+              padding: EdgeInsets.all(7.0),
               child: Text(
                 'Macaroni \n Campania',
                 textAlign: TextAlign.end,
