@@ -81,11 +81,13 @@ class _HomePage extends State<HomePage>{
             top: 130,
           child: Column(
           children: [
-            Image.asset('assets/images/Macaroni.png'),
             Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Color(0xFF0C8C75),
+              ),
               height: 100,
               width: 230,
-              color: Color(0xFF0C8C75),
               alignment: Alignment.topRight,
               padding: EdgeInsets.all(12.0),
               child: Text(
