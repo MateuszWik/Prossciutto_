@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mateusz/menu.dart';
-//import 'package:mateusz/cart.dart';
-//import 'package:mateusz/account.dart';
+import 'package:mateusz/cart.dart';
+import 'package:mateusz/account.dart';
 
 void main() {
 
@@ -48,10 +48,10 @@ class _HomePage extends State<HomePage>{
         page = Favorites();
         break;
       case 2:
-        page = Placeholder();
+        page = Cart();
         break;
       case 3:
-        page = Placeholder();
+        page = Account();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
