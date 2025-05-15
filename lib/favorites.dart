@@ -186,7 +186,7 @@ class Favorites extends StatelessWidget {
                         Expanded(
                           child: RichText(
                             text: TextSpan(
-                              text: 'Spaghetti\nSicily\n',
+                              text: 'Spaghetti\nSicily\n\n',
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
@@ -194,7 +194,7 @@ class Favorites extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: "25",
+                                  text: "25\$",
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     color: Colors.white,
