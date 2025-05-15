@@ -37,6 +37,7 @@ flutter:
     - assets/images/Quattro Formaggi.png
     - assets/images/Spaghetti -Sicily.png
     - assets/images/Water.png
+    - assets/images/Macaroni.png
   fonts:
     - family: LeagueSpartan
       fonts:

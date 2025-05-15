@@ -65,33 +65,6 @@ class _HomePage extends State<HomePage>{
       body: Stack(
         children: [
           Positioned.fill(child: mainArea),
-          AppBar(
-            centerTitle: true,
-            backgroundColor: Color(0xFFF3ECE4),
-            title: Text(
-              'Cart',
-              style: TextStyle(
-                fontFamily: 'LeagueSpartan',
-                fontSize: 25,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 80,
-            top: 130,
-          child: Column(
-          children: [
-            ClipRRect(
-      borderRadius: BorderRadius.circular(16), // Zaokrąglenie rogów
-        child: Image.asset('assets/images/Macaroni.png',
-      width: 200,  // Ustal szerokość obrazu
-      height: 100, // Ustal wysokość obrazu
-        fit: BoxFit.none, // Obrazek nie wypełnia kontenera
-    ),
-          ),
-        ],
-        ),
-        ),
           // Pasek dolny jako warstwa
           Positioned(
             left: 16,
@@ -185,8 +158,7 @@ class Cart extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16), // Zaokrąglenie rogów
-                  child: Image.asset(
-                    'assets/images/Macaroni.png',
+                  child: Image.asset('assets/images/Macaroni.png',
                     width: 200,  // Ustal szerokość obrazu
                     height: 100, // Ustal wysokość obrazu
                     fit: BoxFit.none, // Obrazek nie wypełnia kontenera
