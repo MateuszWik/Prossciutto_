@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mateusz/menu.dart';
-import 'package:mateusz/cart.dart';
 import 'package:mateusz/favorites.dart';
 
 void main() {
