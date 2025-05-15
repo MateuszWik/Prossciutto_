@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mateusz/main.dart';
 import 'package:mateusz/favorites.dart';
+import 'package:mateusz/cart.dart';
+import 'package:mateusz/singup.dart';
+import 'package:mateusz/login.dart';
 
 void main() {
 
@@ -9,8 +12,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +22,18 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
 
       ),
-      home: HomePage(),
+      home: Account(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class Account extends StatefulWidget {
+  const Account({super.key});
 
   @override
-  State<HomePage> createState() => _HomePage();
+  State<Account> createState() => _Account();
 }
-class _HomePage extends State<HomePage>{
+class _Account extends State<Account>{
   var selectedIndex = 0;
 
   @override
@@ -47,14 +49,15 @@ class _HomePage extends State<HomePage>{
         page = Favorites();
         break;
       case 2:
-        page = Placeholder();
+        page = Cart();
         break;
       case 3:
-        page = Account();
+        page = LoginScreen();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
+
 
     var mainArea = ColoredBox(
       color: colorScheme.surfaceContainerHighest,
@@ -131,25 +134,11 @@ class _HomePage extends State<HomePage>{
       ),
     );
   }
-}
 
-class Account extends StatefulWidget {
-  const Account({super.key});
+
 
   @override
-  State<Account> createState() => _AccountState();
-}
-class _AccountState extends State<Account> {
-  String selectedImage = "assets/profile1.png"; // Domyślne zdjęcie profilowe
-
-  void selectImage(String imagePath) {
-    setState(() {
-      selectedImage = imagePath;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildd(BuildContext context) {
     return Column(
       children: [
         Padding(
@@ -160,33 +149,129 @@ class _AccountState extends State<Account> {
               style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan",),),
           ),
         ),
-        SizedBox(height: 15), // Odstęp między tekstem a kółkiem
-        CircleAvatar(
-          radius: 50, // Wielkość kółeczka
-          backgroundImage: AssetImage(selectedImage), // Kolor tła kółeczka
-          backgroundColor: Colors.grey[300], // Ikona wewnątrz kółeczka
-        ),
         SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (var image in [
-             // "assets/profil1.png",
-             // "assets/profil2.png",
-              //"assets/profil3.png",
-             // "assets/profil4.png"
-            ])
-              GestureDetector(
-                onTap: () => selectImage(image),
-                child: Padding(padding: EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage(image),
-                  ),),
-              )
-          ],
-        )
-      ],
+        CircleAvatar(
+          radius: 40,
+          backgroundColor: Colors.grey,
+          backgroundImage: AssetImage('assets/images/kotek.png'),
+          // child: Icon(Icons.person, size: 40, color: Colors.white),
+         ),
+        SizedBox(height: 23),
+        Padding(
+            padding: EdgeInsets.only(left:13),
+          child:Align(alignment: Alignment.centerLeft,
+              child:Text("Name",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
+              ),
+          ),
+        ),
+        SizedBox(height: 5),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 13),
+          child: Container(
+            height: 23,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                   "Brak danych" ,
+                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
+                ),
+              ),
+            ),
+          ),
+        ),
+            SizedBox(height: 10),
+    Padding(
+    padding: EdgeInsets.only(left:13),
+    child:Align(alignment: Alignment.centerLeft,
+    child:Text("Email",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
+    ),
+    ),
+    ),
+    SizedBox(height: 5),
+    Padding(
+    padding: EdgeInsets.symmetric(horizontal: 13),
+    child: Container(
+    height: 23,
+    decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+    ),
+    child: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 10),
+    child: Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+    "Brak danych" ,
+    style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
+    ),
+    ),
+    ),
+    ),
+    ), SizedBox(height: 10),
+        Padding(
+          padding: EdgeInsets.only(left:13),
+          child:Align(alignment: Alignment.centerLeft,
+            child:Text("Password",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
+            ),
+          ),
+        ),
+        SizedBox(height: 5),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 13),
+          child: Container(
+            height: 23,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Brak danych" ,
+                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: EdgeInsets.only(left:13),
+          child:Align(alignment: Alignment.centerLeft,
+            child:Text("Date of Birth",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
+            ),
+          ),
+        ),
+        SizedBox(height: 5),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 13),
+          child: Container(
+            height: 23,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Brak danych" ,
+                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ]
     );
   }
 }

@@ -1,65 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/account.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LoginScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
+      backgroundColor: Color(0xFF0C8C75), // Kolor tła
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Log in',
+                  style: TextStyle(
+                    fontFamily: "LeagueSpartan",
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 40),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13), // 13px odstępu z lewej i prawej
+                  child: TextFormField(
+                    obscureText: true,
+                    style: TextStyle(fontFamily: "MontSerrat"),
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16), // Zaokrąglone rogi
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 23),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13), // 13px odstępu z lewej i prawej
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16), // Zaokrąglone rogi
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 103),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13), // Odstęp 13px po obu stronach
+                  child: SizedBox(
+                    height: 65, // Ustawiona wysokość przycisku
+                    width: double.infinity, // Pełna szerokość (minus padding)
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Account()), // Przejście na nową stronę
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black, // Czarny kolor tła
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(19), // Zaokrąglone rogi 16px
+                        ),
+                      ),
+                      child: Text(
+                        'Log in',
+                        style: TextStyle(fontFamily:"LeagueSpartan" ,color: Colors.white, fontSize: 27),
+                      ),
+                    ),
+                  ),
+                )
+
+              ]
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),);
+    );
   }
 }

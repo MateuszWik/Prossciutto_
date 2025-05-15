@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/main.dart';
+import 'package:mateusz/favorites.dart';
+import 'package:mateusz/Account.dart';
 
 void main() {
 
