@@ -156,7 +156,7 @@ class Favorites extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'LeagueSpartan',
                     color: Colors.black,
-                    fontSize: 15,
+                    fontSize: 20,
                   ),
                 ),
               ),
