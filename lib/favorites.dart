@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mateusz/menu.dart';
-import 'package:mateusz/cart.dart';
-import 'package:mateusz/account.dart';
+//import 'package:mateusz/cart.dart';
+//import 'package:mateusz/account.dart';
 
 void main() {
 
