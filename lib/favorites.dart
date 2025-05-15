@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/menu.dart';
+import 'package:mateusz/cart.dart';
+import 'package:mateusz/account.dart';
+
 void main() {
 
   runApp(MyApp());
@@ -6,6 +10,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
