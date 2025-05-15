@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/menu.dart';
+import 'package:mateusz/cart.dart';
+import 'package:mateusz/account.dart';
+
 void main() {
 
   runApp(MyApp());
@@ -6,6 +10,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,7 @@ class _HomePage extends State<HomePage>{
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = Placeholder();
+        page = Menu();
         break;
       case 1:
         page = Favorites();
@@ -150,7 +156,7 @@ class Favorites extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'LeagueSpartan',
                     color: Colors.black,
-                    fontSize: 30,
+                    fontSize: 20,
                   ),
                 ),
               ),
@@ -183,7 +189,7 @@ class Favorites extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                               children: [
                                 TextSpan(
@@ -191,7 +197,7 @@ class Favorites extends StatelessWidget {
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],

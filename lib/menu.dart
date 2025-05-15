@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './favorites.dart';
-import './coupons.dart';
-import './account.dart';
-import './cart.dart';
 
 void main() {
 
-  runApp(MyApp());
+  runApp(Menu());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Menu extends StatelessWidget {
+  const Menu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +18,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
 
       ),
-      home: Menu(),
+      home: HomePage(),
     );
   }
 }
 
-class Menu extends StatefulWidget {
+class HomePage extends StatefulWidget {
 
   @override
-  State<Menu> createState() => _Menu();
+  State<HomePage> createState() => _HomePage();
 }
 
 
-class _Menu extends State<Menu>{
+class _HomePage extends State<HomePage>{
   var selectedIndex = 0;
 
   @override
@@ -133,7 +129,11 @@ class _Menu extends State<Menu>{
         ],
       ),
     );
+
+
   }
+
+
 }
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -141,18 +141,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Top Row: Hi and language icon
               Row(
                 children: [
                   Text(
                     'Hi',
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: 20),
                   ),
                   Spacer(),
                   Image.asset('assets/images/kupon.png'),
@@ -166,7 +166,7 @@ class HomeScreen extends StatelessWidget {
                   text: "It's not just ",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
                   children: [
-                    TextSpan(text: "Food", style: TextStyle(color: Colors.teal)),
+                    TextSpan(text: "Food", style: TextStyle(color: Colors.green)),
                     TextSpan(text: "\nIt's an "),
                     TextSpan(text: "Experience", style: TextStyle(color: Colors.teal)),
                   ],
@@ -193,14 +193,14 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 24),
 
               // Pasta Section
-              Text('Pasta', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              Text('Pasta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
                     _buildFoodCard(
-                      imagePath: 'assets/images/campania.png',
+                      imagePath: 'assets/images/',
                       name: 'Macaroni\nCampania',
                       price: '20\$',
                     ),
@@ -238,8 +238,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildFoodCard({required String imagePath, required String name, required String price}) {
     return Container(
-      width: 130,
-      height: 184,
+      width: 140,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -253,7 +252,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
+            child: Image.asset(imagePath, height: 100, width: double.infinity, fit: BoxFit.cover),
           ),
           SizedBox(height: 8),
           Text(name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
