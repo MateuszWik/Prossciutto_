@@ -156,7 +156,7 @@ class Favorites extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'LeagueSpartan',
                     color: Colors.black,
-                    fontSize: 30,
+                    fontSize: 15,
                   ),
                 ),
               ),
@@ -189,7 +189,7 @@ class Favorites extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                               children: [
                                 TextSpan(
@@ -197,7 +197,7 @@ class Favorites extends StatelessWidget {
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],
