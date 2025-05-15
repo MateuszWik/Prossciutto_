@@ -173,11 +173,14 @@ class Favorites extends StatelessWidget {
                     // Tło: Row z obrazkiem i tekstem
                     Row(
                       children: [
-                        Image.asset(
-                          'assets/images/Macaroni.png',
-                          width: 132,
-                          height: 88,
-                          fit: BoxFit.cover,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(16.0), // Zaokrąglone rogi
+                          child: Image.asset(
+                            'assets/images/Macaroni.png', // Ścieżka do lokalnego pliku
+                            width: 132,
+                            height: 88,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
