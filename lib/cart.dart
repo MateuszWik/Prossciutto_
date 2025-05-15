@@ -132,13 +132,23 @@ class _HomePage extends State<HomePage>{
 
 
 }
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
   const Cart({super.key});
+
+  @override
+  State<Cart> createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  int ilosc = 1;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      body: Stack(
+          children: [
+      AppBar(
         centerTitle: true,
         backgroundColor: Color(0xFFF3ECE4),
         title: Text(
@@ -149,26 +159,89 @@ class Cart extends StatelessWidget {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Positioned(
-            left: 80,
-            top: 130,
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16), // Zaokrąglenie rogów
-                  child: Image.asset('assets/images/Macaroni.png',
-                    width: 200,  // Ustal szerokość obrazu
-                    height: 100, // Ustal wysokość obrazu
-                    fit: BoxFit.none, // Obrazek nie wypełnia kontenera
-                  ),
+      Positioned(
+        left: 25,
+        top: 130,
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Color(0xFF0C8C75),
+                image: DecorationImage(image:AssetImage(
+                'assets/images/Macaroni.png',
                 ),
-              ],
-            ),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+              height: 100,
+              width: 235,
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.all(7.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Text(
+                'Macaroni \n Campania',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white
+                ),
+              ),
+          Text(
+            '\n20\$',
+            style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
           ),
+        ),
         ],
+          ),
+            ),
+          ],
+        ),
+      ),
+      Positioned(
+        top: 165,
+        left: 275,
+        child: Column(
+          children: [
+            Container(
+              height: 40,
+              width: 120,
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFF0C8C75),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.remove),
+                    iconSize: 24,
+                    tooltip: 'usun',
+                    onPressed: () {
+                      setState(() {
+                        if (ilosc >=1) {
+                          ilosc--;
+                        }
+                      });
+                    },
+                  ),
+                  Text(
+                    '$ilosc',
+                  )
+                ],
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    ],
       ),
     );
-  }
+    }
+
 }
+
