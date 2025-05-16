@@ -1,314 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/login.dart';
-import './favorites.dart';
-import './account.dart';
-import './main.dart';
-
-void main() {
-
-  runApp(MyApp());
+import 'miniatures.dart'; // import modelu FoodItem
+class CartItem {
+  final FoodItem food;
+  int quantity;
+  CartItem({required this.food, required this.quantity});
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)), // your beige color
-      ),
-      home: Menu(),
-    );
-
-  }
-}
-
-class HomePage extends StatefulWidget {
-
-  @override
-  State<HomePage> createState() => _HomePage();
-}
-class _HomePage extends State<HomePage>{
-  var selectedIndex = 2;
-
-  @override
-  Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
-
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = Menu();
-        break;
-      case 1:
-        page = Placeholder();
-        break;
-      case 2:
-        page = Cart();
-      case 3:
-        page = Account();
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-    var mainArea = ColoredBox(
-      color: colorScheme.surfaceContainerHighest,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: page,
-      ),
-    );
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: mainArea),
-          // Pasek dolny jako warstwa
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: Color(0xFF0C8C75),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined,),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 2;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 3;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-
-
-  }
-
-
-}
+// Globalna lista koszyka
+List<CartItem> cartItems = [];
 class Cart extends StatefulWidget {
   const Cart({super.key});
-
   @override
   State<Cart> createState() => _CartState();
 }
-
 class _CartState extends State<Cart> {
-  int ilosc = 1;
-  double wynik = 0;
-  int cena = 20;
-  String kupon = 'none';
-
-  void total() {
-    setState(() {
-      wynik = (ilosc + cena) as double;
-    });
+  double getTotalPrice() {
+    double total = 0.0;
+    for (var item in cartItems) {
+      double unitPrice = double.tryParse(item.food.price.replaceAll('\$', '')) ?? 0.0;
+      total += unitPrice * item.quantity;
+    }
+    return total;
   }
-
   @override
   Widget build(BuildContext context) {
+    if (cartItems.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Cart')),
+        body: const Center(child: Text('Your cart is empty')),
+      );
+    }
     return Scaffold(
-      backgroundColor: Color(0xFFF3ECE4),
-      body: Stack(
-        children: [
-          // Napis gorny Cart
-          AppBar(
-            centerTitle: true,
-            backgroundColor: Color(0xFFF3ECE4),
-            title: Text(
-              'Cart',
-              style: TextStyle(
-                fontFamily: 'LeagueSpartan',
-                fontSize: 25,
-              ),
+      appBar: AppBar(
+        title: const Text('Cart'),
+        backgroundColor: const Color(0xFFF3ECE4),
+        foregroundColor: Colors.black,
+      ),
+      backgroundColor: const Color(0xFFF3ECE4),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: cartItems.length,
+        itemBuilder: (context, index) {
+          final cartItem = cartItems[index];
+          double unitPrice = double.tryParse(cartItem.food.price.replaceAll('\$', '')) ?? 0.0;
+          double itemTotal = unitPrice * cartItem.quantity;
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0C8C75),
+              borderRadius: BorderRadius.circular(16),
             ),
-          ),
-          // Tylko pokaż, jeśli ilosc > 0
-          if (ilosc > 0)
-            Positioned(
-              left: 25,
-              top: 130,
-              right: 25,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(cartItem.food.imagePath, width: 60, height: 60, fit: BoxFit.cover),
+              ),
+              title: Text(
+                cartItem.food.title,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Quantity: ${cartItem.quantity}\nPrice: \$${itemTotal.toStringAsFixed(2)}',
+                style: const TextStyle(color: Colors.white70),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Blok: produkt
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Color(0xFF0C8C75),
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/Macaroni.png'),
-                            alignment: Alignment.centerLeft,
-                          ),
-                        ),
-                        height: 130,
-                        width: 310,
-                        padding: EdgeInsets.all(7.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Macaroni \n Campania',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontFamily: 'MontSerrat',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '\n$cena\$',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontFamily: 'MontSerrat',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(width: 10-3.6,),
-
-                      // Blok: - 1 +
-                      Container(
-                        height: 40,
-                        width: 120,
-                        margin: EdgeInsets.only(top: 45), // dopasowanie do wysokości
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFF0C8C75),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              iconSize: 24,
-                              tooltip: 'Usuń',
-                              onPressed: () {
-                                setState(() {
-                                  if (ilosc > 0) {
-                                    ilosc--;
-                                  }
-                                });
-                              },
-                            ),
-                            Text(
-                              '$ilosc',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'MontSerrat',
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              iconSize: 24,
-                              tooltip: 'Dodaj',
-                              onPressed: () {
-                                setState(() {
-                                  ilosc++;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.remove, color: Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        if (cartItem.quantity > 1) {
+                          cartItem.quantity--;
+                        } else {
+                          cartItems.removeAt(index);
+                        }
+                      });
+                    },
                   ),
-
-                  SizedBox(height: 15),
-
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 380
-                    ),
-                    child: Text(
-                   'Total: $wynik',
-                      style: TextStyle(
-                        fontFamily: 'MontSerrat',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                      ),
-                  ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom:  500,
-                      left: 1500
-                    ),
-                    child: Text(
-                      'Used coupons: $kupon',
-                      style: TextStyle(
-                          fontFamily: 'MontSerrat',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.add, color: Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        cartItem.quantity++;
+                      });
+                    },
                   ),
                 ],
               ),
             ),
-
-        ],
+          );
+        },
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        color: const Color(0xFFF1ECE3),
+        child: Text(
+          'Total: \$${getTotalPrice().toStringAsFixed(2)}',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
-    }
-
+  }
 }
-
