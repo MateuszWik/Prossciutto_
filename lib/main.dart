@@ -205,7 +205,7 @@ class HomeScreen extends StatelessWidget {
 
     final pizzaItems = [
       FoodItems(name: 'Pizza Margherita', imagePath: 'assets/images/Margherita.png', price: '15\$'),
-      FoodItems(name: 'Pizza Prosciutt funghi', imagePath: 'assets/images/Prosciutto_e_funghi.png', price: '25\$'),
+      FoodItems(name: 'Pizza Prossciutto funghi', imagePath: 'assets/images/Prosciutto_e_funghi.png', price: '25\$'),
       FoodItems(name: 'Pizza Quattro Formaggi', imagePath: 'assets/images/Quattro_Formaggi.png', price: '25\$'),
     ];
 
@@ -330,6 +330,7 @@ class HomeScreen extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(item.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
