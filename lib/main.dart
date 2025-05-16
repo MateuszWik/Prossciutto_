@@ -328,7 +328,7 @@ class HomeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: Image.asset(item.imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 10),
           Text(item.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           Spacer(),
           Row(
