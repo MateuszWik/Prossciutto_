@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mateusz/login.dart';
-import './account.dart';
 import './cart.dart';
 import './coupons.dart';
 import './favorites.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,13 +15,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Menu",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)), // your beige color
       ),
       home: Menu(),
     );
+
   }
+}
+
+class FoodItems {
+  final String name;
+  final String imagePath;
+  final String price;
+
+  FoodItems({required this.name, required this.imagePath, required this.price});
 }
 
 class Menu extends StatefulWidget {
@@ -33,11 +40,26 @@ class Menu extends StatefulWidget {
 class _Menu extends State<Menu> {
   var selectedIndex = 0;
   String searchQuery = '';
+  List<FoodItems> favoriteItems = [];
 
   void updateSearch(String query) {
     setState(() {
       searchQuery = query;
     });
+  }
+
+  void toggleFavorite(FoodItems item) {
+    setState(() {
+      if (favoriteItems.any((element) => element.name == item.name)) {
+        favoriteItems.removeWhere((element) => element.name == item.name);
+      } else {
+        favoriteItems.add(item);
+      }
+    });
+  }
+
+  bool isFavorite(String name) {
+    return favoriteItems.any((item) => item.name == name);
   }
 
   @override
@@ -55,16 +77,22 @@ class _Menu extends State<Menu> {
           },
           searchQuery: searchQuery,
           onSearchChanged: updateSearch,
+          toggleFavorite: toggleFavorite,
+          isFavorite: isFavorite,
         );
         break;
       case 1:
-        page = Favorites();
+        page = Favorites(
+          favoriteItems: favoriteItems,
+          toggleFavorite: toggleFavorite,
+          isFavorite: isFavorite,
+        );
         break;
       case 2:
         page = Cart();
         break;
       case 3:
-        page = Account();
+        page = LoginScreen();
         break;
       case 4:
         page = Coupons();
@@ -151,58 +179,57 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onCouponTap;
   final String searchQuery;
   final ValueChanged<String> onSearchChanged;
+  final Function(FoodItems) toggleFavorite;
+  final bool Function(String) isFavorite;
 
-  const HomeScreen({super.key, required this.onCouponTap, required this.searchQuery, required this.onSearchChanged});
+  const HomeScreen({
+    super.key,
+    required this.onCouponTap,
+    required this.searchQuery,
+    required this.onSearchChanged,
+    required this.toggleFavorite,
+    required this.isFavorite,
+  });
 
-  bool _matches(String query, String name) => name.toLowerCase().contains(query.toLowerCase());
+  bool _matches(String query, String name) =>
+      name.toLowerCase().contains(query.toLowerCase());
 
   @override
   Widget build(BuildContext context) {
     final pastaItems = [
-      {'image': 'assets/images/Macaroni.png', 'name': 'Macaroni Campania', 'price': '20\$'},
-      {'image': 'assets/images/Spaghetti-Sicily.png', 'name': 'Spaghetti Sicily', 'price': '25\$'},
-      {'image': 'assets/images/Penne_all_arrabbiata.png', 'name': "Penne all'Arrabbiata", 'price': '25\$'},
+      FoodItems(name: 'Macaroni Campania', imagePath: 'assets/images/Macaroni.png', price: '20\$'),
+      FoodItems(name: 'Spaghetti Sicily', imagePath: 'assets/images/Spaghetti-Sicily.png', price: '25\$'),
+      FoodItems(name: "Penne all'Arrabbiata", imagePath: 'assets/images/Penne_all_arrabbiata.png', price: '25\$'),
     ];
 
     final pizzaItems = [
-      {'image': 'assets/images/Margherita.png', 'name': 'Pizza Margherita', 'price': '15\$'},
-      {'image': 'assets/images/Prosciutto_e_funghi.png', 'name': 'Pizza Prosciutt funghi', 'price': '25\$'},
-      {'image': 'assets/images/Quattro_Formaggi.png', 'name': 'Pizza Quattro Formaggi', 'price': '25\$'},
+      FoodItems(name: 'Pizza Margherita', imagePath: 'assets/images/Margherita.png', price: '15\$'),
+      FoodItems(name: 'Pizza Prosciutt funghi', imagePath: 'assets/images/Prosciutto_e_funghi.png', price: '25\$'),
+      FoodItems(name: 'Pizza Quattro Formaggi', imagePath: 'assets/images/Quattro_Formaggi.png', price: '25\$'),
     ];
 
     final sideItems = [
-      {'image': 'assets/images/Frantoio-Oil.png', 'name': 'Frantonio Oil', 'price': '3\$'},
-      {'image': 'assets/images/Leccino-Oil.png', 'name': 'Leccino Oil', 'price': '4\$'},
-      {'image': 'assets/images/Water.png', 'name': 'Water', 'price': 'Free of Charge'},
-      {'image': 'assets/images/bread_sticks.png', 'name': 'Bread Sticks', 'price': 'Free of Charge'},
+      FoodItems(name: 'Frantonio Oil', imagePath: 'assets/images/Frantoio-Oil.png', price: '3\$'),
+      FoodItems(name: 'Leccino Oil', imagePath: 'assets/images/Leccino-Oil.png', price: '4\$'),
+      FoodItems(name: 'Water', imagePath: 'assets/images/Water.png', price: 'Free of Charge'),
+      FoodItems(name: 'Bread Sticks', imagePath: 'assets/images/bread_sticks.png', price: 'Free of Charge'),
     ];
 
-    Widget buildSection(String title, List items) {
-      final filtered = items.where((item) => _matches(searchQuery, item['name']!)).toList();
-      if (filtered.isEmpty) return SizedBox.shrink();
+    final sections = [
+      {'title': 'Pasta', 'items': pastaItems},
+      {'title': 'Pizza', 'items': pizzaItems},
+      {'title': 'Sides', 'items': sideItems},
+    ];
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 24),
-          Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          SizedBox(height: 12),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: filtered.map((item) => Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: _buildFoodCard(
-                  imagePath: item['image']!,
-                  name: item['name']!,
-                  price: item['price']!,
-                ),
-              )).toList(),
-            ),
-          ),
-        ],
-      );
-    }
+    final filteredSections = sections.map((section) {
+      final items = (section['items'] as List<FoodItems>)
+          .where((item) => _matches(searchQuery, item.name))
+          .toList();
+      return {
+        'title': section['title'] as String,
+        'items': items,
+      };
+    }).where((section) => (section['items'] as List).isNotEmpty).toList();
 
     return SafeArea(
       child: Padding(
@@ -245,9 +272,34 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              buildSection('Pasta', pastaItems),
-              buildSection('Pizza', pizzaItems),
-              buildSection('Sides', sideItems),
+              ...filteredSections.map((section) {
+                final String title = section['title'] as String;
+                final List<FoodItems> items = section['items'] as List<FoodItems>;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 24),
+                    Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 12),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: items.map((item) => Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: GestureDetector(
+                            onTap: () => toggleFavorite(item),
+                            child: _buildFoodCard(
+                              item: item,
+                              isFavorited: isFavorite(item.name),
+                            ),
+                          ),
+                        )).toList(),
+                      ),
+                    ),
+                  ],
+                );
+              }),
               SizedBox(height: 100),
             ],
           ),
@@ -256,7 +308,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFoodCard({required String imagePath, required String name, required String price}) {
+  Widget _buildFoodCard({required FoodItems item, required bool isFavorited}) {
     return Container(
       width: 140,
       height: 180,
@@ -273,15 +325,19 @@ class HomeScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
+            child: Image.asset(item.imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
           ),
           SizedBox(height: 8),
-          Text(name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          Text(item.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(price, style: TextStyle(fontWeight: FontWeight.bold)),
-              Icon(Icons.favorite_border_outlined, size: 18),
+              Text(item.price, style: TextStyle(fontWeight: FontWeight.bold)),
+              Icon(
+                isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
+                size: 18,
+                color: isFavorited ? Colors.red : null,
+              ),
             ],
           ),
         ],

@@ -3,6 +3,7 @@ import 'package:mateusz/login.dart';
 import 'package:mateusz/main.dart';
 import 'package:mateusz/favorites.dart';
 import 'package:mateusz/cart.dart';
+import 'package:mateusz/favorites.dart';
 
 void main() {
 
@@ -37,7 +38,7 @@ class _Account extends State<Account>{
 
   final List<Widget> pages = [
     Menu(),
-    Favorites(),
+    Placeholder(),
     Cart(),
     LoginScreen(),
   ];

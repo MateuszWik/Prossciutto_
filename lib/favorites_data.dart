@@ -1,3 +1,3 @@
-import '../main.dart';
+import 'main.dart';
 
 List<FoodItems> favoriteItems = [];

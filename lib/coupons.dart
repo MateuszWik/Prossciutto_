@@ -27,7 +27,7 @@ class _CouponsState extends State<Coupons> {
         page = Menu();
         break;
       case 1:
-        page = Favorites();
+        page = Placeholder();
         break;
       case 2:
         page = Cart();

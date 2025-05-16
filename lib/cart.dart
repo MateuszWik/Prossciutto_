@@ -15,13 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Testowa",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
-
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)), // your beige color
       ),
       home: HomePage(),
     );
+
   }
 }
 
@@ -43,7 +42,7 @@ class _HomePage extends State<HomePage>{
         page = Menu();
         break;
       case 1:
-        page = Favorites();
+        page = Placeholder();
         break;
       case 2:
         page = Cart();
@@ -146,6 +145,7 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
           AppBar(
