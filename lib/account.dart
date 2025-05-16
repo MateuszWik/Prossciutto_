@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/Account.dart';
-import 'package:mateusz/singup.dart';
+import 'package:mateusz/login.dart';
 import 'package:mateusz/main.dart';
 import 'package:mateusz/favorites.dart';
 import 'package:mateusz/cart.dart';
-import 'package:mateusz/coupons.dart';
 
 void main() {
 
@@ -34,12 +32,14 @@ class Account extends StatefulWidget {
   @override
   State<Account> createState() => _Account();
 }
-class _Account extends State<Account>{
+class _Account extends State<Account> {
   var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = Theme
+        .of(context)
+        .colorScheme;
 
     Widget page;
     switch (selectedIndex) {
@@ -89,7 +89,8 @@ class _Account extends State<Account>{
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined,),
+                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons
+                            .home_outlined,),
                         color: Colors.white,
                         onPressed: () {
                           setState(() {
@@ -98,17 +99,19 @@ class _Account extends State<Account>{
                         },
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
+                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons
+                            .favorite_border_outlined),
                         color: Colors.white,
                         onPressed: () {
                           setState(() {
                             selectedIndex = 1;
-
                           });
                         },
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                        icon: Icon(
+                            selectedIndex == 2 ? Icons.shopping_cart : Icons
+                                .shopping_cart_outlined),
                         color: Colors.white,
                         onPressed: () {
                           setState(() {
@@ -117,7 +120,8 @@ class _Account extends State<Account>{
                         },
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
+                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons
+                            .person_2_outlined),
                         color: Colors.white,
                         onPressed: () {
                           setState(() {
@@ -135,11 +139,11 @@ class _Account extends State<Account>{
       ),
     );
   }
-
+}
 
 
   @override
-  Widget buildd(BuildContext context) {
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
@@ -274,5 +278,4 @@ class _Account extends State<Account>{
         ),
       ]
     );
-  }
-}
+   }
