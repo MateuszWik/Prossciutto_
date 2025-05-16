@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import './main.dart';
 void main() {
   runApp(
     MaterialApp(
@@ -119,7 +119,16 @@ class _CouponsState extends State<Coupons> {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Image.asset("assets/images/left_arrow.png"),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Menu()),
+                      );
+
+                    },
+                    child: Image.asset("assets/images/left_arrow.png"),
+                  ),
                 ),
                 const Text(
                   "Coupons",
