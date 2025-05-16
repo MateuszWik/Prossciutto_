@@ -109,12 +109,11 @@ class _Account extends State<Account> {
                       IconButton(
                         icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
                         color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()), // Otwiera ekran logowania jako osobną stronę
-                            );
-                          },
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 3;
+                          });
+                        },
                       ),
                     ],
                   ),

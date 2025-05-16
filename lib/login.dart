@@ -47,7 +47,6 @@ class LoginScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 13),
                   child: TextFormField(
-                    obscureText: true,
                     style: TextStyle(fontFamily: "MontSerrat"),
                     decoration: InputDecoration(
                       labelText: 'Email',
@@ -100,9 +99,8 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
-
-              ]
+                ),
+              ],
           ),
         ),
       ),
