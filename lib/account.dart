@@ -39,6 +39,7 @@ class _Account extends State<Account>{
     Menu(),
     Favorites(),
     Cart(),
+    LoginScreen(),
   ];
 
   @override
@@ -85,12 +86,45 @@ class _Account extends State<Account>{
     return IconButton(
       icon: Icon(selectedIndex == index ? selectedIcon : unselectedIcon),
       color: Colors.white,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
-        }
+      onPressed: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
     );
   }
 }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start, // Wyrównanie do lewej strony
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 15),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              "Account",
+              style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan"),
+            ),
+          ),
+        ),
+        SizedBox(height: 15),
+        Center( // Wyśrodkowanie zdjęcia profilowego
+          child: CircleAvatar(
+            radius: 40,
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.person, size: 40, color: Colors.white),
+          ),
+        ),
+        SizedBox(height: 23), // Odstęp między zdjęciem a tekstem "Name"
+        Padding(
+          padding: EdgeInsets.only(left: 13), // Odstęp od lewej strony
+          child: Text(
+            "Name",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
+  }
