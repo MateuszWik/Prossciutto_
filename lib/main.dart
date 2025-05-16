@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/login.dart';
 import './account.dart';
 import './cart.dart';
 import './coupons.dart';
@@ -31,6 +32,13 @@ class Menu extends StatefulWidget {
 
 class _Menu extends State<Menu> {
   var selectedIndex = 0;
+  String searchQuery = '';
+
+  void updateSearch(String query) {
+    setState(() {
+      searchQuery = query;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +47,15 @@ class _Menu extends State<Menu> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = HomeScreen(onCouponTap: () {
-          setState(() {
-            selectedIndex = 4;
-          });
-        });
+        page = HomeScreen(
+          onCouponTap: () {
+            setState(() {
+              selectedIndex = 4;
+            });
+          },
+          searchQuery: searchQuery,
+          onSearchChanged: updateSearch,
+        );
         break;
       case 1:
         page = Favorites();
@@ -73,7 +85,6 @@ class _Menu extends State<Menu> {
       body: Stack(
         children: [
           Positioned.fill(child: mainArea),
-
           Positioned(
             left: 16,
             right: 16,
@@ -138,11 +149,61 @@ class _Menu extends State<Menu> {
 
 class HomeScreen extends StatelessWidget {
   final VoidCallback onCouponTap;
+  final String searchQuery;
+  final ValueChanged<String> onSearchChanged;
 
-  const HomeScreen({super.key, required this.onCouponTap});
+  const HomeScreen({super.key, required this.onCouponTap, required this.searchQuery, required this.onSearchChanged});
+
+  bool _matches(String query, String name) => name.toLowerCase().contains(query.toLowerCase());
 
   @override
   Widget build(BuildContext context) {
+    final pastaItems = [
+      {'image': 'assets/images/Macaroni.png', 'name': 'Macaroni Campania', 'price': '20\$'},
+      {'image': 'assets/images/Spaghetti-Sicily.png', 'name': 'Spaghetti Sicily', 'price': '25\$'},
+      {'image': 'assets/images/Penne_all_arrabbiata.png', 'name': "Penne all'Arrabbiata", 'price': '25\$'},
+    ];
+
+    final pizzaItems = [
+      {'image': 'assets/images/Margherita.png', 'name': 'Pizza Margherita', 'price': '15\$'},
+      {'image': 'assets/images/Prosciutto_e_funghi.png', 'name': 'Pizza Prosciutt funghi', 'price': '25\$'},
+      {'image': 'assets/images/Quattro_Formaggi.png', 'name': 'Pizza Quattro Formaggi', 'price': '25\$'},
+    ];
+
+    final sideItems = [
+      {'image': 'assets/images/Frantoio-Oil.png', 'name': 'Frantonio Oil', 'price': '3\$'},
+      {'image': 'assets/images/Leccino-Oil.png', 'name': 'Leccino Oil', 'price': '4\$'},
+      {'image': 'assets/images/Water.png', 'name': 'Water', 'price': 'Free of Charge'},
+      {'image': 'assets/images/bread_sticks.png', 'name': 'Bread Sticks', 'price': 'Free of Charge'},
+    ];
+
+    Widget buildSection(String title, List items) {
+      final filtered = items.where((item) => _matches(searchQuery, item['name']!)).toList();
+      if (filtered.isEmpty) return SizedBox.shrink();
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 24),
+          Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 12),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: filtered.map((item) => Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: _buildFoodCard(
+                  imagePath: item['image']!,
+                  name: item['name']!,
+                  price: item['price']!,
+                ),
+              )).toList(),
+            ),
+          ),
+        ],
+      );
+    }
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -152,15 +213,9 @@ class HomeScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    'Hi',
-                    style: TextStyle(fontSize: 20),
-                  ),
+                  Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  InkWell(
-                    onTap: onCouponTap,
-                    child: Image.asset('assets/images/kupon.png'),
-                  ),
+                  InkWell(onTap: onCouponTap, child: Image.asset('assets/images/kupon.png')),
                 ],
               ),
               SizedBox(height: 12),
@@ -177,6 +232,7 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextField(
+                onChanged: onSearchChanged,
                 decoration: InputDecoration(
                   hintText: 'search...',
                   prefixIcon: Icon(Icons.search),
@@ -189,98 +245,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 24),
-              Text('Pasta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 12),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildFoodCard(
-                        imagePath: 'assets/images/Macaroni.png',
-                        name: 'Macaroni\nCampania',
-                        price: '20\$'
-                    ),
-                    SizedBox(width: 12),
-                    _buildFoodCard(
-                        imagePath: 'assets/images/Spaghetti-Sicily.png',
-                        name: 'Spaghetti\nSicily',
-                        price: '25\$'
-                    ),
-                    SizedBox(width: 12),
-                    _buildFoodCard(
-                        imagePath: 'assets/images/Penne_all_arrabbiata.png',
-                        name: 'Penne all\'\nArrabbiata',
-                        price: '25\$'
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24),
-              Text('Pizza', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 12),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildFoodCard(
-                        imagePath: 'assets/images/Margherita.png',
-                        name: 'Pizza \nMargherita',
-                        price: '15\$'
-                    ),
-                    SizedBox(width: 12),
-                    _buildFoodCard(
-                        imagePath: 'assets/images/Prosciutto_e_funghi.png',
-                        name: 'Pizza \nProsciutt funghi',
-                        price: '25\$'
-                    ),
-                    SizedBox(width: 12),
-                    _buildFoodCard(
-                        imagePath: 'assets/images/Quattro_Formaggi.png',
-                        name: 'Pizza \nQuattro Formaggi',
-                        price: '25\$'
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24),
-              Text('Sides', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 12),
-              SizedBox(
-                height: 200,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _buildFoodCard(
-                          imagePath: 'assets/images/Frantoio-Oil.png',
-                          name: 'Frantonio Oil',
-                          price: '3\$'
-                      ),
-                      SizedBox(width: 12),
-                      _buildFoodCard(
-                          imagePath: 'assets/images/Leccino-Oil.png',
-                          name: 'Leccino Oil',
-                          price: '4\$'
-                      ),
-                      SizedBox(width: 12),
-                      _buildFoodCard(
-                          imagePath: 'assets/images/Water.png',
-                          name: 'Water',
-                          price: 'Free of Charge'
-                      ),
-                      SizedBox(width: 12),
-                      _buildFoodCard(
-                          imagePath: 'assets/images/bread_sticks.png',
-                          name: 'Bread Sticks',
-                          price: 'Free of Charge'
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-
+              buildSection('Pasta', pastaItems),
+              buildSection('Pizza', pizzaItems),
+              buildSection('Sides', sideItems),
               SizedBox(height: 100),
             ],
           ),
