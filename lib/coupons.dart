@@ -72,7 +72,7 @@ class _CouponsState extends State<Coupons> {
                 elevation: 10,
                 child: Container(
                   height: 60,
-                  color: Color(0xFFF3ECE4),
+                  color: mainwhite,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -122,7 +122,6 @@ class _CouponsState extends State<Coupons> {
                   child: Image.asset("assets/images/left_arrow.png"),
                 ),
                 const Text(
-
                   "Coupons",
                   style: TextStyle(
                     fontSize: 20,
@@ -175,11 +174,11 @@ class _CouponsState extends State<Coupons> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 15,
                       crossAxisSpacing: 15,
-                      childAspectRatio: 0.75 / 0.75,
+                      childAspectRatio: 5,
                       children: [
                         _buildCouponCard(
                           title: 'Student discount',
-                          description: '30% OFF \nBelow 25y old',
+                          description: '30% OFF • Below 25y old',
                         ),
                         _buildCouponCard(
                           title: '2nd pizza',
@@ -206,43 +205,62 @@ class _CouponsState extends State<Coupons> {
   }
 
   Widget _buildCouponCard({required String title, required String description}) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: mainwhite,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: mainGreen,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    fontFamily: 'League Spartan',
-                  ),
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: mainwhite,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
+            ],
+          ),
+          child: Row(
+            children: [
+              SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: mainGreen,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        fontFamily: 'League Spartan',
+                      ),
+                    ),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        color: Colors.grey[800],
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 8,
+          right: 8,
+          child: Center(
+            child: Text(
+              '+',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                height: 1,
+              ),
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
