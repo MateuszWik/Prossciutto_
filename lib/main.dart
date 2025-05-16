@@ -111,7 +111,6 @@ class _Menu extends State<Menu> {
       iconColor = Colors.white;
     }
 
-
     return Scaffold(
       body: Stack(
         children: [
@@ -186,7 +185,7 @@ class _Menu extends State<Menu> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final VoidCallback onCouponTap;
   final String searchQuery;
   final ValueChanged<String> onSearchChanged;
@@ -202,11 +201,37 @@ class HomeScreen extends StatelessWidget {
     required this.isFavorite,
   });
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late TextEditingController _searchController;
+  bool _isControllerReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController(text: widget.searchQuery);
+    _searchController.addListener(() {
+      widget.onSearchChanged(_searchController.text);
+    });
+    _isControllerReady = true;
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   bool _matches(String query, String name) =>
       name.toLowerCase().contains(query.toLowerCase());
 
   @override
   Widget build(BuildContext context) {
+    if (!_isControllerReady) return SizedBox.shrink();
+
     final pastaItems = [
       FoodItems(name: 'Macaroni Campania', imagePath: 'assets/images/Macaroni.png', price: '20\$'),
       FoodItems(name: 'Spaghetti Sicily', imagePath: 'assets/images/Spaghetti-Sicily.png', price: '25\$'),
@@ -234,7 +259,7 @@ class HomeScreen extends StatelessWidget {
 
     final filteredSections = sections.map((section) {
       final items = (section['items'] as List<FoodItems>)
-          .where((item) => _matches(searchQuery, item.name))
+          .where((item) => _matches(_searchController.text, item.name))
           .toList();
       return {
         'title': section['title'] as String,
@@ -253,7 +278,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  InkWell(onTap: onCouponTap, child: Image.asset('assets/images/kupon.png')),
+                  InkWell(onTap: widget.onCouponTap, child: Image.asset('assets/images/kupon.png')),
                 ],
               ),
               SizedBox(height: 12),
@@ -270,7 +295,7 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextField(
-                onChanged: onSearchChanged,
+                controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'search...',
                   prefixIcon: Icon(Icons.search),
@@ -299,10 +324,10 @@ class HomeScreen extends StatelessWidget {
                         children: items.map((item) => Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
-                            onTap: () => toggleFavorite(item),
+                            onTap: () => widget.toggleFavorite(item),
                             child: _buildFoodCard(
                               item: item,
-                              isFavorited: isFavorite(item.name),
+                              isFavorited: widget.isFavorite(item.name),
                             ),
                           ),
                         )).toList(),
