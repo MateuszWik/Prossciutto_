@@ -64,28 +64,28 @@ class _CouponsState extends State<Coupons> {
                 elevation: 10,
                 child: Container(
                   height: 60,
-                  color: mainGreen,
+                  color: mainwhite,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                         icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-                        color: Colors.white,
+                        color: mainGreen,
                         onPressed: () => setState(() => selectedIndex = 0),
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: Colors.white,
+                        color: mainGreen,
                         onPressed: () => setState(() => selectedIndex = 1),
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: Colors.white,
+                        color: mainGreen,
                         onPressed: () => setState(() => selectedIndex = 2),
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 3 ? Icons.person : Icons.person_outline),
-                        color: Colors.white,
+                        color: mainGreen,
                         onPressed: () => setState(() => selectedIndex = 3),
                       ),
                     ],
