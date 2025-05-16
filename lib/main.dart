@@ -219,56 +219,62 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 24),
               Text('Pizza', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
-              Row(
-                children: [
-                  _buildFoodCard(
-                      imagePath: 'assets/images/Margherita.png',
-                      name: 'Pizza \nMargherita',
-                      price: '15\$'
-                  ),
-                  SizedBox(width: 12),
-                  _buildFoodCard(
-                      imagePath: 'assets/images/Prosciutto_e_funghi.png',
-                      name: 'Pizza \nProsciutt funghi',
-                      price: '25\$'
-                  ),
-                  SizedBox(width: 12),
-                  _buildFoodCard(
-                      imagePath: 'assets/images/Quattro_Formaggi.png',
-                      name: 'Pizza \nQuattro Formaggi',
-                      price: '25\$'
-                  ),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Margherita.png',
+                        name: 'Pizza \nMargherita',
+                        price: '15\$'
+                    ),
+                    SizedBox(width: 12),
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Prosciutto_e_funghi.png',
+                        name: 'Pizza \nProsciutt funghi',
+                        price: '25\$'
+                    ),
+                    SizedBox(width: 12),
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Quattro_Formaggi.png',
+                        name: 'Pizza \nQuattro Formaggi',
+                        price: '25\$'
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 24),
               Text('Sides', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
-              Row(
-                children: [
-                  _buildFoodCard(
-                      imagePath: 'assets/images/Frantoio-Oil.png',
-                      name: 'Frantonio Oil',
-                      price: '3\$'
-                  ),
-                  SizedBox(width: 12),
-                  _buildFoodCard(
-                      imagePath: 'assets/images/Leccino-Oil.png',
-                      name: 'Leccino Oil',
-                      price: '4\$'
-                  ),
-                  SizedBox(width: 12),
-                  _buildFoodCard(
-                      imagePath: 'assets/images/Water.png',
-                      name: 'Water',
-                      price: 'Free of Charge'
-                  ),
-                  SizedBox(width: 12),
-                  _buildFoodCard(
-                      imagePath: 'assets/images/bread_sticks.png',
-                      name: 'Bread Sticks',
-                      price: 'Free of Charge'
-                  ),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Frantoio-Oil.png',
+                        name: 'Frantonio Oil',
+                        price: '3\$'
+                    ),
+                    SizedBox(width: 12),
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Leccino-Oil.png',
+                        name: 'Leccino Oil',
+                        price: '4\$'
+                    ),
+                    SizedBox(width: 12),
+                    _buildFoodCard(
+                        imagePath: 'assets/images/Water.png',
+                        name: 'Water',
+                        price: 'Free of Charge'
+                    ),
+                    SizedBox(width: 12),
+                    _buildFoodCard(
+                        imagePath: 'assets/images/bread_sticks.png',
+                        name: 'Bread Sticks',
+                        price: 'Free of Charge'
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 100),
             ],
@@ -307,17 +313,6 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyCard() {
-    return Container(
-      width: 140,
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(16),
       ),
     );
   }
