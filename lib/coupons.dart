@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/login.dart';
-import './account.dart';
-import './cart.dart';
-import './favorites.dart';
-import './main.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
+      ),
+      home: Coupons(),
+      debugShowCheckedModeBanner: false,
+    ),
+  );
+}
 
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
@@ -24,25 +31,26 @@ class _CouponsState extends State<Coupons> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = Menu();
+        page = Placeholder();
         break;
       case 1:
         page = Placeholder();
         break;
       case 2:
-        page = Cart();
+        page = Placeholder();
         break;
       case 3:
-        page = LoginScreen();
+        page = Placeholder();
         break;
       case 4:
         page = _buildCouponsPage();
         break;
       default:
-        page = Menu();
+        page = Placeholder();
     }
 
     return Scaffold(
+      backgroundColor: mainwhite,
       body: Stack(
         children: [
           Positioned.fill(
@@ -64,7 +72,7 @@ class _CouponsState extends State<Coupons> {
                 elevation: 10,
                 child: Container(
                   height: 60,
-                  color: mainwhite,
+                  color: Color(0xFFF3ECE4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -114,6 +122,7 @@ class _CouponsState extends State<Coupons> {
                   child: Image.asset("assets/images/left_arrow.png"),
                 ),
                 const Text(
+
                   "Coupons",
                   style: TextStyle(
                     fontSize: 20,
@@ -200,7 +209,7 @@ class _CouponsState extends State<Coupons> {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color(0xFFF3ECE4),
+        color: mainwhite,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
