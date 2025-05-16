@@ -4,7 +4,7 @@ import 'main.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FoodDetailScreen(selectedIndex: 4),
+    home: FoodDetailScreen(selectedIndex: 1),
   ));
 }
 
@@ -34,7 +34,7 @@ final List<FoodItem> foodItems = [
     price: '25\$',
     imagePath: 'assets/images/Spaghetti-Sicily.png',
     description:
-    'Pasta ala Sicilia is a traditional Sicilian dish consisting of pasta, usually penne or spaghetti, served with an aromatic sauce made from a mixture of spices alla Siciliana, dried tomatoes, garlic, olive oil, onion, eggplants and fresh basil.',
+    'Traditional Sicilian pasta with rich tomato-based sauce and fresh ingredients.',
   ),
   FoodItem(
     title: 'Penne all\' Arrabbiata',
@@ -98,55 +98,74 @@ class FoodDetailScreen extends StatefulWidget {
 class _FoodDetailScreenState extends State<FoodDetailScreen> {
   int quantity = 1;
 
+  String calculateTotalPrice(FoodItem food, int quantity) {
+    if (food.title == 'Water') {
+      if (quantity <= 1) {
+        return 'Free of Charge';
+      } else {
+        double total = (quantity - 1) * 1.0;
+        return '\$${total.toStringAsFixed(2)}';
+      }
+    } else if (food.title == 'Bread Sticks') {
+      if (quantity <= 1) {
+        return 'Free of Charge';
+      } else {
+        double total = (quantity - 1) * 1.99;
+        return '\$${total.toStringAsFixed(2)}';
+      }
+    } else {
+      double unitPrice = double.tryParse(food.price.replaceAll('\$', '')) ?? 0.0;
+      double total = unitPrice * quantity;
+      return '\$${total.toStringAsFixed(2)}';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final food = foodItems[widget.selectedIndex];
 
     return Scaffold(
-      backgroundColor: Color(0xFFF3ECE4),
+      backgroundColor: const Color(0xFFF3ECE4),
       body: SafeArea(
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFFF1ECE3),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
               ),
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => Menu()),
-                        );
+                        Navigator.pop(context);
                       },
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     food.title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    food.price,
+                    calculateTotalPrice(food, quantity),
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.grey[700],
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(
@@ -160,25 +179,25 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFF0C8C75),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40),
                   ),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   children: [
                     Text(
                       food.description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 25,
                         color: Colors.white,
                       ),
                       textAlign: TextAlign.justify,
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       children: [
                         Container(
@@ -189,7 +208,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                           child: Row(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.remove),
+                                icon: const Icon(Icons.remove),
                                 onPressed: () {
                                   setState(() {
                                     if (quantity > 1) quantity--;
@@ -198,7 +217,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               ),
                               Text('$quantity'),
                               IconButton(
-                                icon: Icon(Icons.add),
+                                icon: const Icon(Icons.add),
                                 onPressed: () {
                                   setState(() {
                                     quantity++;
@@ -208,15 +227,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFF1ECE3),
+                              backgroundColor: const Color(0xFFF1ECE3),
                               foregroundColor: Colors.black,
-                              padding: EdgeInsets.symmetric(vertical: 16),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -224,7 +242,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
-                              children: [
+                              children: const [
                                 Text('Add to'),
                                 SizedBox(width: 8),
                                 Icon(Icons.shopping_cart_outlined),
