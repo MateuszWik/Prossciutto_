@@ -175,7 +175,7 @@ class _CouponsState extends State<Coupons> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 15,
                       crossAxisSpacing: 15,
-                      childAspectRatio: 5,
+                      childAspectRatio: 3 / 1.5,
                       children: [
                         _buildCouponCard(
                           title: 'Student discount',
