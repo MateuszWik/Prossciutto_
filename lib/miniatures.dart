@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-
+import 'cart.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -145,7 +145,10 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Menu()),
+                        );
                       },
                     ),
                   ),
