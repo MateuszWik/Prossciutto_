@@ -147,98 +147,115 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-          children: [
-      AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFFF3ECE4),
-        title: Text(
-          'Cart',
-          style: TextStyle(
-            fontFamily: 'LeagueSpartan',
-            fontSize: 25,
-          ),
-        ),
-      ),
-      Positioned(
-        left: 25,
-        top: 130,
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Color(0xFF0C8C75),
-                image: DecorationImage(image:AssetImage(
-                'assets/images/Macaroni.png',
-                ),
-                  alignment: Alignment.centerLeft,
-                ),
+        children: [
+          AppBar(
+            centerTitle: true,
+            backgroundColor: Color(0xFFF3ECE4),
+            title: Text(
+              'Cart',
+              style: TextStyle(
+                fontFamily: 'LeagueSpartan',
+                fontSize: 25,
               ),
-              height: 100,
-              width: 235,
-              alignment: Alignment.topRight,
-              padding: EdgeInsets.all(7.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                Text(
-                'Macaroni \n Campania',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white
-                ),
-              ),
-          Text(
-            '\n20\$',
-            style: TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          ),
-        ),
-        ],
-          ),
             ),
-          ],
-        ),
-      ),
-      Positioned(
-        top: 165,
-        left: 275,
-        child: Column(
-          children: [
-            Container(
-              height: 40,
-              width: 120,
-
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xFF0C8C75),
-              ),
-              child: Row(
+          ),
+          // Tylko pokaż, jeśli ilosc > 0
+          if (ilosc > 0) ...[
+            Positioned(
+              left: 25,
+              top: 130,
+              child: Column(
                 children: [
-                  IconButton(
-                      icon: Icon(Icons.remove),
-                    iconSize: 24,
-                    tooltip: 'usun',
-                    onPressed: () {
-                      setState(() {
-                        if (ilosc >=1) {
-                          ilosc--;
-                        }
-                      });
-                    },
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xFF0C8C75),
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/Macaroni.png'),
+                        alignment: Alignment.centerLeft,
+                      ),
+                    ),
+                    height: 100,
+                    width: 235,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.all(7.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Macaroni \n Campania',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontFamily: 'MontSerrat',
+                          ),
+                        ),
+                        Text(
+                          '\n20\$',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontFamily: 'MontSerrat',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    '$ilosc',
-                  )
                 ],
               ),
             ),
-
+            Positioned(
+              top: 165,
+              left: 275,
+              child: Column(
+                children: [
+                  Container(
+                    height: 40,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF0C8C75),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          iconSize: 24,
+                          tooltip: 'Usuń',
+                          onPressed: () {
+                            setState(() {
+                              if (ilosc > 0) {
+                                ilosc--;
+                              }
+                            });
+                          },
+                        ),
+                        Text(
+                          '$ilosc',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'MontSerrat',
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          iconSize: 24,
+                          tooltip: 'Dodaj',
+                          onPressed: () {
+                            setState(() {
+                              ilosc++;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
-        ),
-      ),
-    ],
+        ],
       ),
     );
     }
