@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/login.dart';
-import 'package:mateusz/main.dart';
-import 'package:mateusz/favorites.dart';
-import 'package:mateusz/cart.dart';
-
+import 'login.dart';
+import 'main.dart';
+import 'cart.dart';
 
 void main() {
-
   runApp(MyApp());
 }
 
@@ -20,7 +17,6 @@ class MyApp extends StatelessWidget {
       title: "Testowa",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
-
       ),
       home: Account(),
     );
@@ -28,32 +24,47 @@ class MyApp extends StatelessWidget {
 }
 
 class Account extends StatefulWidget {
-  const Account({super.key});
-
   @override
   State<Account> createState() => _Account();
 }
-class _Account extends State<Account>{
-  var selectedIndex = 0;
 
-  final List<Widget> pages = [
-    Menu(),
-    Placeholder(),
-    Cart(),
-    LoginScreen(),
-  ];
+class _Account extends State<Account> {
+  var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    var colorScheme = Theme.of(context).colorScheme;
+
+    Widget page;
+    switch (selectedIndex) {
+      case 0:
+        page = Menu(); // Twój widget menu
+        break;
+      case 1:
+        page = Placeholder(); // Tu możesz wstawić np. FavoritePage()
+        break;
+      case 2:
+        page = Cart(); // Twój widget koszyka
+        break;
+      case 3:
+        page = LoginScreen(); // Nowy widget z widokiem konta
+        break;
+      default:
+        throw UnimplementedError('no widget for $selectedIndex');
+    }
+
+    var mainArea = ColoredBox(
+      color: colorScheme.surfaceContainerHighest,
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 200),
+        child: page,
+      ),
+    );
+
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: AnimatedSwitcher(
-              duration: Duration(milliseconds: 200),
-              child: pages[selectedIndex],
-            ),
-          ),
+          Positioned.fill(child: mainArea),
           Positioned(
             left: 16,
             right: 16,
@@ -68,12 +79,109 @@ class _Account extends State<Account>{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildNavItem(Icons.home, Icons.home_outlined, 0),
-                      _buildNavItem(Icons.favorite, Icons.favorite_border_outlined, 1),
-                      _buildNavItem(Icons.shopping_cart, Icons.shopping_cart_outlined, 2),
-                      _buildNavItem(Icons.person_2, Icons.person_2_outlined, 3),
+                      IconButton(
+                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 0;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 1;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 2;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
+                        color: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()), // Otwiera ekran logowania jako osobną stronę
+                            );
+                          },
+                      ),
                     ],
                   ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class AccountPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 40),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                "Account",
+                style: TextStyle(fontSize: 20, fontFamily: "LeagueSpartan"),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          CircleAvatar(
+            radius: 40,
+            backgroundColor: Colors.grey,
+            backgroundImage: AssetImage('assets/images/kotek.png'),
+          ),
+          SizedBox(height: 23),
+          buildInfoField("Name", "Brak danych"),
+          buildInfoField("Email", "Brak danych"),
+          buildInfoField("Password", "Brak danych"),
+          buildInfoField("Date of Birth", "Brak danych"),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInfoField(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 13),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label,
+              style: TextStyle(fontSize: 14, fontFamily: "LeagueSpartan")),
+          SizedBox(height: 5),
+          Container(
+            height: 30,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  value,
+                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
                 ),
               ),
             ),
@@ -82,50 +190,4 @@ class _Account extends State<Account>{
       ),
     );
   }
-
-  Widget _buildNavItem(IconData selectedIcon, IconData unselectedIcon, int index) {
-    return IconButton(
-      icon: Icon(selectedIndex == index ? selectedIcon : unselectedIcon),
-      color: Colors.white,
-      onPressed: () {
-        setState(() {
-          selectedIndex = index;
-        });
-      },
-    );
-  }
 }
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start, // Wyrównanie do lewej strony
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Text(
-              "Account",
-              style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan"),
-            ),
-          ),
-        ),
-        SizedBox(height: 15),
-        Center( // Wyśrodkowanie zdjęcia profilowego
-          child: CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.grey,
-            child: Icon(Icons.person, size: 40, color: Colors.white),
-          ),
-        ),
-        SizedBox(height: 23), // Odstęp między zdjęciem a tekstem "Name"
-        Padding(
-          padding: EdgeInsets.only(left: 13), // Odstęp od lewej strony
-          child: Text(
-            "Name",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-    );
-  }

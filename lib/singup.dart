@@ -76,10 +76,10 @@ class SingupScreen extends StatelessWidget {
                     width: double.infinity, // Pełna szerokość (minus padding)
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Account()), // Przejście na nową stronę
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   //MaterialPageRoute(builder: (context) => Account()), // Przejście na nową stronę
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black, // Czarny kolor tła
@@ -88,7 +88,7 @@ class SingupScreen extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Log in',
+                        'Sing up',
                         style: TextStyle(fontFamily:"LeagueSpartan" ,color: Colors.white, fontSize: 27),
                       ),
                     ),

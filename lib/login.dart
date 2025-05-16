@@ -27,17 +27,23 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              mainAxisAlignment: MainAxisAlignment.start, // Zawartość przesunięta bliżej góry
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset('assets/images/logo.png', width: 120, height: 120, fit: BoxFit.cover),
+                ),
+                SizedBox(height: 100),
+
                 Text(
                   'Log in',
                   style: TextStyle(
                     fontFamily: "LeagueSpartan",
-                    fontSize: 16,
+                    fontSize: 35,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 13),
                   child: TextFormField(
@@ -78,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Account()),
+                          MaterialPageRoute(builder: (context) => AccountPage()),
                         );
 
                       },
@@ -90,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       child: Text(
                         'Log in',
-                        style: TextStyle(fontFamily:"LeagueSpartan" ,color: Colors.white, fontSize: 27),
+                        style: TextStyle(fontFamily:"LeagueSpartan" ,color: Colors.white, fontSize: 20),
                       ),
                     ),
                   ),
