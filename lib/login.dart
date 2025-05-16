@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/Account.dart';
+import 'package:mateusz/singup.dart';
 import 'package:mateusz/main.dart';
 import 'package:mateusz/favorites.dart';
-import 'package:mateusz/Account.dart';
+import 'package:mateusz/cart.dart';
+import 'package:mateusz/coupons.dart';
 
 void main() {
-
   runApp(MyApp());
 }
 
@@ -14,122 +16,93 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Testowa",
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
-
-      ),
-      home: HomePage(),
+      home: LoginScreen(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-
-  @override
-  State<HomePage> createState() => _HomePage();
-}
-class _HomePage extends State<HomePage>{
-  var selectedIndex = 0;
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
-
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = Placeholder();
-        break;
-      case 1:
-        page = Placeholder();
-        break;
-      case 2:
-        page = Placeholder();
-        break;
-      case 3:
-        page = Placeholder();
-        break;
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-
-    var mainArea = ColoredBox(
-      color: colorScheme.surfaceContainerHighest,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: page,
-      ),
-    );
-
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: mainArea),
-
-          // Pasek dolny jako warstwa
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: Color(0xFF0C8C75),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined,),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 2;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 3;
-                          });
-                        },
-                      ),
-                    ],
+      backgroundColor: Color(0xFF0C8C75), // Kolor tła
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Log in',
+                  style: TextStyle(
+                    fontFamily: "LeagueSpartan",
+                    fontSize: 16,
+                    color: Colors.white,
                   ),
                 ),
-              ),
-            ),
-          )
-        ],
+                SizedBox(height: 40),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13), // 13px odstępu z lewej i prawej
+                  child: TextFormField(
+                    obscureText: true,
+                    style: TextStyle(fontFamily: "MontSerrat"),
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16), // Zaokrąglone rogi
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 23),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13), // 13px odstępu z lewej i prawej
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16), // Zaokrąglone rogi
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 103),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13), // Odstęp 13px po obu stronach
+                  child: SizedBox(
+                    height: 65, // Ustawiona wysokość przycisku
+                    width: double.infinity, // Pełna szerokość (minus padding)
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Account()), // Przejście na nową stronę
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black, // Czarny kolor tła
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(19), // Zaokrąglone rogi 16px
+                        ),
+                      ),
+                      child: Text(
+                        'Log in',
+                        style: TextStyle(fontFamily:"LeagueSpartan" ,color: Colors.white, fontSize: 27),
+                      ),
+                    ),
+                  ),
+                )
+
+              ]
+          ),
+        ),
       ),
     );
   }
