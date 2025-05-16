@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/login.dart';
 import './favorites.dart';
 import './account.dart';
 import './main.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)), // your beige color
       ),
-      home: HomePage(),
+      home: Menu(),
     );
 
   }
@@ -140,7 +141,15 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   int ilosc = 1;
+  double wynik = 0;
+  int cena = 20;
+  String kupon = 'none';
 
+  void total() {
+    setState(() {
+      wynik = (ilosc + cena) as double;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +157,7 @@ class _CartState extends State<Cart> {
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
+          // Napis gorny Cart
           AppBar(
             centerTitle: true,
             backgroundColor: Color(0xFFF3ECE4),
@@ -160,101 +170,141 @@ class _CartState extends State<Cart> {
             ),
           ),
           // Tylko pokaż, jeśli ilosc > 0
-          if (ilosc > 0) ...[
+          if (ilosc > 0)
             Positioned(
               left: 25,
               top: 130,
+              right: 25,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color(0xFF0C8C75),
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/Macaroni.png'),
-                        alignment: Alignment.centerLeft,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Blok: produkt
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Color(0xFF0C8C75),
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/Macaroni.png'),
+                            alignment: Alignment.centerLeft,
+                          ),
+                        ),
+                        height: 130,
+                        width: 310,
+                        padding: EdgeInsets.all(7.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Macaroni \n Campania',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontFamily: 'MontSerrat',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '\n$cena\$',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'MontSerrat',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(width: 10-3.6,),
+
+                      // Blok: - 1 +
+                      Container(
+                        height: 40,
+                        width: 120,
+                        margin: EdgeInsets.only(top: 45), // dopasowanie do wysokości
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF0C8C75),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              iconSize: 24,
+                              tooltip: 'Usuń',
+                              onPressed: () {
+                                setState(() {
+                                  if (ilosc > 0) {
+                                    ilosc--;
+                                  }
+                                });
+                              },
+                            ),
+                            Text(
+                              '$ilosc',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'MontSerrat',
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              iconSize: 24,
+                              tooltip: 'Dodaj',
+                              onPressed: () {
+                                setState(() {
+                                  ilosc++;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 15),
+
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 380
+                    ),
+                    child: Text(
+                   'Total: $wynik',
+                      style: TextStyle(
+                        fontFamily: 'MontSerrat',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                      ),
+                  ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom:  500,
+                      left: 1500
+                    ),
+                    child: Text(
+                      'Used coupons: $kupon',
+                      style: TextStyle(
+                          fontFamily: 'MontSerrat',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
                       ),
                     ),
-                    height: 100,
-                    width: 235,
-                    alignment: Alignment.topRight,
-                    padding: EdgeInsets.all(7.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Macaroni \n Campania',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontFamily: 'MontSerrat',
-                          ),
-                        ),
-                        Text(
-                          '\n20\$',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'MontSerrat',
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
             ),
-            Positioned(
-              top: 165,
-              left: 275,
-              child: Column(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF0C8C75),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.remove),
-                          iconSize: 24,
-                          tooltip: 'Usuń',
-                          onPressed: () {
-                            setState(() {
-                              if (ilosc > 0) {
-                                ilosc--;
-                              }
-                            });
-                          },
-                        ),
-                        Text(
-                          '$ilosc',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'MontSerrat',
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          iconSize: 24,
-                          tooltip: 'Dodaj',
-                          onPressed: () {
-                            setState(() {
-                              ilosc++;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+
         ],
       ),
     );
