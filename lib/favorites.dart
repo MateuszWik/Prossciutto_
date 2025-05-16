@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/main.dart';
+import '../main.dart';
 import 'package:mateusz/cart.dart';
 import 'package:mateusz/account.dart';
+import 'data/favorites_data.dart';
 
 void main() {
 
@@ -48,10 +49,10 @@ class _HomePage extends State<HomePage>{
         page = Favorites();
         break;
       case 2:
-        page = Cart();
+        page = Placeholder();
         break;
       case 3:
-        page = Account();
+        page = Placeholder();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -137,95 +138,116 @@ class _HomePage extends State<HomePage>{
 
 
 }
-class Favorites extends StatelessWidget {
+class Favorites extends StatefulWidget {
   const Favorites({super.key});
 
   @override
+  State<Favorites> createState() => _FavoritesState();
+}
+
+class _FavoritesState extends State<Favorites> {
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.all(40.0),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  'Favorites',
-                  style: TextStyle(
-                    fontFamily: 'LeagueSpartan',
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                'Favorites',
+                style: TextStyle(
+                  fontFamily: 'LeagueSpartan',
+                  color: Colors.black,
+                  fontSize: 20,
                 ),
               ),
-              SizedBox(height: 40),
-              Container(
-                width: 277,
-                height: 88,
-                decoration: BoxDecoration(
-                  color: Color(0xFF0C8C75),
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                child: Stack(
-                  children: [
-                    // Tło: Row z obrazkiem i tekstem
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16.0), // Zaokrąglone rogi
-                          child: Image.asset(
-                            'assets/images/Spaghetti-Sicily.png', // Ścieżka do lokalnego pliku
-                            width: 132,
-                            height: 88,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text: 'Spaghetti\nSicily\n\n',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: "25\$",
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Ikona w prawym górnym rogu
-                    Positioned(
-                      top: 4,
-                      right: 4,
-                      child: IconButton(
-                        icon: Icon(Icons.favorite),
-                        color: Colors.white,
-                        onPressed: () {
-                          // obsługa kliknięcia
-                        },
-                      ),
-                    ),
-                  ],
+            ),
+            SizedBox(height: 40),
+            Expanded(
+              child: (favoriteItems?.isEmpty ?? true)
+                  ? Center(
+                child: Text(
+                  "Brak ulubionych dań",
+                  style: TextStyle(fontSize: 18),
                 ),
               )
-            ],
-          ),
-        )
-      ],
+                  : ListView.builder(
+                itemCount: favoriteItems.length,
+                itemBuilder: (context, index) {
+                  final item = favoriteItems[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Container(
+                      width: 277,
+                      height: 88,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF0C8C75),
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: Image.asset(
+                                  item.imagePath,
+                                  width: 132,
+                                  height: 88,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: '${item.name}\n\n',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: item.price,
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            top: 4,
+                            right: 4,
+                            child: IconButton(
+                              icon: Icon(Icons.favorite),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  favoriteItems.removeAt(index);
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
