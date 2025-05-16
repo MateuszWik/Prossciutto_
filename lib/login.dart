@@ -22,8 +22,22 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0C8C75),
-      body: Center(
+      backgroundColor: Color(0xFFF3ECE4),
+      body: Stack(
+        children: [
+        // 🔹 Zielony box na dole
+        Positioned(
+        left: 0,
+        right: 0,
+        bottom: 0,
+        child: Container(
+          height: 555, // Wysokość boxa
+          decoration: BoxDecoration(
+            color: Color(0xFF0C8C75), // Zielony kolor
+            borderRadius: BorderRadius.vertical(top: Radius.circular(33)), // Zaokrąglone rogi u góry
+          ),
+        ),
+      ), Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -47,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 13),
                   child: TextFormField(
-                    style: TextStyle(fontFamily: "MontSerrat"),
+                    style: TextStyle(fontFamily: "MontSerrat", fontSize: 13),
                     decoration: InputDecoration(
                       labelText: 'Email',
                       filled: true,
@@ -104,6 +118,8 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    ]
+      )
     );
   }
 }
