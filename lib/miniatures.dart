@@ -1,19 +1,107 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: SpaghettiScreen(),
+    home: FoodDetailScreen(selectedIndex: 4),
   ));
 }
-class SpaghettiScreen extends StatefulWidget {
-  @override
-  _SpaghettiScreenState createState() => _SpaghettiScreenState();
+
+class FoodItem {
+  final String title;
+  final String price;
+  final String imagePath;
+  final String description;
+
+  FoodItem({
+    required this.title,
+    required this.price,
+    required this.imagePath,
+    required this.description,
+  });
 }
-class _SpaghettiScreenState extends State<SpaghettiScreen> {
+
+final List<FoodItem> foodItems = [
+  FoodItem(
+    title: 'Macaroni',
+    price: '20\$',
+    imagePath: 'assets/images/Macaroni.png',
+    description: 'Delicious macaroni from Campania region, with rich tomato sauce and herbs.',
+  ),
+  FoodItem(
+    title: 'Spaghetti Sicily',
+    price: '25\$',
+    imagePath: 'assets/images/Spaghetti-Sicily.png',
+    description:
+    'Pasta ala Sicilia is a traditional Sicilian dish consisting of pasta, usually penne or spaghetti, served with an aromatic sauce made from a mixture of spices alla Siciliana, dried tomatoes, garlic, olive oil, onion, eggplants and fresh basil.',
+  ),
+  FoodItem(
+    title: 'Penne all\' Arrabbiata',
+    price: '25\$',
+    imagePath: 'assets/images/Penne_all_arrabbiata.png',
+    description: 'Spicy penne pasta with garlic, tomatoes and red chili peppers.',
+  ),
+  FoodItem(
+    title: 'Pizza Margherita',
+    price: '15\$',
+    imagePath: 'assets/images/Margherita.png',
+    description: 'Classic pizza with fresh tomatoes, mozzarella cheese and basil.',
+  ),
+  FoodItem(
+    title: 'Pizza Prosciutto e Funghi',
+    price: '25\$',
+    imagePath: 'assets/images/Prosciutto_e_funghi.png',
+    description: 'Pizza topped with ham and mushrooms.',
+  ),
+  FoodItem(
+    title: 'Pizza Quattro Formaggi',
+    price: '25\$',
+    imagePath: 'assets/images/Quattro_Formaggi.png',
+    description: 'Four cheese pizza with mozzarella, gorgonzola, parmesan and ricotta.',
+  ),
+  FoodItem(
+    title: 'Frantonio Oil',
+    price: '3\$',
+    imagePath: 'assets/images/Frantoio-Oil.png',
+    description: 'High quality olive oil from Frantoio olives.',
+  ),
+  FoodItem(
+    title: 'Leccino Oil',
+    price: '4\$',
+    imagePath: 'assets/images/Leccino-Oil.png',
+    description: 'Premium olive oil made from Leccino olives.',
+  ),
+  FoodItem(
+    title: 'Water',
+    price: 'Free of Charge',
+    imagePath: 'assets/images/Water.png',
+    description: 'Fresh and pure mineral water.',
+  ),
+  FoodItem(
+    title: 'Bread Sticks',
+    price: 'Free of Charge',
+    imagePath: 'assets/images/bread_sticks.png',
+    description: 'Crunchy and tasty bread sticks perfect as a side.',
+  ),
+];
+
+class FoodDetailScreen extends StatefulWidget {
+  final int selectedIndex;
+
+  const FoodDetailScreen({super.key, required this.selectedIndex});
+
+  @override
+  _FoodDetailScreenState createState() => _FoodDetailScreenState();
+}
+
+class _FoodDetailScreenState extends State<FoodDetailScreen> {
   int quantity = 1;
+
   @override
   Widget build(BuildContext context) {
+    final food = foodItems[widget.selectedIndex];
+
     return Scaffold(
       backgroundColor: Color(0xFFF3ECE4),
       body: SafeArea(
@@ -44,7 +132,7 @@ class _SpaghettiScreenState extends State<SpaghettiScreen> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Spaghetti Sicily',
+                    food.title,
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -52,7 +140,7 @@ class _SpaghettiScreenState extends State<SpaghettiScreen> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    '25\$',
+                    food.price,
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.grey[700],
@@ -62,7 +150,7 @@ class _SpaghettiScreenState extends State<SpaghettiScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(
-                      'assets/images/Spaghetti-Sicily.png',
+                      food.imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -83,7 +171,7 @@ class _SpaghettiScreenState extends State<SpaghettiScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Pasta ala Sicilia is a traditional Sicilian dish consisting of pasta, usually penne or spaghetti, served with an aromatic sauce made from a mixture of spices alla Siciliana, dried tomatoes, garlic, olive oil, onion, eggplants and fresh basil.',
+                      food.description,
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.white,
@@ -156,12 +244,3 @@ class _SpaghettiScreenState extends State<SpaghettiScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
