@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/Account.dart';
+import 'package:mateusz/account.dart';
 
 void main() {
   runApp(MyApp());
