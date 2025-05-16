@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:mateusz/login.dart';
 import './cart.dart';
@@ -17,11 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)), // your beige color
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
       ),
       home: Menu(),
     );
-
   }
 }
 
@@ -102,18 +100,21 @@ class _Menu extends State<Menu> {
         throw UnimplementedError('no widget for $selectedIndex');
     }
 
-    var mainArea = ColoredBox(
-      color: colorScheme.surfaceContainerHighest,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: page,
-      ),
-    );
+    Color navBarColor = selectedIndex == 4 ? Color(0xFFF3ECE4) : Color(0xFF0C8C75);
+    Color iconColor = selectedIndex == 4 ? Color(0xFF0C8C75) : Colors.white;
 
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: mainArea),
+          Positioned.fill(
+            child: ColoredBox(
+              color: colorScheme.surfaceContainerHighest,
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 200),
+                child: page,
+              ),
+            ),
+          ),
           Positioned(
             left: 16,
             right: 16,
@@ -124,13 +125,13 @@ class _Menu extends State<Menu> {
                 elevation: 10,
                 child: Container(
                   height: 60,
-                  color: Color(0xFF0C8C75),
+                  color: navBarColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                         icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-                        color: Colors.white,
+                        color: iconColor,
                         onPressed: () {
                           setState(() {
                             selectedIndex = 0;
@@ -139,7 +140,7 @@ class _Menu extends State<Menu> {
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: Colors.white,
+                        color: iconColor,
                         onPressed: () {
                           setState(() {
                             selectedIndex = 1;
@@ -148,7 +149,7 @@ class _Menu extends State<Menu> {
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: Colors.white,
+                        color: iconColor,
                         onPressed: () {
                           setState(() {
                             selectedIndex = 2;
@@ -157,7 +158,7 @@ class _Menu extends State<Menu> {
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
-                        color: Colors.white,
+                        color: iconColor,
                         onPressed: () {
                           setState(() {
                             selectedIndex = 3;
@@ -329,7 +330,7 @@ class HomeScreen extends StatelessWidget {
             child: Image.asset(item.imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
           ),
           SizedBox(height: 10),
-          Text(item.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          Text(item.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500), maxLines: 2),
           Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -338,7 +339,7 @@ class HomeScreen extends StatelessWidget {
               Icon(
                 isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
                 size: 18,
-                color: isFavorited ? Colors.red : null,
+                color: isFavorited ? Colors.red : Colors.grey,
               ),
             ],
           ),
