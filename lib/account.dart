@@ -32,48 +32,26 @@ class Account extends StatefulWidget {
   @override
   State<Account> createState() => _Account();
 }
-class _Account extends State<Account> {
+class _Account extends State<Account>{
   var selectedIndex = 0;
+
+  final List<Widget> pages = [
+    Menu(),
+    Favorites(),
+    Cart(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme
-        .of(context)
-        .colorScheme;
-
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = Menu();
-        break;
-      case 1:
-        page = Favorites();
-        break;
-      case 2:
-        page = Cart();
-        break;
-      case 3:
-        page = LoginScreen();
-        break;
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-
-    var mainArea = ColoredBox(
-      color: colorScheme.surfaceContainerHighest,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: page,
-      ),
-    );
-
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: mainArea),
-
-          // Pasek dolny jako warstwa
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 200),
+              child: pages[selectedIndex],
+            ),
+          ),
           Positioned(
             left: 16,
             right: 16,
@@ -88,194 +66,31 @@ class _Account extends State<Account> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons
-                            .home_outlined,),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons
-                            .favorite_border_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                            selectedIndex == 2 ? Icons.shopping_cart : Icons
-                                .shopping_cart_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 2;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons
-                            .person_2_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 3;
-                          });
-                        },
-                      ),
+                      _buildNavItem(Icons.home, Icons.home_outlined, 0),
+                      _buildNavItem(Icons.favorite, Icons.favorite_border_outlined, 1),
+                      _buildNavItem(Icons.shopping_cart, Icons.shopping_cart_outlined, 2),
+                      _buildNavItem(Icons.person_2, Icons.person_2_outlined, 3),
                     ],
                   ),
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
-}
 
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Text("Account",
-              style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan",),),
-          ),
-        ),
-        SizedBox(height: 15),
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: Colors.grey,
-          backgroundImage: AssetImage('assets/images/kotek.png'),
-          // child: Icon(Icons.person, size: 40, color: Colors.white),
-         ),
-        SizedBox(height: 23),
-        Padding(
-            padding: EdgeInsets.only(left:13),
-          child:Align(alignment: Alignment.centerLeft,
-              child:Text("Name",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
-              ),
-          ),
-        ),
-        SizedBox(height: 5),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 13),
-          child: Container(
-            height: 23,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                   "Brak danych" ,
-                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
-                ),
-              ),
-            ),
-          ),
-        ),
-            SizedBox(height: 10),
-    Padding(
-    padding: EdgeInsets.only(left:13),
-    child:Align(alignment: Alignment.centerLeft,
-    child:Text("Email",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
-    ),
-    ),
-    ),
-    SizedBox(height: 5),
-    Padding(
-    padding: EdgeInsets.symmetric(horizontal: 13),
-    child: Container(
-    height: 23,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(16),
-    ),
-    child: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10),
-    child: Align(
-    alignment: Alignment.centerLeft,
-    child: Text(
-    "Brak danych" ,
-    style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
-    ),
-    ),
-    ),
-    ),
-    ), SizedBox(height: 10),
-        Padding(
-          padding: EdgeInsets.only(left:13),
-          child:Align(alignment: Alignment.centerLeft,
-            child:Text("Password",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
-            ),
-          ),
-        ),
-        SizedBox(height: 5),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 13),
-          child: Container(
-            height: 23,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Brak danych" ,
-                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: EdgeInsets.only(left:13),
-          child:Align(alignment: Alignment.centerLeft,
-            child:Text("Date of Birth",style: TextStyle(fontSize: 14,fontFamily: "LeagueSpartan" ),
-            ),
-          ),
-        ),
-        SizedBox(height: 5),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 13),
-          child: Container(
-            height: 23,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Brak danych" ,
-                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ]
+  Widget _buildNavItem(IconData selectedIcon, IconData unselectedIcon, int index) {
+    return IconButton(
+      icon: Icon(selectedIndex == index ? selectedIcon : unselectedIcon),
+      color: Colors.white,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        }
     );
-   }
+  }
+}
