@@ -177,31 +177,44 @@ class _CouponsState extends State<Coupons> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Coupon cards
+
                   Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 15,
-                      crossAxisSpacing: 15,
-                      childAspectRatio: 5,
-                      children: [
-                        _buildCouponCard(
-                          title: 'Student discount',
-                          description: '30% OFF • Below 25y old',
-                        ),
-                        _buildCouponCard(
-                          title: '2nd pizza',
-                          description: '50% OFF',
-                        ),
-                        _buildCouponCard(
-                          title: 'User discount',
-                          description: '5% OFF',
-                        ),
-                        _buildCouponCard(
-                          title: 'All pasta',
-                          description: '2% OFF',
-                        ),
-                      ],
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        double width = constraints.maxWidth;
+                        double height = constraints.maxHeight;
+
+                        int crossAxisCount = 2;
+                        double totalSpacing = 15 * (crossAxisCount - 1);
+                        double itemWidth = (width - totalSpacing) / crossAxisCount;
+                        double itemHeight = itemWidth * 0.75;
+                        double childAspectRatio = itemWidth / itemHeight;
+
+                        return GridView.count(
+                          crossAxisCount: crossAxisCount,
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 15,
+                          childAspectRatio: childAspectRatio,
+                          children: [
+                            _buildCouponCard(
+                              title: 'Student discount',
+                              description: '30% OFF • Below 25y old',
+                            ),
+                            _buildCouponCard(
+                              title: '2nd pizza',
+                              description: '50% OFF',
+                            ),
+                            _buildCouponCard(
+                              title: 'User discount',
+                              description: '5% OFF',
+                            ),
+                            _buildCouponCard(
+                              title: 'All pasta',
+                              description: '2% OFF',
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -231,6 +244,7 @@ class _CouponsState extends State<Coupons> {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       title,
