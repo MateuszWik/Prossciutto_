@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
       ),
-      home: AccountPage(name: "Maria", email: "maria@example.com", password: "********", dateOfBirth: "01-01-2000"),
+      home: AccountPage(name: "Maria", email: "maria@example.com", password: "084539", dateOfBirth: "01-01-2000"),
     );
   }
 }
