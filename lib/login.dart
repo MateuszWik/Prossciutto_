@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
         right: 0,
         bottom: 0,
         child: Container(
-          height: 555, // Wysokość boxa
+          height: 630, // Wysokość boxa
           decoration: BoxDecoration(
             color: Color(0xFF0C8C75), // Zielony kolor
             borderRadius: BorderRadius.vertical(top: Radius.circular(33)), // Zaokrąglone rogi u góry
@@ -43,6 +43,7 @@ class LoginScreen extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start, // Zawartość przesunięta bliżej góry
               children: [
+                SizedBox(height: 40,),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset('assets/images/logo.png', width: 120, height: 120, fit: BoxFit.cover),
@@ -95,9 +96,9 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AccountPage()),
+                          MaterialPageRoute(builder: (context) => AccountPage(name: '', email: '', password: '', dateOfBirth: '',)),
                         );
 
                       },

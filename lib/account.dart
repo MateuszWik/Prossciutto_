@@ -18,18 +18,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
       ),
-      home: Account(),
+      home: AccountPage(name: "Maria", email: "maria@example.com", password: "********", dateOfBirth: "01-01-2000"),
     );
   }
 }
 
-class Account extends StatefulWidget {
+class AccountPage extends StatefulWidget {
+  final String name;
+  final String email;
+  final String password;
+  final String dateOfBirth;
+
+  const AccountPage({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.password,
+    required this.dateOfBirth,
+  });
+
   @override
-  State<Account> createState() => _Account();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _Account extends State<Account> {
-  var selectedIndex = 0;
+class _AccountPageState extends State<AccountPage> {
+  var selectedIndex = 3; // Ustawiony na 'Account' domyślnie
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +51,19 @@ class _Account extends State<Account> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = Menu(); // Twój widget menu
+        page = Menu();
         break;
       case 1:
-        page = Placeholder(); // Tu możesz wstawić np. FavoritePage()
+        page = Placeholder(); // Możesz zamienić na FavoritePage()
         break;
       case 2:
-        page = Cart(); // Twój widget koszyka
+        page = Cart();
         break;
       case 3:
-        page = LoginScreen(); // Nowy widget z widokiem konta
+        page = accountContent(); // Wywołanie ekranu konta
         break;
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        throw UnimplementedError('Nie znaleziono widoku dla $selectedIndex');
     }
 
     var mainArea = ColoredBox(
@@ -120,17 +133,15 @@ class _Account extends State<Account> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
-}
 
-class AccountPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
+  Widget accountContent() {
+    return Container(
+      color: Color(0xFFF3ECE4),
       child: Column(
         children: [
           Padding(
@@ -139,7 +150,12 @@ class AccountPage extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Text(
                 "Account",
-                style: TextStyle(fontSize: 20, fontFamily: "LeagueSpartan"),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "LeagueSpartan",
+                  color: Colors.black,
+                  decoration: TextDecoration.none,
+                ),
               ),
             ),
           ),
@@ -150,10 +166,10 @@ class AccountPage extends StatelessWidget {
             backgroundImage: AssetImage('assets/images/kotek.png'),
           ),
           SizedBox(height: 23),
-          buildInfoField("Name", "Brak danych"),
-          buildInfoField("Email", "Brak danych"),
-          buildInfoField("Password", "Brak danych"),
-          buildInfoField("Date of Birth", "Brak danych"),
+          buildInfoField("Name", widget.name),
+          buildInfoField("Email", widget.email),
+          buildInfoField("Password", widget.password),
+          buildInfoField("Date of Birth", widget.dateOfBirth),
         ],
       ),
     );
@@ -161,18 +177,22 @@ class AccountPage extends StatelessWidget {
 
   Widget buildInfoField(String label, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 13),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: TextStyle(fontSize: 14, fontFamily: "LeagueSpartan")),
-          SizedBox(height: 5),
+          Text(
+            label,
+            style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan", fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
           Container(
-            height: 30,
+            height: 40,
+            width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade400, width: 1),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -180,7 +200,7 @@ class AccountPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   value,
-                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat"),
+                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat", color: Colors.black54),
                 ),
               ),
             ),

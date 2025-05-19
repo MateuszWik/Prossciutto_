@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/login.dart';
 import './account.dart';
 import './main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +49,7 @@ class _HomePage extends State<HomePage>{
       case 2:
         page = Cart();
       case 3:
-        page = Account();
+        page = LoginScreen();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
