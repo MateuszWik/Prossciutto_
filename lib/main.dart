@@ -165,7 +165,7 @@ class _Menu extends State<Menu> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final VoidCallback onCouponTap;
   final String searchQuery;
   final ValueChanged<String> onSearchChanged;
@@ -180,6 +180,38 @@ class HomeScreen extends StatelessWidget {
     required this.toggleFavorite,
     required this.isFavorite,
   });
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late TextEditingController searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController(text: widget.searchQuery);
+    searchController.addListener(() {
+      widget.onSearchChanged(searchController.text);
+    });
+  }
+
+  @override
+  void didUpdateWidget(HomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update controller text only if external searchQuery changed
+    if (widget.searchQuery != oldWidget.searchQuery &&
+        widget.searchQuery != searchController.text) {
+      searchController.text = widget.searchQuery;
+    }
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   bool _matches(String query, String name) =>
       name.toLowerCase().contains(query.toLowerCase());
@@ -211,15 +243,10 @@ class HomeScreen extends StatelessWidget {
 
     final filteredSections = sections.map((section) {
       final items = (section['items'] as List<FoodItems>)
-          .where((item) => _matches(searchQuery, item.name))
+          .where((item) => _matches(searchController.text, item.name))
           .toList();
       return {'title': section['title'], 'items': items};
     }).where((section) => (section['items'] as List).isNotEmpty).toList();
-
-    final searchController = TextEditingController(text: searchQuery);
-    searchController.addListener(() {
-      onSearchChanged(searchController.text);
-    });
 
     return SafeArea(
       child: Padding(
@@ -232,7 +259,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  InkWell(onTap: onCouponTap, child: Image.asset('assets/images/kupon.png')),
+                  InkWell(onTap: widget.onCouponTap, child: Image.asset('assets/images/kupon.png')),
                 ],
               ),
               SizedBox(height: 12),
@@ -288,7 +315,7 @@ class HomeScreen extends StatelessWidget {
                                 );
                               }
                             },
-                            child: _buildFoodCard(item: item, isFavorited: isFavorite(item.name)),
+                            child: _buildFoodCard(item: item, isFavorited: widget.isFavorite(item.name)),
                           ),
                         )).toList(),
                       ),
@@ -316,60 +343,53 @@ class HomeScreen extends StatelessWidget {
           BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
         ],
       ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image on top
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                item.imagePath,
-                height: 80,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              item.imagePath,
+              height: 80,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
-
-            SizedBox(height: 8),
-
-            // Name text
-            Text(
-              item.name,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-
-            // Fills remaining space and pins price + heart to bottom
-            Expanded(
-              child: Column(
-                children: [
-                  Spacer(), // pushes the row to the bottom
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        item.price,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Text(
+            item.name,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      item.price,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    GestureDetector(
+                      onTap: () => widget.toggleFavorite(item),
+                      child: Icon(
+                        isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
+                        size: 24,
+                        color: isFavorited ? Colors.red : Colors.grey,
                       ),
-                      GestureDetector(
-                        onTap: () => toggleFavorite(item),
-                        child: Icon(
-                          isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
-                          size: 24,
-                          color: isFavorited ? Colors.red : Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        )
-
-
+          ),
+        ],
+      ),
     );
   }
 }
+
 
