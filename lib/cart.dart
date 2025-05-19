@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './account.dart';
 import './main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() {
 
@@ -139,9 +141,48 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   int ilosc = 1;
-  double wynik = 0;
   int cena = 20;
   String kupon = 'none';
+  double wynik = 0;
+
+  void saveIlosc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('ilosc', ilosc);
+  }
+
+  void loadIlosc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      ilosc = prefs.getInt('ilosc') ?? 1;
+    });
+  }
+
+  void total() async {
+    setState(() {
+      wynik = ilosc * cena.toDouble();
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('wynik', wynik);
+  }
+
+  void loadTotal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      wynik = prefs.getDouble('wynik') ?? 0.0;
+    });
+  }
+
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    loadIlosc();
+    loadTotal();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +274,8 @@ class _CartState extends State<Cart> {
                                 setState(() {
                                   if (ilosc > 0) {
                                     ilosc--;
+                                    total();
+                                    saveIlosc();
                                   }
                                 });
                               },
@@ -251,6 +294,8 @@ class _CartState extends State<Cart> {
                               onPressed: () {
                                 setState(() {
                                   ilosc++;
+                                  total();
+                                  saveIlosc();
                                 });
                               },
                             ),
@@ -274,18 +319,16 @@ class _CartState extends State<Cart> {
                         Text(
                           'Total: $wynik',
                           style: TextStyle(
-                            fontFamily: 'MontSerrat',
+                            fontFamily: 'Leauge Spartan',
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: 8),
                         Text(
                           'Used coupons: $kupon',
                           style: TextStyle(
-                            fontFamily: 'MontSerrat',
+                            fontFamily: 'Leauge Spartan',
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
