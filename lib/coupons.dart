@@ -143,7 +143,7 @@ class _CouponsState extends State<Coupons> {
                 builder: (context, constraints) {
                   double width = constraints.maxWidth;
                   int crossAxisCount = 2;
-                  double spacing = 25;
+                  double spacing = 15;
                   double totalSpacing = spacing * (crossAxisCount - 1);
                   double itemWidth = (width - totalSpacing) / crossAxisCount;
                   double itemHeight = itemWidth * 0.75;
