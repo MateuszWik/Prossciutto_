@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/login.dart';
-import './cart.dart';
-import './coupons.dart';
-import './favorites.dart';
+import 'miniatures.dart';
+import 'cart.dart';
+import 'coupons.dart';
+import 'favorites.dart';
+import 'login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +11,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,19 +97,15 @@ class _Menu extends State<Menu> {
         page = Coupons();
         break;
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        throw UnimplementedError('No widget for $selectedIndex');
     }
 
-    Color navBarColor;
-    Color iconColor;
-
-    if (selectedIndex == 3 || selectedIndex == 4) {
-      navBarColor = Color(0xFFF3ECE4);
-      iconColor = Color(0xFF0C8C75);
-    } else {
-      navBarColor = Color(0xFF0C8C75);
-      iconColor = Colors.white;
-    }
+    Color navBarColor = selectedIndex >= 3
+        ? Color(0xFFF3ECE4)
+        : Color(0xFF0C8C75);
+    Color iconColor = selectedIndex >= 3
+        ? Color(0xFF0C8C75)
+        : Colors.white;
 
     return Scaffold(
       body: Stack(
@@ -140,38 +136,22 @@ class _Menu extends State<Menu> {
                       IconButton(
                         icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
                         color: iconColor,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
+                        onPressed: () => setState(() => selectedIndex = 0),
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
                         color: iconColor,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-                          });
-                        },
+                        onPressed: () => setState(() => selectedIndex = 1),
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
                         color: iconColor,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 2;
-                          });
-                        },
+                        onPressed: () => setState(() => selectedIndex = 2),
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
                         color: iconColor,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 3;
-                          });
-                        },
+                        onPressed: () => setState(() => selectedIndex = 3),
                       ),
                     ],
                   ),
@@ -185,7 +165,7 @@ class _Menu extends State<Menu> {
   }
 }
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   final VoidCallback onCouponTap;
   final String searchQuery;
   final ValueChanged<String> onSearchChanged;
@@ -201,49 +181,21 @@ class HomeScreen extends StatefulWidget {
     required this.isFavorite,
   });
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late TextEditingController _searchController;
-  bool _isControllerReady = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController = TextEditingController(text: widget.searchQuery);
-    _searchController.addListener(() {
-      widget.onSearchChanged(_searchController.text);
-    });
-    _isControllerReady = true;
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
   bool _matches(String query, String name) =>
       name.toLowerCase().contains(query.toLowerCase());
 
   @override
   Widget build(BuildContext context) {
-    if (!_isControllerReady) return SizedBox.shrink();
-
     final pastaItems = [
-      FoodItems(name: 'Macaroni Campania', imagePath: 'assets/images/Macaroni.png', price: '20\$'),
+      FoodItems(name: 'Macaroni', imagePath: 'assets/images/Macaroni.png', price: '20\$'),
       FoodItems(name: 'Spaghetti Sicily', imagePath: 'assets/images/Spaghetti-Sicily.png', price: '25\$'),
-      FoodItems(name: "Penne all'Arrabbiata", imagePath: 'assets/images/Penne_all_arrabbiata.png', price: '25\$'),
+      FoodItems(name: "Penne all' Arrabbiata", imagePath: 'assets/images/Penne_all_arrabbiata.png', price: '25\$'),
     ];
-
     final pizzaItems = [
       FoodItems(name: 'Pizza Margherita', imagePath: 'assets/images/Margherita.png', price: '15\$'),
-      FoodItems(name: 'Pizza Prossciutto funghi', imagePath: 'assets/images/Prosciutto_e_funghi.png', price: '25\$'),
+      FoodItems(name: 'Pizza Prosciutto e Funghi', imagePath: 'assets/images/Prosciutto_e_funghi.png', price: '25\$'),
       FoodItems(name: 'Pizza Quattro Formaggi', imagePath: 'assets/images/Quattro_Formaggi.png', price: '25\$'),
     ];
-
     final sideItems = [
       FoodItems(name: 'Frantonio Oil', imagePath: 'assets/images/Frantoio-Oil.png', price: '3\$'),
       FoodItems(name: 'Leccino Oil', imagePath: 'assets/images/Leccino-Oil.png', price: '4\$'),
@@ -259,13 +211,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final filteredSections = sections.map((section) {
       final items = (section['items'] as List<FoodItems>)
-          .where((item) => _matches(_searchController.text, item.name))
+          .where((item) => _matches(searchQuery, item.name))
           .toList();
-      return {
-        'title': section['title'] as String,
-        'items': items,
-      };
+      return {'title': section['title'], 'items': items};
     }).where((section) => (section['items'] as List).isNotEmpty).toList();
+
+    final searchController = TextEditingController(text: searchQuery);
+    searchController.addListener(() {
+      onSearchChanged(searchController.text);
+    });
 
     return SafeArea(
       child: Padding(
@@ -278,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  InkWell(onTap: widget.onCouponTap, child: Image.asset('assets/images/kupon.png')),
+                  InkWell(onTap: onCouponTap, child: Image.asset('assets/images/kupon.png')),
                 ],
               ),
               SizedBox(height: 12),
@@ -295,13 +249,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 16),
               TextField(
-                controller: _searchController,
+                controller: searchController,
                 decoration: InputDecoration(
                   hintText: 'search...',
                   prefixIcon: Icon(Icons.search),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
@@ -309,9 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               ...filteredSections.map((section) {
-                final String title = section['title'] as String;
-                final List<FoodItems> items = section['items'] as List<FoodItems>;
-
+                final title = section['title'] as String;
+                final items = section['items'] as List<FoodItems>;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -324,18 +277,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: items.map((item) => Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
-                            onTap: () => widget.toggleFavorite(item),
-                            child: _buildFoodCard(
-                              item: item,
-                              isFavorited: widget.isFavorite(item.name),
-                            ),
+                            onTap: () {
+                              final index = foodItems.indexWhere((e) => e.imagePath == item.imagePath);
+                              if (index != -1) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FoodDetailScreen(selectedIndex: index),
+                                  ),
+                                );
+                              }
+                            },
+                            child: _buildFoodCard(item: item, isFavorited: isFavorite(item.name)),
                           ),
                         )).toList(),
                       ),
                     ),
                   ],
                 );
-              }),
+              }).toList(),
               SizedBox(height: 100),
             ],
           ),
@@ -352,9 +312,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,11 +328,8 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(item.price, style: TextStyle(fontWeight: FontWeight.bold)),
-              Icon(
-                isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
-                size: 18,
-                color: isFavorited ? Colors.red : Colors.grey,
-              ),
+              Icon(isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
+                  size: 18, color: isFavorited ? Colors.red : Colors.grey),
             ],
           ),
         ],
