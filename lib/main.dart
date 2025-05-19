@@ -312,28 +312,64 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset(item.imagePath, height: 80, width: double.infinity, fit: BoxFit.cover),
-          ),
-          SizedBox(height: 10),
-          Text(item.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500), maxLines: 2),
-          Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(item.price, style: TextStyle(fontWeight: FontWeight.bold)),
-              Icon(isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
-                  size: 18, color: isFavorited ? Colors.red : Colors.grey),
-            ],
-          ),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
         ],
       ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image on top
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                item.imagePath,
+                height: 80,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            SizedBox(height: 8),
+
+            // Name text
+            Text(
+              item.name,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            // Fills remaining space and pins price + heart to bottom
+            Expanded(
+              child: Column(
+                children: [
+                  Spacer(), // pushes the row to the bottom
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        item.price,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      GestureDetector(
+                        onTap: () => toggleFavorite(item),
+                        child: Icon(
+                          isFavorited ? Icons.favorite : Icons.favorite_border_outlined,
+                          size: 24,
+                          color: isFavorited ? Colors.red : Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
+
+
     );
   }
 }
+

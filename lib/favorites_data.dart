@@ -1,3 +1,4 @@
 import 'main.dart';
+import 'miniatures.dart';
 
-List<FoodItems> favoriteItems = [];
+List<FoodItem> favoriteItems = [];
