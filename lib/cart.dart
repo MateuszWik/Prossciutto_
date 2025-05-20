@@ -177,21 +177,17 @@ class _CartState extends State<Cart> {
                     thickness: 1,
                     color: Colors.grey,
                   ),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.3,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SingleChildScrollView(
-                              child: Positioned(
-                                top: 200,
-                                child: Text(
+                            Text(
                                 'Total: $equal',
                                 style: TextStyle(
                                   fontFamily: 'LeagueSpartan',
                                   fontSize: 16,
                                 ),
                               ),
-                              ),
-                            ),
                             Text(
                               'Used coupons: $coupon',
                               style: TextStyle(
