@@ -171,13 +171,13 @@ class _CartState extends State<Cart> {
                     ],
                   ),
 
-                  SizedBox(height: 15),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 
                   Divider(
                     thickness: 1,
                     color: Colors.grey,
                   ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.3,),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.33,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -201,7 +201,7 @@ class _CartState extends State<Cart> {
               ),
             ),
             Positioned(
-              top: 490,
+              top: MediaQuery.of(context).size.height * 0.68,
               left: 5,
               child: TextButton(
                 onPressed: (){},
