@@ -38,7 +38,6 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
 
     Widget page;
     switch (selectedIndex) {

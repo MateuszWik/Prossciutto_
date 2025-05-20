@@ -30,6 +30,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
+  DateTime? selectedDate;
+
+  void pickDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
 
   bool isButtonEnabled = false;
 
@@ -38,9 +55,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isButtonEnabled = nameController.text.isNotEmpty &&
           emailController.text.isNotEmpty &&
           passwordController.text.isNotEmpty &&
-          dateOfBirthController.text.isNotEmpty;
+          selectedDate != null; // ✅ Sprawdza, czy użytkownik wybrał datę
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             right: 0,
             bottom: 0,
             child: Container(
-              height: 790,
+              height: 770,
               decoration: BoxDecoration(
                 color: Color(0xFF0C8C75),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(33)),
@@ -67,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 100), // **Usunięto miejsce na zdjęcie**
+                  SizedBox(height: 100), //
 
                   Text(
                     'Sign Up',
@@ -128,20 +146,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   SizedBox(height: 23),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 13),
-                    child: TextFormField(
-                      controller: dateOfBirthController,
-                      onChanged: (text) => checkFields(),
-                      decoration: InputDecoration(
-                        labelText: 'Date of Birth',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
+                    padding: EdgeInsets.symmetric(horizontal: 13), // ✅ Odstęp 13px z każdej strony
+                    child: InkWell(
+                      onTap: () => pickDate(context),
+                      child: Container(
+                        width: double.infinity, // ✅ Pełna szerokość ekranu
+                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 13), // ✅ Dopasowanie do inputów
+                        decoration: BoxDecoration(
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: Text(
+                          selectedDate == null
+                              ? "Select Date of Birth"
+                              : "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                          style: TextStyle(fontFamily: "MontSerrat", fontSize: 16),
                         ),
                       ),
                     ),
                   ),
+
+
                   SizedBox(height: 80),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 13),
@@ -149,8 +175,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 65,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: isButtonEnabled
-                            ? () {
+                        onPressed: () {
+                          if (nameController.text.isEmpty ||
+                              emailController.text.isEmpty ||
+                              passwordController.text.isEmpty ||
+                              selectedDate == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Nie wszystkie pola są wypełnione!",style: TextStyle(color: Color(0xFF0C8C75)),),
+                                backgroundColor: Colors.white,
+
+                              ),
+                            );
+                            return; // ✅ Jeśli pola są puste, wyświetla komunikat i nie przechodzi dalej
+                          }
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -158,17 +197,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 name: nameController.text,
                                 email: emailController.text,
                                 password: passwordController.text,
-                                dateOfBirth: dateOfBirthController.text,
+                                dateOfBirth: "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
                               ),
                             ),
                           );
-                        }
-                            : () {}, // Przycisk zawsze widoczny, ale nieaktywny gdy pola są puste
+                        },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:  Colors.black, // Czarny gdy aktywny, szary gdy nie
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(19),
-                          ),
+                          backgroundColor: Colors.black, // ✅ Zawsze czarne tło
+                          foregroundColor: Colors.white, // ✅ Tekst zawsze biały
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
                         ),
                         child: Text(
                           'Sign Up',

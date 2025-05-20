@@ -49,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!userExists) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Nie istnieje konto na taki email. Zarejestruj się!"),
+          content: Text("Nie istnieje konto na taki email. Zarejestruj się!", style: TextStyle(color: Color(0xFF0C8C75)),),
+          backgroundColor: Colors.white,
         ),
       );
       return;
