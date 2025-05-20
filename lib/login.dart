@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mateusz/account.dart';
+import 'package:mateusz/main.dart';
 import 'package:mateusz/singup.dart';
-import 'main.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -26,6 +29,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final box = GetStorage();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isButtonEnabled = false;
@@ -34,6 +38,64 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isButtonEnabled = emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
     });
+  }
+
+  void loginUser() {
+    List<Map<String, String>> users = box.read('users') ?? [];
+
+    // Sprawdzenie, czy użytkownik istnieje w bazie
+    bool userExists = users.any((user) => user['email'] == emailController.text);
+
+    if (!userExists) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Nie istnieje konto na taki email. Zarejestruj się!"),
+        ),
+      );
+      return;
+    }
+
+    // Jeśli konto istnieje, pobranie danych i przekierowanie do AccountPage
+    Map<String, String> userData = users.firstWhere((user) => user['email'] == emailController.text);
+    box.write('isLoggedIn', true);
+    box.write('userName', userData['name']);
+    box.write('userEmail', userData['email']);
+    box.write('userPassword', userData['password']);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountPage(
+          name: userData['name'] ?? '',
+          email: userData['email'] ?? '',
+          password: userData['password'] ?? '',
+          dateOfBirth: '',
+        ),
+      ),
+    );
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Automatyczne logowanie, jeśli użytkownik jest już zalogowany
+    if (box.read('isLoggedIn') ?? false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AccountPage(
+              name: box.read('userName'),
+              email: box.read('userEmail'),
+              password: box.read('userPassword'),
+              dateOfBirth: '',
+            ),
+          ),
+        );
+      });
+    }
   }
 
   @override
@@ -56,17 +118,23 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 40),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset('assets/images/logo.png', width: 120, height: 120, fit: BoxFit.cover),
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/logo.png'),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
-                  SizedBox(height: 100),
-
+                  SizedBox(height: 80,),
                   Text(
                     'Log in',
                     style: TextStyle(
@@ -116,23 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 65,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: isButtonEnabled
-                            ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountPage(
-                                name: emailController.text,
-                                email: emailController.text,
-                                password: passwordController.text,
-                                dateOfBirth: '',
-                              ),
-                            ),
-                          );
-                        }
-                            : () {},
+                        onPressed: isButtonEnabled ? loginUser : () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
+                          backgroundColor: Colors.black, // Czarny gdy aktywny, szary gdy nie
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(19),
                           ),
@@ -149,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don’t have an account?",
+                        "Don't have an account?",
                         style: TextStyle(fontFamily: "MontSerrat", fontSize: 16, color: Colors.white),
                       ),
                       SizedBox(width: 5),
@@ -177,6 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
+          // 🔹 Pasek nawigacyjny (NavBar)
           Positioned(
             left: 16,
             right: 16,
@@ -191,44 +246,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.home_outlined),
-                        color: Color(0xFF0C8C75),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.favorite_border_outlined),
-                        color: Color(0xFF0C8C75),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder()));
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.shopping_cart_outlined),
-                        color: Color(0xFF0C8C75),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Card()));
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.person_2_outlined),
-                        color: Color(0xFF0C8C75),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountPage(
-                                name: '',
-                                email: '',
-                                password: '',
-                                dateOfBirth: '',
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      IconButton(icon: Icon(Icons.home_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+                      }),
+                      IconButton(icon: Icon(Icons.favorite_border_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder()));
+                      }),
+                      IconButton(icon: Icon(Icons.shopping_cart_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Card()));
+                      }),
+                      IconButton(icon: Icon(Icons.person_2_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                      }),
                     ],
                   ),
                 ),

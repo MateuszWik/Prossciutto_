@@ -1,27 +1,8 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'package:get_storage/get_storage.dart'; // Dodano GetStorage
+import 'package:mateusz/login.dart';
 import 'main.dart';
 import 'cart.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Testowa",
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
-      ),
-      home: AccountPage(name: "Maria", email: "maria@example.com", password: "084539", dateOfBirth: "01-01-2000"),
-    );
-  }
-}
 
 class AccountPage extends StatefulWidget {
   final String name;
@@ -43,6 +24,19 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   var selectedIndex = 3; // Ustawiony na 'Account' domyślnie
+  final box = GetStorage();
+
+  void logoutUser() {
+    box.remove('isLoggedIn');
+    box.remove('userName');
+    box.remove('userEmail');
+    box.remove('userPassword');
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,30 +48,22 @@ class _AccountPageState extends State<AccountPage> {
         page = Menu();
         break;
       case 1:
-        page = Placeholder(); // Możesz zamienić na FavoritePage()
+        page = Placeholder();
         break;
       case 2:
         page = Cart();
         break;
       case 3:
-        page = accountContent(); // Wywołanie ekranu konta
+        page = accountContent();
         break;
       default:
         throw UnimplementedError('Nie znaleziono widoku dla $selectedIndex');
     }
 
-    var mainArea = ColoredBox(
-      color: colorScheme.surfaceContainerHighest,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: page,
-      ),
-    );
-
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: mainArea),
+          Positioned.fill(child: page),
           Positioned(
             left: 16,
             right: 16,
@@ -170,6 +156,25 @@ class _AccountPageState extends State<AccountPage> {
           buildInfoField("Email", widget.email),
           buildInfoField("Password", widget.password),
           buildInfoField("Date of Birth", widget.dateOfBirth),
+          SizedBox(height: 40),
+
+          // 🔹 Przycisk "Wyloguj"
+          ElevatedButton(
+            onPressed: logoutUser,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red, // Czerwony przycisk dla wylogowania
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Text(
+                "Wyloguj",
+                style: TextStyle(fontSize: 18, fontFamily: "LeagueSpartan", color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );

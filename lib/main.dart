@@ -4,9 +4,14 @@ import 'cart.dart';
 import 'coupons.dart';
 import 'favorites.dart';
 import 'login.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Zapewnia inicjalizację Fluttera
+  await GetStorage.init();
+  final box = GetStorage();
+  List<Map<String, String>> users = box.read('users') ?? [];
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
