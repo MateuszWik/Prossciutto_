@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mateusz/account.dart';
 import 'package:mateusz/main.dart';
-import 'package:mateusz/singup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,19 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void loginUser() {
     List<Map<String, String>> users = box.read('users') ?? [];
 
-    // Sprawdzenie, czy użytkownik istnieje w bazie
     bool userExists = users.any((user) => user['email'] == emailController.text);
-
     if (!userExists) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Nie istnieje konto na taki email. Zarejestruj się!"),
-        ),
+        SnackBar(content: Text("Nie istnieje konto na taki email. Zarejestruj się!")),
       );
       return;
     }
 
-    // Jeśli konto istnieje, pobranie danych i przekierowanie do AccountPage
     Map<String, String> userData = users.firstWhere((user) => user['email'] == emailController.text);
     box.write('isLoggedIn', true);
     box.write('userName', userData['name']);
@@ -75,12 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   @override
   void initState() {
     super.initState();
 
-    // Automatyczne logowanie, jeśli użytkownik jest już zalogowany
     if (box.read('isLoggedIn') ?? false) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
@@ -134,14 +126,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  SizedBox(height: 80,),
+                  SizedBox(height: 80),
                   Text(
                     'Log in',
-                    style: TextStyle(
-                      fontFamily: "LeagueSpartan",
-                      fontSize: 35,
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontFamily: "LeagueSpartan", fontSize: 35, color: Colors.white),
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -149,14 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       controller: emailController,
                       onChanged: (text) => checkFields(),
-                      style: TextStyle(fontFamily: "MontSerrat", fontSize: 13),
                       decoration: InputDecoration(
                         labelText: 'Email',
                         filled: true,
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                     ),
                   ),
@@ -171,9 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Password',
                         filled: true,
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                     ),
                   ),
@@ -186,85 +169,46 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: isButtonEnabled ? loginUser : () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black, // Czarny gdy aktywny, szary gdy nie
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(19),
-                          ),
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
                         ),
-                        child: Text(
-                          'Log in',
-                          style: TextStyle(fontFamily: "LeagueSpartan", color: Colors.white, fontSize: 20),
-                        ),
+                        child: Text('Log in', style: TextStyle(fontFamily: "LeagueSpartan", color: Colors.white, fontSize: 20)),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have an account?",
-                        style: TextStyle(fontFamily: "MontSerrat", fontSize: 16, color: Colors.white),
-                      ),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => SignUpScreen()),
-                          );
-                        },
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            fontFamily: "MontSerrat",
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
             ),
           ),
-          // 🔹 Pasek nawigacyjny (NavBar)
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: Color(0xFFF3ECE4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(icon: Icon(Icons.home_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
-                      }),
-                      IconButton(icon: Icon(Icons.favorite_border_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder()));
-                      }),
-                      IconButton(icon: Icon(Icons.shopping_cart_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Card()));
-                      }),
-                      IconButton(icon: Icon(Icons.person_2_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                      }),
-                    ],
-                  ),
-                ),
-              ),
+        ],
+      ),
+
+      bottomNavigationBar: ClipRRect( // ✅ Przypięty pasek nawigacyjny
+        borderRadius: BorderRadius.circular(16),
+        child: Material(
+          elevation: 10,
+          child: Container(
+            height: 60,
+            color: Color(0xFFF3ECE4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(icon: Icon(Icons.home_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+                }),
+                IconButton(icon: Icon(Icons.favorite_border_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder()));
+                }),
+                IconButton(icon: Icon(Icons.shopping_cart_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Card()));
+                }),
+                IconButton(icon: Icon(Icons.person_2_outlined), color: Color(0xFF0C8C75), onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                }),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
