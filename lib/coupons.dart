@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'main.dart';
-
 
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
@@ -11,38 +9,11 @@ class Coupons extends StatefulWidget {
 }
 
 class _CouponsState extends State<Coupons> {
-  int selectedIndex = 4;
   final Color mainGreen = const Color(0xFF0C8C75);
   final Color mainWhite = const Color(0xFFF3ECE4);
 
   @override
   Widget build(BuildContext context) {
-    Widget page;
-
-    switch (selectedIndex) {
-      case 4:
-        page = _buildCouponsPage();
-        break;
-      default:
-        page = Center(child: Text("Placeholder Page"));
-    }
-
-    return SafeArea(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: AnimatedSwitcher(
-              duration: Duration(milliseconds: 300),
-              child: page,
-            ),
-          ),
-
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCouponsPage() {
     return SafeArea(
       child: Column(
         children: [
@@ -67,7 +38,6 @@ class _CouponsState extends State<Coupons> {
                         width: 24,
                       ),
                     ),
-
                   ),
                 ),
                 const Center(
@@ -83,7 +53,6 @@ class _CouponsState extends State<Coupons> {
               ],
             ),
           ),
-
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -91,65 +60,79 @@ class _CouponsState extends State<Coupons> {
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
               ),
               padding: const EdgeInsets.all(20),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  double width = constraints.maxWidth;
-                  int crossAxisCount = 2;
-                  double spacing = 10;
-                  double totalSpacing = spacing * (crossAxisCount - 1);
-                  double itemWidth = (width - totalSpacing) / crossAxisCount;
-                  double itemHeight = itemWidth * 0.80;
-
-                  return GridView.count(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: spacing,
-                    mainAxisSpacing: spacing,
-                    childAspectRatio: itemWidth / itemHeight,
-                    children: [
-                      Center(
-                        child: Text(
-                          "Permanent discounts",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Permanent discounts",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      Center(
-                        child: Text(
-                          "Weekly discounts",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    _buildCouponGrid([
                       _buildCouponCard(
                         title: 'Student discount',
                         description: '30% OFF\nBelow 25y old',
                       ),
                       _buildCouponCard(
-                        title: '2nd pizza',
-                        description: '50% OFF',
-                      ),
-                      _buildCouponCard(
                         title: 'User discount',
                         description: '5% OFF',
+                      ),
+                    ]),
+                    const SizedBox(height: 30),
+                    Text(
+                      "Weekly discounts",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    _buildCouponGrid([
+                      _buildCouponCard(
+                        title: '2nd pizza',
+                        description: '50% OFF',
                       ),
                       _buildCouponCard(
                         title: 'All pasta',
                         description: '2% OFF',
                       ),
-                    ],
-                  );
-                },
+                    ]),
+                  ],
+                ),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCouponGrid(List<Widget> cards) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double width = constraints.maxWidth;
+        int crossAxisCount = 2;
+        double spacing = 20;
+        double totalSpacing = spacing * (crossAxisCount - 1);
+        double itemWidth = (width - totalSpacing) / crossAxisCount;
+        double itemHeight = itemWidth * 0.80;
+
+        return GridView.count(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: spacing,
+          mainAxisSpacing: spacing,
+          childAspectRatio: itemWidth / itemHeight,
+          children: cards,
+        );
+      },
     );
   }
 
