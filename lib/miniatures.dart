@@ -34,49 +34,49 @@ final List<FoodItem> foodItems = [
     title: 'Spaghetti Sicily',
     price: '25\$',
     imagePath: 'assets/images/Spaghetti-Sicily.png',
-    description: 'Traditional Sicilian pasta with rich tomato-based sauce and fresh ingredients.',
+    description: '\nTraditional Sicilian pasta with rich tomato-based sauce and fresh ingredients.',
   ),
   FoodItem(
     title: 'Penne all\' Arrabbiata',
     price: '25\$',
     imagePath: 'assets/images/Penne_all_arrabbiata.png',
-    description: 'Spicy penne pasta with garlic, tomatoes and red chili peppers.',
+    description: '\nSpicy penne pasta with garlic, tomatoes and red chili peppers.',
   ),
   FoodItem(
     title: 'Pizza Margherita',
     price: '15\$',
     imagePath: 'assets/images/Margherita.png',
-    description: 'Classic pizza with fresh tomatoes, mozzarella cheese and basil.',
+    description: '\nClassic pizza with fresh tomatoes, mozzarella cheese and basil.',
   ),
   FoodItem(
     title: 'Pizza Prosciutto e Funghi',
     price: '25\$',
     imagePath: 'assets/images/Prosciutto_e_funghi.png',
-    description: 'Pizza topped with ham and mushrooms.',
+    description: '\n topped with ham and mushrooms.',
   ),
   FoodItem(
     title: 'Pizza Quattro Formaggi',
     price: '25\$',
     imagePath: 'assets/images/Quattro_Formaggi.png',
-    description: 'Four cheese pizza with mozzarella, gorgonzola, parmesan and ricotta.',
+    description: '\nFour cheese pizza with mozzarella, gorgonzola, parmesan and ricotta.',
   ),
   FoodItem(
     title: 'Frantonio Oil',
     price: '3\$',
     imagePath: 'assets/images/Frantoio-Oil.png',
-    description: 'High quality olive oil from Frantoio olives.',
+    description: '\nHigh quality olive oil from Frantoio olives.',
   ),
   FoodItem(
     title: 'Leccino Oil',
     price: '4\$',
     imagePath: 'assets/images/Leccino-Oil.png',
-    description: 'Premium olive oil made from Leccino olives.',
+    description: '\nPremium olive oil made from Leccino olives.',
   ),
   FoodItem(
     title: 'Water',
     price: 'Free of Charge',
     imagePath: 'assets/images/Water.png',
-    description: 'Fresh and pure mineral water.',
+    description: '\nFresh and pure mineral water.',
   ),
   FoodItem(
     title: 'Bread Sticks',
@@ -150,9 +150,9 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                       food.description,
                       style: const TextStyle(
                         fontSize: 30,
+                        fontFamily: 'MontSerrat',
                         color: Colors.white,
                       ),
-                      textAlign: TextAlign.justify,
                     ),
                     const Spacer(),
                     Row(
@@ -218,8 +218,6 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                 ),
               ),
             ),
-
-            // Góra ekranu: tytuł, cena i zdjęcie
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
@@ -242,15 +240,16 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                     food.title,
                     style: const TextStyle(
                       fontSize: 20,
+                      fontFamily: 'LeagueSpartan',
                       fontWeight: FontWeight.bold,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 4),
                   Text(
                     food.price,
                     style: const TextStyle(
                       fontSize: 18,
+                      fontFamily: 'LeagueSpartan',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -274,5 +273,4 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
       ),
     );
   }
-
 }
