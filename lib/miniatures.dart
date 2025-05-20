@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
-import 'cart.dart';
+import './main.dart';
+import './cart.dart';
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FoodDetailScreen(selectedIndex: 1),
+    home: Menu(),
   ));
 }
 
@@ -27,14 +28,13 @@ final List<FoodItem> foodItems = [
     title: 'Macaroni',
     price: '20\$',
     imagePath: 'assets/images/Macaroni.png',
-    description: 'Delicious macaroni from Campania region, with rich tomato sauce and herbs.',
+    description: '\nDelicious macaroni from Campania region, with rich tomato sauce and herbs.',
   ),
   FoodItem(
     title: 'Spaghetti Sicily',
     price: '25\$',
     imagePath: 'assets/images/Spaghetti-Sicily.png',
-    description:
-    'Traditional Sicilian pasta with rich tomato-based sauce and fresh ingredients.',
+    description: 'Traditional Sicilian pasta with rich tomato-based sauce and fresh ingredients.',
   ),
   FoodItem(
     title: 'Penne all\' Arrabbiata',
@@ -114,12 +114,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
         return '\$${total.toStringAsFixed(2)}';
       }
     } else {
-      double unitPrice = double.tryParse(food.price.replaceAll('\$', '')) ?? 0.0;
+      double unitPrice = double.tryParse(food.price.replaceAll('\$', '')) ??
+          0.0;
       double total = unitPrice * quantity;
       return '\$${total.toStringAsFixed(2)}';
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final food = foodItems[widget.selectedIndex];
@@ -127,61 +127,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF3ECE4),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFF1ECE3),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
-                ),
-              ),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => Menu()),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    food.title,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    calculateTotalPrice(food, quantity),
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      food.imagePath,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              top: MediaQuery.of(context).size.height * 0.27,
               child: Container(
-                width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Color(0xFF0C8C75),
                   borderRadius: BorderRadius.only(
@@ -192,10 +145,11 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   children: [
+                    const SizedBox(height: 100),
                     Text(
                       food.description,
                       style: const TextStyle(
-                        fontSize: 25,
+                        fontSize: 30,
                         color: Colors.white,
                       ),
                       textAlign: TextAlign.justify,
@@ -233,7 +187,12 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => Cart()),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFF1ECE3),
                               foregroundColor: Colors.black,
@@ -259,9 +218,61 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                 ),
               ),
             ),
+
+            // Góra ekranu: tytuł, cena i zdjęcie
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Menu()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    food.title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    food.price,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        food.imagePath,
+                        height: 250,
+                        width: 300,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
 }
