@@ -180,14 +180,16 @@ class _CouponsState extends State<Coupons> {
                 Positioned(
                   top: 10,
                   right: 8,
-                  child: Text(
-                    "+",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.add,
+                      size: 28,
                       color: Colors.black,
-                      height: 1,
                     ),
+                    tooltip: 'Apply coupon',
+                    onPressed: () {
+
+                    },
                   ),
                 ),
               ],

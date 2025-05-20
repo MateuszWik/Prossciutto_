@@ -170,7 +170,6 @@ class _Menu extends State<Menu> {
     );
   }
 }
-
 class HomeScreen extends StatefulWidget {
   final VoidCallback onCouponTap;
   final String searchQuery;
@@ -397,4 +396,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
