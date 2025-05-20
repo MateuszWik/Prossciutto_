@@ -133,6 +133,7 @@ class _CartState extends State<Cart> {
                               icon: Icon(Icons.remove),
                               iconSize: MediaQuery.of(context).size.width * 0.04,
                               tooltip: 'Usuń',
+                              color: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   if (number > 0) {
@@ -148,12 +149,14 @@ class _CartState extends State<Cart> {
                               style: TextStyle(
                                 fontSize: MediaQuery.of(context).size.width * 0.04,
                                 fontFamily: 'MontSerrat',
+                                color: Colors.white
                               ),
                             ),
                             IconButton(
                               icon: Icon(Icons.add),
                               iconSize: MediaQuery.of(context).size.width * 0.04,
                               tooltip: 'Dodaj',
+                              color: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   number++;
@@ -174,36 +177,53 @@ class _CartState extends State<Cart> {
                     thickness: 1,
                     color: Colors.grey,
                   ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Total: $equal',
-                          style: TextStyle(
-                            fontFamily: 'Leauge Spartan',
-                            fontSize: 16,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total: $equal',
+                              style: TextStyle(
+                                fontFamily: 'LeagueSpartan',
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              'Used coupons: $coupon',
+                              style: TextStyle(
+                                fontFamily: 'LeagueSpartan',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Used coupons: $coupon',
-                          style: TextStyle(
-                            fontFamily: 'Leauge Spartan',
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
                 ],
               ),
             ),
             Positioned(
-              top: 100,
-              child: Container(
-              height: 200,
-                width: 200,
-                color: Color(0xFF0C8C75),
-            ),
+              top: 490,
+              left: 5,
+              child: TextButton(
+                onPressed: (){},
+                child: Container(
+                height: 70,
+                width: MediaQuery.of(context).size.width * 0.91,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Color(0xFF0C8C75),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Next',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'LeagueSpartan'
+                      ),
+                    ),
+                  ),
+              ),
+              ),
             ),
           ]
           else if(number <= 0)...[
@@ -213,7 +233,7 @@ class _CartState extends State<Cart> {
                 'Cart is empty',
                 style: TextStyle(
                     fontSize: 20,
-                    fontFamily: 'Leauge Spartan',
+                    fontFamily: 'LeagueSpartan',
                     fontWeight: FontWeight.bold
                 ),
               ),
