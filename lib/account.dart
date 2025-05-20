@@ -27,16 +27,14 @@ class _AccountPageState extends State<AccountPage> {
   final box = GetStorage();
 
   void logoutUser() {
-    box.remove('isLoggedIn');
-    box.remove('userName');
-    box.remove('userEmail');
-    box.remove('userPassword');
+    box.write('isLoggedIn', false); // ✅ Tylko wylogowanie, bez usuwania danych
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +160,7 @@ class _AccountPageState extends State<AccountPage> {
           ElevatedButton(
             onPressed: logoutUser,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red, // Czerwony przycisk dla wylogowania
+              backgroundColor: Color(0xFF0C8C75), // Czerwony przycisk dla wylogowania
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -171,7 +169,7 @@ class _AccountPageState extends State<AccountPage> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Text(
                 "Wyloguj",
-                style: TextStyle(fontSize: 18, fontFamily: "LeagueSpartan", color: Colors.white),
+                style: TextStyle(fontSize: 14, fontFamily: "LeagueSpartan", color: Colors.white),
               ),
             ),
           ),
