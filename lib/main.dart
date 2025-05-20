@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
+        scaffoldBackgroundColor: Color(0xFFF3ECE4),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xfff3ece4)),
       ),
       home: Menu(),
     );
