@@ -2,21 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'main.dart';
 
-// Pamiętaj, aby zaimportować swoją klasę Menu, np.:
-// import 'menu.dart';
-
-void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)),
-        useMaterial3: true,
-      ),
-      home: Coupons(),
-    ),
-  );
-}
 
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
@@ -42,9 +27,8 @@ class _CouponsState extends State<Coupons> {
         page = Center(child: Text("Placeholder Page"));
     }
 
-    return Scaffold(
-      backgroundColor: mainWhite,
-      body: Stack(
+    return SafeArea(
+      child: Stack(
         children: [
           Positioned.fill(
             child: AnimatedSwitcher(
@@ -52,46 +36,7 @@ class _CouponsState extends State<Coupons> {
               child: page,
             ),
           ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: mainWhite,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-                        color: mainGreen,
-                        onPressed: () => setState(() => selectedIndex = 0),
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: mainGreen,
-                        onPressed: () => setState(() => selectedIndex = 1),
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: mainGreen,
-                        onPressed: () => setState(() => selectedIndex = 2),
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person : Icons.person_outline),
-                        color: mainGreen,
-                        onPressed: () => setState(() => selectedIndex = 3),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+
         ],
       ),
     );
@@ -115,7 +60,14 @@ class _CouponsState extends State<Coupons> {
                         MaterialPageRoute(builder: (context) => Menu()),
                       );
                     },
-                    child: Image.asset("assets/images/left_arrow.png", width: 24, height: 24),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/images/left_arrow.png",
+                        width: 24,
+                      ),
+                    ),
+
                   ),
                 ),
                 const Center(
@@ -143,7 +95,7 @@ class _CouponsState extends State<Coupons> {
                 builder: (context, constraints) {
                   double width = constraints.maxWidth;
                   int crossAxisCount = 2;
-                  double spacing = 15;
+                  double spacing = 10;
                   double totalSpacing = spacing * (crossAxisCount - 1);
                   double itemWidth = (width - totalSpacing) / crossAxisCount;
                   double itemHeight = itemWidth * 0.75;
@@ -154,6 +106,26 @@ class _CouponsState extends State<Coupons> {
                     mainAxisSpacing: spacing,
                     childAspectRatio: itemWidth / itemHeight,
                     children: [
+                      Center(
+                        child: Text(
+                          "Permanent discounts",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          "Weekly discounts",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                       _buildCouponCard(
                         title: 'Student discount',
                         description: '30% OFF\nBelow 25y old',
@@ -186,9 +158,6 @@ class _CouponsState extends State<Coupons> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
-        ],
       ),
       child: Column(
         children: [
