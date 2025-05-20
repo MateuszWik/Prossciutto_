@@ -1,138 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/login.dart';
-import './account.dart';
-import './main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-void main() {
-
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFF3ECE4)), // your beige color
-      ),
-      home: Menu(),
-    );
-
-  }
-}
-
-class HomePage extends StatefulWidget {
-
-  @override
-  State<HomePage> createState() => _HomePage();
-}
-class _HomePage extends State<HomePage>{
-  var selectedIndex = 2;
-
-  @override
-  Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
-
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = Menu();
-        break;
-      case 1:
-        page = Placeholder();
-        break;
-      case 2:
-        page = Cart();
-      case 3:
-        page = LoginScreen();
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-    var mainArea = ColoredBox(
-      color: colorScheme.surfaceContainerHighest,
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
-        child: page,
-      ),
-    );
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: mainArea),
-          // Pasek dolny jako warstwa
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: Color(0xFF0C8C75),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined,),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 2;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 3;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-
-
-  }
-
-
-}
 class Cart extends StatefulWidget {
   const Cart({super.key});
 
@@ -141,60 +10,54 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  int ilosc = 1;
-  int cena = 20;
-  String kupon = 'none';
-  double wynik = 0;
+  int number = 1;
+  int value = 20;
+  String coupon = 'none';
+  double equal = 0;
 
-  void saveIlosc() async {
+  void saveNumber() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('ilosc', ilosc);
+    prefs.setInt('number', number);
   }
 
-  void loadIlosc() async {
+  void loadNumber() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      ilosc = prefs.getInt('ilosc') ?? 1;
+      number = prefs.getInt('number') ?? 1;
     });
   }
 
   void total() async {
     setState(() {
-      wynik = ilosc * cena.toDouble();
+      equal = number * value.toDouble();
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('wynik', wynik);
+    prefs.setDouble('equal', equal);
   }
 
   void loadTotal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      wynik = prefs.getDouble('wynik') ?? 0.0;
+      equal = prefs.getDouble('equal') ?? 0.0;
     });
   }
-
-
-
 
   @override
   void initState() {
     super.initState();
-    loadIlosc();
+    loadNumber();
     loadTotal();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF3ECE4),
-      body: Stack(
+    return SafeArea(
+
+      child: Stack(
         children: [
           // Napis gorny Cart
           AppBar(
             centerTitle: true,
-            backgroundColor: Color(0xFFF3ECE4),
             title: Text(
               'Cart',
               style: TextStyle(
@@ -204,16 +67,16 @@ class _CartState extends State<Cart> {
             ),
           ),
           // Tylko pokaż, jeśli ilosc > 0
-          if (ilosc > 0)...[
+          if (number > 0)...[
             Positioned(
-              left: 25,
+              left: 15,
               top: 130,
               right: 25,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Blok: produkt
                       Container(
@@ -225,8 +88,8 @@ class _CartState extends State<Cart> {
                             alignment: Alignment.centerLeft,
                           ),
                         ),
-                        height: 100,
-                        width: 235,
+                        height: 85,
+                        width: MediaQuery.of(context).size.width * 0.56,
                         padding: EdgeInsets.all(7.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -234,16 +97,16 @@ class _CartState extends State<Cart> {
                             Text(
                               'Macaroni \n Campania',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 10,
                                 color: Colors.white,
                                 fontFamily: 'MontSerrat',
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              '\n$cena\$',
+                              '\n$value\$',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Colors.white,
                                 fontFamily: 'MontSerrat',
                                 fontWeight: FontWeight.bold,
@@ -258,8 +121,7 @@ class _CartState extends State<Cart> {
                       // Blok: - 1 +
                       Container(
                         height: 40,
-                        width: 120,
-                        margin: EdgeInsets.only(top: 35), // dopasowanie do wysokości
+                        width: MediaQuery.of(context).size.width * 0.31,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Color(0xFF0C8C75),
@@ -269,34 +131,34 @@ class _CartState extends State<Cart> {
                           children: [
                             IconButton(
                               icon: Icon(Icons.remove),
-                              iconSize: 24,
+                              iconSize: MediaQuery.of(context).size.width * 0.04,
                               tooltip: 'Usuń',
                               onPressed: () {
                                 setState(() {
-                                  if (ilosc > 0) {
-                                    ilosc--;
+                                  if (number > 0) {
+                                    number--;
                                     total();
-                                    saveIlosc();
+                                    saveNumber();
                                   }
                                 });
                               },
                             ),
                             Text(
-                              '$ilosc',
+                              '$number',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: MediaQuery.of(context).size.width * 0.04,
                                 fontFamily: 'MontSerrat',
                               ),
                             ),
                             IconButton(
                               icon: Icon(Icons.add),
-                              iconSize: 24,
+                              iconSize: MediaQuery.of(context).size.width * 0.04,
                               tooltip: 'Dodaj',
                               onPressed: () {
                                 setState(() {
-                                  ilosc++;
+                                  number++;
                                   total();
-                                  saveIlosc();
+                                  saveNumber();
                                 });
                               },
                             ),
@@ -312,13 +174,11 @@ class _CartState extends State<Cart> {
                     thickness: 1,
                     color: Colors.grey,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 385),
-                    child: Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          'Total: $wynik',
+                          'Total: $equal',
                           style: TextStyle(
                             fontFamily: 'Leauge Spartan',
                             fontSize: 16,
@@ -326,7 +186,7 @@ class _CartState extends State<Cart> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Used coupons: $kupon',
+                          'Used coupons: $coupon',
                           style: TextStyle(
                             fontFamily: 'Leauge Spartan',
                             fontSize: 16,
@@ -334,28 +194,35 @@ class _CartState extends State<Cart> {
                         ),
                       ],
                     ),
-                  ),
                 ],
               ),
             ),
-            ]
-          else if(ilosc <=0)...[
+            Positioned(
+              top: 100,
+              child: Container(
+              height: 200,
+                width: 200,
+                color: Color(0xFF0C8C75),
+            ),
+            ),
+          ]
+          else if(number <= 0)...[
             Align(
-         alignment: Alignment.center,
-        child: Text(
-          'Cart is empty',
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'Leauge Spartan',
-            fontWeight: FontWeight.bold
-          ),
-      ),
-    )
-            ]
+              alignment: Alignment.center,
+              child: Text(
+                'Cart is empty',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Leauge Spartan',
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            )
+          ]
         ],
       ),
     );
-    }
+  }
 
 }
 
