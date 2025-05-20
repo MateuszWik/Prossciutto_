@@ -180,11 +180,16 @@ class _CartState extends State<Cart> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Total: $equal',
-                              style: TextStyle(
-                                fontFamily: 'LeagueSpartan',
-                                fontSize: 16,
+                            SingleChildScrollView(
+                              child: Positioned(
+                                top: 200,
+                                child: Text(
+                                'Total: $equal',
+                                style: TextStyle(
+                                  fontFamily: 'LeagueSpartan',
+                                  fontSize: 16,
+                                ),
+                              ),
                               ),
                             ),
                             Text(
