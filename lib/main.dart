@@ -107,13 +107,15 @@ class _Menu extends State<Menu> {
         throw UnimplementedError('No widget for $selectedIndex');
     }
 
-    Color navBarColor = selectedIndex >= 2
+    Color navBarColor = selectedIndex == 2 || selectedIndex == 4
         ? Color(0xFFF3ECE4)
         : Color(0xFF0C8C75);
 
-    Color iconColor = selectedIndex >= 2
+    Color iconColor = selectedIndex == 2 || selectedIndex == 4
         ? Color(0xFF0C8C75)
         : Colors.white;
+
+
 
 
     return Scaffold(
