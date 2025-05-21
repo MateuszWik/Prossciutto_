@@ -27,7 +27,7 @@ class _AccountPageState extends State<AccountPage> {
   final box = GetStorage();
 
   void logoutUser() {
-    box.write('isLoggedIn', false); // ✅ Tylko wylogowanie, bez usuwania danych
+    box.write('isLoggedIn', false);
 
     Navigator.pushReplacement(
       context,
@@ -159,7 +159,7 @@ class _AccountPageState extends State<AccountPage> {
           ElevatedButton(
             onPressed: logoutUser,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF0C8C75), // Czerwony przycisk dla wylogowania
+              backgroundColor: Color(0xFF0C8C75),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

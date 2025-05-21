@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             right: 0,
             bottom: 0,
             child: Container(
-              height: 630,
+              height: 590,
               decoration: BoxDecoration(
                 color: Color(0xFF0C8C75),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(33)),
@@ -119,11 +119,32 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(13),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 40),
+                  SizedBox(height: 15),
+                  Padding(padding: EdgeInsets.only(top: 25),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Menu()),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          "assets/images/left_arrow.png",
+                          width: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ),
+                  SizedBox(height: 0),
                   Container(
                     width: 120,
                     height: 120,
@@ -135,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  SizedBox(height: 80,),
+                  SizedBox(height: 100,),
                   Text(
                     'Log in',
                     style: TextStyle(
@@ -228,38 +249,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ],
-              ),
-            ),
-          ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: Color(0xFFF3ECE4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(icon: Icon(Icons.home_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
-                      }),
-                      IconButton(icon: Icon(Icons.favorite_border_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Placeholder()));
-                      }),
-                      IconButton(icon: Icon(Icons.shopping_cart_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Card()));
-                      }),
-                      IconButton(icon: Icon(Icons.person_2_outlined), color: Color(0xFF0C8C75), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                      }),
-                    ],
-                  ),
-                ),
               ),
             ),
           ),
