@@ -118,7 +118,7 @@ class _CouponsState extends State<Coupons> {
         double spacing = 20;
         double totalSpacing = spacing * (crossAxisCount - 1);
         double itemWidth = (width - totalSpacing) / crossAxisCount;
-        double itemHeight = itemWidth * 0.80/0.80;
+        double itemHeight = itemWidth * 0.80/0.90;
 
         return GridView.count(
           shrinkWrap: true,
