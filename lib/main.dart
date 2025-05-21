@@ -5,7 +5,7 @@ import 'coupons.dart';
 import 'favorites.dart';
 import 'login.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -130,46 +130,48 @@ class _Menu extends State<Menu> {
               ),
             ),
           ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                elevation: 10,
-                child: Container(
-                  height: 60,
-                  color: navBarColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 0),
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 1),
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.local_offer : Icons.local_offer_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 2),
-                      ),
-                      IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.shopping_cart: Icons.shopping_cart_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 3),
-                      ),
-                    ],
+          if (selectedIndex != 4)
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: 60,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Material(
+                  elevation: 10,
+                  child: Container(
+                    height: 60,
+                    color: navBarColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
+                          color: iconColor,
+                          onPressed: () => setState(() => selectedIndex = 0),
+                        ),
+                        IconButton(
+                          icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
+                          color: iconColor,
+                          onPressed: () => setState(() => selectedIndex = 1),
+                        ),
+                        IconButton(
+                          icon: Icon(selectedIndex == 2 ? Icons.local_offer : Icons.local_offer_outlined),
+                          color: iconColor,
+                          onPressed: () => setState(() => selectedIndex = 2),
+                        ),
+                        IconButton(
+                          icon: Icon(selectedIndex == 3 ? Icons.shopping_cart: Icons.shopping_cart_outlined),
+                          color: iconColor,
+                          onPressed: () => setState(() => selectedIndex = 3),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          )
+
         ],
       ),
     );
@@ -268,9 +270,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  InkWell(onTap: widget.onCouponTap, child: Image.asset('assets/images/account.png')),
+                  InkWell(
+                    onTap: widget.onCouponTap,
+                    child: Icon(
+                      Icons.person,
+                      size: 28,           // rozmiar ikony, możesz dostosować
+                      color: Colors.grey, // kolor ikony, też możesz zmienić
+                    ),
+                  ),
                 ],
               ),
+
               SizedBox(height: 12),
               RichText(
                 text: TextSpan(
