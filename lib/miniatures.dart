@@ -23,6 +23,11 @@ class FoodItem {
   });
 }
 
+class CartItem {
+  final FoodItem foodItem;
+  int quantity;
+  CartItem({required this.foodItem, this.quantity = 1});
+}
 final List<FoodItem> foodItems = [
   FoodItem(
     title: 'Macaroni',
@@ -186,12 +191,14 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => Cart()),
-                              );
+                          child:ElevatedButton(
+                          onPressed: () {
+                            final selectedFood = foodItems[widget.selectedIndex];
+                            Navigator.pushReplacement(
+                            context,MaterialPageRoute(builder: (context) => Cart(addedItem: CartItem(foodItem: selectedFood, quantity: quantity),
+                             ),
+                              ),
+                             );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFF1ECE3),
