@@ -26,14 +26,16 @@ class _AccountPageState extends State<AccountPage> {
   var selectedIndex = 3; // Ustawiony na 'Account' domyślnie
   final box = GetStorage();
 
-  void logoutUser() {
+  void logoutUser(BuildContext context) {
+    final box = GetStorage();
     box.write('isLoggedIn', false);
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
+
+
 
 
   @override
@@ -157,7 +159,7 @@ class _AccountPageState extends State<AccountPage> {
 
           // 🔹 Przycisk "Wyloguj"
           ElevatedButton(
-            onPressed: logoutUser,
+            onPressed:() => logoutUser(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF0C8C75),
               shape: RoundedRectangleBorder(

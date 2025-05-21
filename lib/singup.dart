@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mateusz/account.dart';
 import 'package:mateusz/login.dart';
+import 'package:get_storage/get_storage.dart';
 import 'main.dart';
 
 void main() {
@@ -31,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
   DateTime? selectedDate;
+  final box = GetStorage();
 
   void pickDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -203,26 +205,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               selectedDate == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Nie wszystkie pola są wypełnione!",style: TextStyle(color: Color(0xFF0C8C75)),),
+                                content: Text("Nie wszystkie pola są wypełnione!", style: TextStyle(color: Color(0xFF0C8C75))),
                                 backgroundColor: Colors.white,
-
                               ),
                             );
-                            return; // ✅ Jeśli pola są puste, wyświetla komunikat i nie przechodzi dalej
+                            return;
                           }
 
-                          Navigator.push(
+                          List<Map<String, String>> users = box.read('users') ?? [];
+
+                          bool emailExists = users.any((user) => user['email'] == emailController.text);
+
+                          if (emailExists) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Ten email już istnieje!", style: TextStyle(color: Color(0xFF0C8C75))),
+                                backgroundColor: Colors.white,
+                              ),
+                            );
+                            return;
+                          }
+
+                          Map<String, String> newUser = {
+                            'name': nameController.text,
+                            'email': emailController.text,
+                            'password': passwordController.text,
+                            'dateOfBirth': "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                          };
+
+                          users.add(newUser);
+                          box.write('users', users);
+                          box.write('isLoggedIn', true);
+                          box.write('userName', newUser['name']);
+                          box.write('userEmail', newUser['email']);
+                          box.write('userPassword', newUser['password']);
+                          box.write('userDateOfBirth', newUser['dateOfBirth']);
+
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => AccountPage(
-                                name: nameController.text,
-                                email: emailController.text,
-                                password: passwordController.text,
-                                dateOfBirth: "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                                name: newUser['name']!,
+                                email: newUser['email']!,
+                                password: newUser['password']!,
+                                dateOfBirth: newUser['dateOfBirth']!,
                               ),
                             ),
                           );
-                        },
+                        }
+                        ,
+
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black, // ✅ Zawsze czarne tło
                           foregroundColor: Colors.white, // ✅ Tekst zawsze biały

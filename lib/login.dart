@@ -44,27 +44,37 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUser() {
-    List<Map<String, String>> users = box.read('users') ?? [];
+    List<Map<String, String>> users = box.read('users')?.cast<Map<String, String>>() ?? [];
 
-    // Sprawdzenie, czy użytkownik istnieje w bazie
-    bool userExists = users.any((user) => user['email'] == emailController.text);
+    final String email = emailController.text.trim();
+    final String password = passwordController.text.trim();
 
-    if (!userExists) {
+    // Znalezienie użytkownika po emailu i haśle
+    final userData = users.firstWhere(
+          (user) => user['email'] == email && user['password'] == password,
+      orElse: () => {},
+    );
+
+    // Jeśli nie znaleziono
+    if (userData.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Nie istnieje konto na taki email. Zarejestruj się!", style: TextStyle(color: Color(0xFF0C8C75)),),
+          content: Text(
+            "Niepoprawny email lub hasło.",
+            style: TextStyle(color: Color(0xFF0C8C75)),
+          ),
           backgroundColor: Colors.white,
         ),
       );
       return;
     }
 
-    // Jeśli konto istnieje, pobranie danych i przekierowanie do AccountPage
-    Map<String, String> userData = users.firstWhere((user) => user['email'] == emailController.text);
+    // Zaloguj użytkownika i zapisz dane
     box.write('isLoggedIn', true);
     box.write('userName', userData['name']);
     box.write('userEmail', userData['email']);
     box.write('userPassword', userData['password']);
+    box.write('userDateOfBirth', userData['dateOfBirth'] ?? '');
 
     Navigator.pushReplacement(
       context,
@@ -73,11 +83,12 @@ class _LoginScreenState extends State<LoginScreen> {
           name: userData['name'] ?? '',
           email: userData['email'] ?? '',
           password: userData['password'] ?? '',
-          dateOfBirth: '',
+          dateOfBirth: userData['dateOfBirth'] ?? '',
         ),
       ),
     );
   }
+
 
 
   @override
