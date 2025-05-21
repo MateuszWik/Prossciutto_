@@ -1,239 +1,267 @@
 import 'package:flutter/material.dart';
-import 'miniatures.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import './couponsProvider.dart';
+
+
+class CartProduct {
+  final String name;
+  final String imagePath;
+  final int unitPrice;
+  int quantity;
+
+  CartProduct({
+    required this.name,
+    required this.imagePath,
+    required this.unitPrice,
+    this.quantity = 1,
+  });
+}
 
 class Cart extends StatefulWidget {
-  final CartItem? addedItem;
-  const Cart({super.key, this.addedItem});
+  const Cart({super.key});
 
   @override
   State<Cart> createState() => _CartState();
 }
 
 class _CartState extends State<Cart> {
-  List<CartItem> cartItems = [];
-  double totalPrice = 0.0;
+  int number = 1;
+  int value = 20;
+  String coupon = 'none';
+  double equal = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.addedItem != null) {
-      addOrUpdateItem(widget.addedItem!);
-    }
+  void saveNumber() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('number', number);
   }
 
-  void addOrUpdateItem(CartItem newItem) {
-    final index = cartItems.indexWhere(
-            (item) => item.foodItem.title == newItem.foodItem.title);
-    if (index != -1) {
-      cartItems[index].quantity += newItem.quantity;
-    } else {
-      cartItems.add(newItem);
-    }
-    calculateTotal();
-  }
-
-  void calculateTotal() {
-    double sum = 0.0;
-
-    for (var item in cartItems) {
-      String titleLower = item.foodItem.title.toLowerCase();
-
-      if (titleLower.contains('water') || titleLower.contains('woda')) {
-        if (item.quantity > 1) {
-          sum += (item.quantity - 1) * 1.0; // Woda: 1$ od drugiej sztuki
-        }
-      } else if (titleLower.contains('bread stick') || titleLower.contains('bread stiks')) {
-        if (item.quantity > 1) {
-          sum += (item.quantity - 1) * 1.99; // Bread Sticks: 1.99$ od drugiej sztuki
-        }
-      } else {
-        double price = double.tryParse(
-            item.foodItem.price.replaceAll('\$', '').replaceAll(',', '.')) ??
-            0.0;
-        sum += price * item.quantity;
-      }
-    }
-
+  void loadNumber() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      totalPrice = sum;
+      number = prefs.getInt('number') ?? 1;
+    });
+  }
+
+  void total() async {
+    setState(() {
+      equal = number * value.toDouble();
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('equal', equal);
+  }
+
+  void loadTotal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      equal = prefs.getDouble('equal') ?? 0.0;
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    loadNumber();
+    loadTotal();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final coupon = Provider.of<CouponProvider>(context).appliedCoupon;
     return Scaffold(
-      backgroundColor: const Color(0xFF0C8C75),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0C8C75),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        centerTitle: true,
-        title: const Text(
-          'Cart',
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'LeagueSpartan',
-            fontSize: 20,
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: cartItems.isEmpty
-                ? const Center(
-              child: Text(
-                'Cart is empty',
-                style: TextStyle(
-                    fontSize: 18,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Padding(padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height*0.02
+            ),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  'Cart',
+                  style: TextStyle(
                     fontFamily: 'LeagueSpartan',
-                    fontWeight: FontWeight.bold),
+                    fontSize: 25,
+                  ),
+                ),
               ),
-            )
-                : ListView.builder(
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) {
-                final item = cartItems[index];
-                return Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
+            ),
+            if (number > 0)...[
+              Positioned(
+                left: 15,
+                top: MediaQuery.of(context).size.height * 0.12,
+                right: 25,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
+                        // Blok: produkt
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Color(0xFF0C8C75),
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/Macaroni.png'),
+                              alignment: Alignment.centerLeft,
+                            ),
                           ),
-                          child: Image.asset(
-                            item.foodItem.imagePath,
-                            height: 80,
-                            width: 100,
-                            fit: BoxFit.cover,
+                          height: 85,
+                          width: MediaQuery.of(context).size.width * 0.56,
+                          padding: EdgeInsets.all(7.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Macaroni \n Campania',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.white,
+                                  fontFamily: 'MontSerrat',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '\n$value\$',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontFamily: 'MontSerrat',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.foodItem.title,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+
+                        SizedBox(width: 10-3.6,),
+
+                        // Blok: - 1 +
+                        Container(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.31,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xFF0C8C75),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                iconSize: MediaQuery.of(context).size.width * 0.04,
+                                tooltip: 'Usuń',
+                                color: Colors.white,
+                                onPressed: () {
+                                  setState(() {
+                                    if (number > 0) {
+                                      number--;
+                                      total();
+                                      saveNumber();
+                                    }
+                                  });
+                                },
+                              ),
+                              Text(
+                                '$number',
+                                style: TextStyle(
+                                    fontSize: MediaQuery.of(context).size.width * 0.04,
                                     fontFamily: 'MontSerrat',
-                                  ),
+                                    color: Colors.white
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  item.foodItem.price,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.green),
-                                ),
-                              ],
-                            ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                iconSize: MediaQuery.of(context).size.width * 0.04,
+                                tooltip: 'Dodaj',
+                                color: Colors.white,
+                                onPressed: () {
+                                  setState(() {
+                                    number++;
+                                    total();
+                                    saveNumber();
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.add,
-                                  color: Colors.teal),
-                              onPressed: () {
-                                setState(() {
-                                  item.quantity++;
-                                  calculateTotal();
-                                });
-                              },
-                            ),
-                            Text('${item.quantity}'),
-                            IconButton(
-                              icon: const Icon(Icons.remove,
-                                  color: Colors.teal),
-                              onPressed: () {
-                                setState(() {
-                                  if (item.quantity > 1) {
-                                    item.quantity--;
-                                  } else {
-                                    cartItems.removeAt(index);
-                                  }
-                                  calculateTotal();
-                                });
-                              },
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total: \$${totalPrice.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'LeagueSpartan'),
+
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey,
                     ),
-                    const Text(
-                      'Used cupons: All Pasta',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.37,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total: $equal\$',
+                          style: TextStyle(
+                            fontFamily: 'LeagueSpartan',
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          'Used coupons: $coupon',
+                          style: TextStyle(
+                            fontFamily: 'LeagueSpartan',
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0C8C75),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.68,
+                left: 5,
+                child: TextButton(
+                  onPressed: (){},
+                  child: Container(
+                    height: 70,
+                    width: MediaQuery.of(context).size.width * 0.91,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xFF0C8C75),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'LeagueSpartan'
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Icon(Icons.home, color: Colors.teal),
-                    Icon(Icons.favorite_border, color: Colors.teal),
-                    Icon(Icons.shopping_cart, color: Colors.teal),
-                    Icon(Icons.person_outline, color: Colors.teal),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
+              ),
+            ]
+            else if(number <= 0)...[
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Cart is empty',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'LeagueSpartan',
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              )
+            ]
+          ],
+        ),
       ),
     );
   }
+
 }

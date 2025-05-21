@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'cart.dart';
 import 'main.dart';
+import 'couponsProvider.dart';
 
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
@@ -32,7 +35,7 @@ class _CouponsState extends State<Coupons> {
                       );
                     },
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Image.asset(
                         "assets/images/left_arrow.png",
                         width: 24,
@@ -64,7 +67,7 @@ class _CouponsState extends State<Coupons> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Permanent discounts",
                       style: TextStyle(
                         color: Colors.white,
@@ -73,18 +76,12 @@ class _CouponsState extends State<Coupons> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    _buildCouponGrid([
-                      _buildCouponCard(
-                        title: 'Student discount',
-                        description: '30% OFF\nBelow 25y old',
-                      ),
-                      _buildCouponCard(
-                        title: 'User discount',
-                        description: '5% OFF',
-                      ),
-                    ]),
+                    _buildCouponGrid(_buildCouponCards([
+                      {'title': 'Student discount', 'description': '30% OFF\nBelow 25y old'},
+                      {'title': 'User discount', 'description': '5% OFF'},
+                    ])),
                     const SizedBox(height: 30),
-                    Text(
+                    const Text(
                       "Weekly discounts",
                       style: TextStyle(
                         color: Colors.white,
@@ -93,16 +90,10 @@ class _CouponsState extends State<Coupons> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    _buildCouponGrid([
-                      _buildCouponCard(
-                        title: '2nd pizza',
-                        description: '50% OFF',
-                      ),
-                      _buildCouponCard(
-                        title: 'All pasta',
-                        description: '2% OFF',
-                      ),
-                    ]),
+                    _buildCouponGrid(_buildCouponCards([
+                      {'title': '2nd pizza', 'description': '50% OFF'},
+                      {'title': 'All pasta', 'description': '2% OFF'},
+                    ])),
                   ],
                 ),
               ),
@@ -111,6 +102,15 @@ class _CouponsState extends State<Coupons> {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildCouponCards(List<Map<String, String>> coupons) {
+    return coupons.map((coupon) {
+      return _buildCouponCard(
+        title: coupon['title']!,
+        description: coupon['description']!,
+      );
+    }).toList();
   }
 
   Widget _buildCouponGrid(List<Widget> cards) {
@@ -125,7 +125,7 @@ class _CouponsState extends State<Coupons> {
 
         return GridView.count(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: crossAxisCount,
           crossAxisSpacing: spacing,
           mainAxisSpacing: spacing,
@@ -149,11 +149,11 @@ class _CouponsState extends State<Coupons> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
             decoration: BoxDecoration(
               color: mainWhite,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -170,7 +170,7 @@ class _CouponsState extends State<Coupons> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 13,
                       ),
@@ -188,7 +188,15 @@ class _CouponsState extends State<Coupons> {
                     ),
                     tooltip: 'Apply coupon',
                     onPressed: () {
+                      final coupon = Coupon(title: title, description: description);
+                      Provider.of<CouponProvider>(context, listen: false).applyCoupon(coupon);
 
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Applied coupon: ${coupon.title}'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -200,3 +208,11 @@ class _CouponsState extends State<Coupons> {
     );
   }
 }
+
+class Coupon {
+  final String title;
+  final String description;
+
+  Coupon({required this.title, required this.description});
+}
+
