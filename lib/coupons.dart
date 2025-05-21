@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'cart.dart';
 import 'main.dart';
-import 'couponsProvider.dart';
 
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
@@ -189,7 +186,6 @@ class _CouponsState extends State<Coupons> {
                     tooltip: 'Apply coupon',
                     onPressed: () {
                       final coupon = Coupon(title: title, description: description);
-                      Provider.of<CouponProvider>(context, listen: false).applyCoupon(coupon);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -215,4 +211,5 @@ class Coupon {
 
   Coupon({required this.title, required this.description});
 }
+
 

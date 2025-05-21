@@ -1,21 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import './couponsProvider.dart';
 
-
-class CartProduct {
-  final String name;
-  final String imagePath;
-  final int unitPrice;
-  int quantity;
-
-  CartProduct({
-    required this.name,
-    required this.imagePath,
-    required this.unitPrice,
-    this.quantity = 1,
-  });
-}
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -23,57 +8,41 @@ class Cart extends StatefulWidget {
   @override
   State<Cart> createState() => _CartState();
 }
+class Coupon {
+  final String title;
+  final String description;
 
+  Coupon({
+    required this.title,
+    required this.description,
+  });
+}
 class _CartState extends State<Cart> {
   int number = 1;
   int value = 20;
-  String coupon = 'none';
   double equal = 0;
 
-  void saveNumber() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('number', number);
-  }
-
-  void loadNumber() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      number = prefs.getInt('number') ?? 1;
-    });
-  }
-
-  void total() async {
+  void total() {
     setState(() {
       equal = number * value.toDouble();
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('equal', equal);
-  }
-
-  void loadTotal() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      equal = prefs.getDouble('equal') ?? 0.0;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    loadNumber();
-    loadTotal();
+    total();
   }
 
   @override
   Widget build(BuildContext context) {
-    final coupon = Provider.of<CouponProvider>(context).appliedCoupon;
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            Padding(padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height*0.02
-            ),
+            Padding(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
@@ -85,7 +54,7 @@ class _CartState extends State<Cart> {
                 ),
               ),
             ),
-            if (number > 0)...[
+            if (number > 0) ...[
               Positioned(
                 left: 15,
                 top: MediaQuery.of(context).size.height * 0.12,
@@ -96,7 +65,6 @@ class _CartState extends State<Cart> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Blok: produkt
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
@@ -133,10 +101,7 @@ class _CartState extends State<Cart> {
                             ],
                           ),
                         ),
-
-                        SizedBox(width: 10-3.6,),
-
-                        // Blok: - 1 +
+                        SizedBox(width: 6.4),
                         Container(
                           height: 40,
                           width: MediaQuery.of(context).size.width * 0.31,
@@ -154,20 +119,17 @@ class _CartState extends State<Cart> {
                                 color: Colors.white,
                                 onPressed: () {
                                   setState(() {
-                                    if (number > 0) {
-                                      number--;
-                                      total();
-                                      saveNumber();
-                                    }
+                                    if (number > 0) number--;
+                                    total();
                                   });
                                 },
                               ),
                               Text(
                                 '$number',
                                 style: TextStyle(
-                                    fontSize: MediaQuery.of(context).size.width * 0.04,
-                                    fontFamily: 'MontSerrat',
-                                    color: Colors.white
+                                  fontSize: MediaQuery.of(context).size.width * 0.04,
+                                  fontFamily: 'MontSerrat',
+                                  color: Colors.white,
                                 ),
                               ),
                               IconButton(
@@ -179,7 +141,6 @@ class _CartState extends State<Cart> {
                                   setState(() {
                                     number++;
                                     total();
-                                    saveNumber();
                                   });
                                 },
                               ),
@@ -188,14 +149,12 @@ class _CartState extends State<Cart> {
                         ),
                       ],
                     ),
-
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-
                     Divider(
                       thickness: 1,
                       color: Colors.grey,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.37,),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.37),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -207,7 +166,7 @@ class _CartState extends State<Cart> {
                           ),
                         ),
                         Text(
-                          'Used coupons: $coupon',
+                          'Used coupon:none',
                           style: TextStyle(
                             fontFamily: 'LeagueSpartan',
                             fontSize: 16,
@@ -222,7 +181,7 @@ class _CartState extends State<Cart> {
                 top: MediaQuery.of(context).size.height * 0.68,
                 left: 5,
                 child: TextButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   child: Container(
                     height: 70,
                     width: MediaQuery.of(context).size.width * 0.91,
@@ -235,33 +194,31 @@ class _CartState extends State<Cart> {
                       child: Text(
                         'Next',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontFamily: 'LeagueSpartan'
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'LeagueSpartan',
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ]
-            else if(number <= 0)...[
+            ] else ...[
               Align(
                 alignment: Alignment.center,
                 child: Text(
                   'Cart is empty',
                   style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'LeagueSpartan',
-                      fontWeight: FontWeight.bold
+                    fontSize: 20,
+                    fontFamily: 'LeagueSpartan',
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
-            ]
+              ),
+            ],
           ],
         ),
       ),
     );
   }
-
 }

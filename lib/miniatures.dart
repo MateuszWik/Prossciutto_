@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './main.dart';
-import './cart.dart';
+
 
 void main() {
   runApp(MaterialApp(
@@ -193,12 +193,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                         Expanded(
                           child:ElevatedButton(
                           onPressed: () {
-                            final selectedFood = foodItems[widget.selectedIndex];
-                            Navigator.pushReplacement(
-                            context,MaterialPageRoute(builder: (context) => Cart(addedItem: CartItem(foodItem: selectedFood, quantity: quantity),
-                             ),
-                              ),
-                             );
+
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFF1ECE3),
