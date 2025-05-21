@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-
+import 'package:mateusz/coupons_data.dart';
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
 
@@ -134,6 +134,10 @@ class _CouponsState extends State<Coupons> {
   }
 
   Widget _buildCouponCard({required String title, required String description}) {
+    bool isApplied = CouponData.appliedCoupons.any((c) => c.title == title);
+
+    IconData icon = isApplied ? Icons.check : Icons.add;
+    String tooltip = isApplied ? 'Remove coupon' : 'Apply coupon';
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -178,27 +182,36 @@ class _CouponsState extends State<Coupons> {
                   top: 10,
                   right: 8,
                   child: IconButton(
-                    icon: const Icon(
-                      Icons.add,
+                    icon: Icon(
+                      icon,
                       size: 28,
                       color: Colors.black,
                     ),
                     tooltip: 'Apply coupon',
                     onPressed: () {
-                      final coupon = Coupon(title: title, description: description);
+                        final coupon = Coupon(title: title, description: description);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Applied coupon: ${coupon.title}',
-                            style: TextStyle(color: Colors.black), // 🔥 tu zmieniamy kolor tekstu
+                        setState(() {
+                          if (isApplied) {
+                            CouponData.removeCoupon(coupon);
+                          } else {
+                            CouponData.applyCoupon(coupon);
+                          }
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              isApplied
+                                  ? 'Removed coupon: ${coupon.title}'
+                                  : 'Applied coupon: ${coupon.title}',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            duration: Duration(seconds: 2),
+                            backgroundColor: mainWhite,
                           ),
-                          duration: Duration(seconds: 3),
-                          backgroundColor: mainWhite,
-                        ),
-
-                      );
-                    },
+                        );
+                      },
                   ),
                 ),
               ],
@@ -208,13 +221,6 @@ class _CouponsState extends State<Coupons> {
       ),
     );
   }
-}
-
-class Coupon {
-  final String title;
-  final String description;
-
-  Coupon({required this.title, required this.description});
 }
 
 
