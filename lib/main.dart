@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Zapewnia inicjalizację Fluttera
+  WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   final box = GetStorage();
   List<Map<String, String>> users = box.read('users') ?? [];
@@ -95,24 +95,26 @@ class _Menu extends State<Menu> {
         );
         break;
       case 2:
-        page = Cart();
+        page = Coupons();
         break;
       case 3:
-        page = LoginScreen();
+        page = Cart();
         break;
       case 4:
-        page = Coupons();
+        page = LoginScreen();
         break;
       default:
         throw UnimplementedError('No widget for $selectedIndex');
     }
 
-    Color navBarColor = selectedIndex >= 3
+    Color navBarColor = selectedIndex >= 2
         ? Color(0xFFF3ECE4)
         : Color(0xFF0C8C75);
-    Color iconColor = selectedIndex >= 3
+
+    Color iconColor = selectedIndex >= 2
         ? Color(0xFF0C8C75)
         : Colors.white;
+
 
     return Scaffold(
       body: Stack(
@@ -151,12 +153,12 @@ class _Menu extends State<Menu> {
                         onPressed: () => setState(() => selectedIndex = 1),
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                        icon: Icon(selectedIndex == 2 ? Icons.local_offer : Icons.local_offer_outlined),
                         color: iconColor,
                         onPressed: () => setState(() => selectedIndex = 2),
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
+                        icon: Icon(selectedIndex == 3 ? Icons.shopping_cart: Icons.shopping_cart_outlined),
                         color: iconColor,
                         onPressed: () => setState(() => selectedIndex = 3),
                       ),
@@ -206,7 +208,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didUpdateWidget(HomeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Update controller text only if external searchQuery changed
     if (widget.searchQuery != oldWidget.searchQuery &&
         widget.searchQuery != searchController.text) {
       searchController.text = widget.searchQuery;
@@ -256,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 25),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  InkWell(onTap: widget.onCouponTap, child: Image.asset('assets/images/kupon.png')),
+                  InkWell(onTap: widget.onCouponTap, child: Image.asset('assets/images/account.png')),
                 ],
               ),
               SizedBox(height: 12),
