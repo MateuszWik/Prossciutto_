@@ -74,7 +74,7 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': 'Student discount', 'description': '30% OFF\nBelow 25y old'},
+                      {'title': "Student's", 'description': '30% OFF\nBelow 25y old'},
                       {'title': 'User discount', 'description': '5% OFF'},
                     ])),
                     const SizedBox(height: 30),
@@ -88,7 +88,7 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': '2nd pizza', 'description': '50% OFF'},
+                      {'title': '2nd same pizza', 'description': '50% OFF'},
                       {'title': 'All pasta', 'description': '2% OFF'},
                     ])),
                   ],
@@ -118,7 +118,7 @@ class _CouponsState extends State<Coupons> {
         double spacing = 20;
         double totalSpacing = spacing * (crossAxisCount - 1);
         double itemWidth = (width - totalSpacing) / crossAxisCount;
-        double itemHeight = itemWidth * 0.80/0.703;
+        double itemHeight = itemWidth * 0.80/0.8;
 
         return GridView.count(
           shrinkWrap: true,
@@ -189,9 +189,14 @@ class _CouponsState extends State<Coupons> {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Applied coupon: ${coupon.title}'),
-                          duration: Duration(seconds: 2),
+                          content: Text(
+                            'Applied coupon: ${coupon.title}',
+                            style: TextStyle(color: Colors.black), // 🔥 tu zmieniamy kolor tekstu
+                          ),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: mainWhite,
                         ),
+
                       );
                     },
                   ),
