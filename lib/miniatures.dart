@@ -194,13 +194,15 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                   existingItem.quantity += quantity;
                                 }
                               });
-
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: const Text('Dodano do koszyka'),
+                                  content: const Text(
+                                    'Dodano do koszyka',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
                                   duration: const Duration(seconds: 2),
                                   behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Color(0xFF0C8C75),
+                                  backgroundColor: Color(0xFFF3ECE4),
                                 ),
                               );
                             },
