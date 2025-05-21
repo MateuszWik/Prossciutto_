@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mateusz/miniatures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mateusz/cart_data.dart';
 import 'package:mateusz/coupons_data.dart';
@@ -73,7 +74,6 @@ class _CartState extends State<Cart> {
         total += unitPrice * item.quantity;
       }
 
-      // Zastosuj wszystkie kupony, jeden po drugim
       for (final coupon in CouponData.appliedCoupons) {
         final regex = RegExp(r'(\d+)%');
         final match = regex.firstMatch(coupon.description);
@@ -81,8 +81,8 @@ class _CartState extends State<Cart> {
           final discount = int.parse(match.group(1)!);
           total = total * ((100 - discount) / 100.0);
         }
-      }
 
+      }
       return total;
     }
     return Scaffold(
@@ -102,7 +102,7 @@ class _CartState extends State<Cart> {
                 ),
               ),
             ),
-            if (number > 0) ...[
+            if (cartItems.isNotEmpty) ...[
               Positioned(
                 left: 15,
                 top: MediaQuery.of(context).size.height * 0.12,
@@ -121,8 +121,28 @@ class _CartState extends State<Cart> {
                         final quantity = item.quantity;
                         final imagePath = item.foodItem.imagePath;
 
+                        double totalItemPrice;
+                        if (title.toLowerCase() == 'water' || title.toLowerCase() == 'bread sticks') {
+                          totalItemPrice = 0;
+                          if(title.toLowerCase() == 'water') {
+                            for (int i = 2; i <= quantity; i++) {
+                              totalItemPrice += 1;
+                            }
+                          }
+                          else if(title.toLowerCase() == 'bread sticks'){
+                            for (int i = 2; i <= quantity; i++) {
+                              totalItemPrice += 1.99;
+                            }
+                          }
+                        } else {
+                          final unitPrice = double.tryParse(price.replaceAll('\$', '')) ?? 0.0;
+                          totalItemPrice = unitPrice * quantity;
+                        }
+
+
+
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 3.2),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -135,7 +155,7 @@ class _CartState extends State<Cart> {
                                     alignment: Alignment.centerLeft,
                                   ),
                                 ),
-                                height: 85,
+                                height: 69,
                                 width: MediaQuery.of(context).size.width * 0.56,
                                 padding: EdgeInsets.all(7.0),
                                 child: Column(
@@ -151,7 +171,7 @@ class _CartState extends State<Cart> {
                                       ),
                                     ),
                                     Text(
-                                      '\n$price',
+                                      '\n\$${totalItemPrice.toStringAsFixed(2)}',
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.white,
@@ -220,7 +240,6 @@ class _CartState extends State<Cart> {
                       thickness: 1,
                       color: Colors.grey,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.37),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -270,7 +289,7 @@ class _CartState extends State<Cart> {
                 ),
               ),
             ]
-            else if(number <= 0)...[
+            else...[
               Align(
                 alignment: Alignment.center,
                 child: Text(
