@@ -197,7 +197,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text(
-                                    'Dodano do koszyka',
+                                    'Added to Cart',
                                     style: TextStyle(color: Colors.black),
                                   ),
                                   duration: const Duration(seconds: 2),
