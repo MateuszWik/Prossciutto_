@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import './main.dart';
-
-
+import './cart_data.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Menu(),
   ));
 }
-
 class FoodItem {
   final String title;
   final String price;
   final String imagePath;
   final String description;
-
   FoodItem({
     required this.title,
     required this.price,
@@ -22,7 +19,6 @@ class FoodItem {
     required this.description,
   });
 }
-
 class CartItem {
   final FoodItem foodItem;
   int quantity;
@@ -90,19 +86,14 @@ final List<FoodItem> foodItems = [
     description: '\n\nCrunchy and tasty bread sticks perfect as a side.',
   ),
 ];
-
 class FoodDetailScreen extends StatefulWidget {
   final int selectedIndex;
-
   const FoodDetailScreen({super.key, required this.selectedIndex});
-
   @override
   _FoodDetailScreenState createState() => _FoodDetailScreenState();
 }
-
 class _FoodDetailScreenState extends State<FoodDetailScreen> {
   int quantity = 1;
-
   String calculateTotalPrice(FoodItem food, int quantity) {
     if (food.title == 'Water') {
       if (quantity <= 1) {
@@ -128,7 +119,6 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final food = foodItems[widget.selectedIndex];
-
     return Scaffold(
       backgroundColor: const Color(0xFFF3ECE4),
       body: SafeArea(
@@ -164,7 +154,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Color(0xFFF3ECE4),
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Row(
@@ -191,9 +181,28 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child:ElevatedButton(
-                          onPressed: () {
+                          child: ElevatedButton(
+                            onPressed: () {
+                              final existingItem = cartItems.firstWhere(
+                                    (item) => item.foodItem.title == food.title,
+                                orElse: () => CartItem(foodItem: food, quantity: 0),
+                              );
+                              setState(() {
+                                if (existingItem.quantity == 0) {
+                                  cartItems.add(CartItem(foodItem: food, quantity: quantity));
+                                } else {
+                                  existingItem.quantity += quantity;
+                                }
+                              });
 
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text('Dodano do koszyka'),
+                                  duration: const Duration(seconds: 2),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Color(0xFF0C8C75),
+                                ),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFF1ECE3),
