@@ -74,8 +74,8 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': "Student's", 'description': '30% OFF\nBelow 25y old'},
-                      {'title': 'User discount', 'description': '5% OFF'},
+                      {'title': "Student's", 'description': '30% OFF\nBelow 25y old', 'discount': '30'},
+                      {'title': 'User discount', 'description': '5% OFF','discount': '5'},
                     ])),
                     const SizedBox(height: 30),
                     const Text(
@@ -88,8 +88,8 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': '2nd same pizza', 'description': '50% OFF'},
-                      {'title': 'All pasta', 'description': '2% OFF'},
+                      {'title': '2nd same pizza', 'description': '50% OFF','discount': '50'},
+                      {'title': 'All pasta', 'description': '2% OFF','discount': '2'},
                     ])),
                   ],
                 ),
@@ -106,6 +106,7 @@ class _CouponsState extends State<Coupons> {
       return _buildCouponCard(
         title: coupon['title']!,
         description: coupon['description']!,
+        discount: int.parse(coupon['discount']!),
       );
     }).toList();
   }
@@ -133,7 +134,7 @@ class _CouponsState extends State<Coupons> {
     );
   }
 
-  Widget _buildCouponCard({required String title, required String description}) {
+  Widget _buildCouponCard({required String title, required String description, required int discount}) {
     bool isApplied = CouponData.appliedCoupons.any((c) => c.title == title);
 
     IconData icon = isApplied ? Icons.check : Icons.add;
@@ -189,29 +190,29 @@ class _CouponsState extends State<Coupons> {
                     ),
                     tooltip: 'Apply coupon',
                     onPressed: () {
-                        final coupon = Coupon(title: title, description: description);
+                      final coupon = Coupon(title: title, description: description, discount: discount);
 
-                        setState(() {
-                          if (isApplied) {
-                            CouponData.removeCoupon(coupon);
-                          } else {
-                            CouponData.applyCoupon(coupon);
-                          }
-                        });
+                      setState(() {
+                        if (isApplied) {
+                          CouponData.removeCoupon(coupon);
+                        } else {
+                          CouponData.applyCoupon(coupon);
+                        }
+                      });
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              isApplied
-                                  ? 'Removed coupon: ${coupon.title}'
-                                  : 'Applied coupon: ${coupon.title}',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            duration: Duration(seconds: 2),
-                            backgroundColor: mainWhite,
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            isApplied
+                                ? 'Removed coupon: ${coupon.title}'
+                                : 'Applied coupon: ${coupon.title}',
+                            style: TextStyle(color: Colors.black),
                           ),
-                        );
-                      },
+                          duration: Duration(seconds: 2),
+                          backgroundColor: mainWhite,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -222,5 +223,3 @@ class _CouponsState extends State<Coupons> {
     );
   }
 }
-
-
