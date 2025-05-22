@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mateusz/miniatures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mateusz/cart_data.dart';
 import 'package:mateusz/coupons_data.dart';
 
 
 class Cart extends StatefulWidget {
-  const Cart({super.key});
+  final String? dateOfBirth;
+
+  const Cart({super.key, this.dateOfBirth});
 
   @override
   State<Cart> createState() => _CartState();
@@ -29,6 +30,24 @@ class _CartState extends State<Cart> {
   int number = 1;
   int value = 20;
   double equal = 0;
+
+
+  int? calculateAge(String? dateOfBirth) {
+    if (dateOfBirth == null || dateOfBirth.isEmpty) return null;
+
+    try {
+      final birthDate = DateTime.parse(dateOfBirth);
+      final today = DateTime.now();
+      int age = today.year - birthDate.year;
+      if (today.month < birthDate.month || (today.month == birthDate.month && today.day < birthDate.day)) {
+        age--;
+      }
+      return age;
+    } catch (e) {
+      print("Failed to parse date: $dateOfBirth");
+      return null;
+    }
+  }
 
   void saveNumber() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,6 +79,7 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     super.initState();
+    print("Received date of birth: ${widget.dateOfBirth}");
     loadNumber();
     loadTotal();
   }
@@ -69,20 +89,65 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     double calculateTotal() {
       double total = 0.0;
+
       for (final item in cartItems) {
-        final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
-        total += unitPrice * item.quantity;
+        final title = item.foodItem.title.toLowerCase();
+        final quantity = item.quantity;
+
+        double itemTotal;
+
+        if (title == 'water') {
+          itemTotal = 0;
+          for (int i = 2; i <= quantity; i++) {
+            itemTotal += 1;
+          }
+        } else if (title == 'bread sticks') {
+          itemTotal = 0;
+          for (int i = 2; i <= quantity; i++) {
+            itemTotal += 1.99;
+          }
+        } else {
+          final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+          itemTotal = unitPrice * quantity;
+        }
+        total += itemTotal;
       }
 
       for (final coupon in CouponData.appliedCoupons) {
-        final regex = RegExp(r'(\d+)%');
-        final match = regex.firstMatch(coupon.description);
-        if (match != null) {
-          final discount = int.parse(match.group(1)!);
-          total = total * ((100 - discount) / 100.0);
-        }
+        for(final item in cartItems) {
+          final title = item.foodItem.title.toLowerCase();
+          final quantity = item.quantity;
+          final discount = coupon.discount;
+          final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+          switch (coupon.title.toLowerCase()) {
+            case "student's":
+              final age = calculateAge(widget.dateOfBirth);
+              if (age != null && age >= 19 && age <= 25) {
+                total = total * (1 - discount / 100);
+              }
+              break;
+            case 'user discount':
+              total = total * (1 - discount / 100);
+            break;
+            case 'all pasta':
+              if(title == 'macaroni' || title == 'spaghetti sicily' || title == 'penne all\' arrabbiata') {
+                total = total * (1 - discount / 100);
+              }
+            break;
+            case '2nd same pizza':
+              if(quantity >= 2 && title.contains('pizza')){
 
+                int numberOfDiscounted = quantity ~/ 2; // Co druga pizza
+
+                double discountAmount = numberOfDiscounted * (unitPrice * (1 - discount / 100)); // 50% off
+
+                total -= discountAmount;
+              }
+              break;
+          }
+        }
       }
+
       return total;
     }
     return Scaffold(
@@ -127,6 +192,7 @@ class _CartState extends State<Cart> {
                           if(title.toLowerCase() == 'water') {
                             for (int i = 2; i <= quantity; i++) {
                               totalItemPrice += 1;
+
                             }
                           }
                           else if(title.toLowerCase() == 'bread sticks'){
@@ -162,7 +228,7 @@ class _CartState extends State<Cart> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '$title x$quantity',
+                                      '$title',
                                       style: TextStyle(
                                         fontSize: 10,
                                         color: Colors.white,

@@ -1,7 +1,8 @@
 class Coupon {
   final String title;
   final String description;
-  Coupon({required this.title, required this.description});
+  final int discount;
+  Coupon({required this.title, required this.description, required this.discount});
 }
 class CouponData {
   static final List<Coupon> _appliedCoupons = [];

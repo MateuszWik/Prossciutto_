@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:get_storage/get_storage.dart'; // Dodano GetStorage
 import 'package:mateusz/login.dart';
 import 'main.dart';
 import 'cart.dart';
-import 'favorites.dart';
-import 'coupons.dart';
 
 class AccountPage extends StatefulWidget {
   final String name;
@@ -25,10 +23,11 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  int selectedIndex = 4;
+  var selectedIndex = 3; // Ustawiony na 'Account' domyślnie
   final box = GetStorage();
 
   void logoutUser(BuildContext context) {
+    final box = GetStorage();
     box.write('isLoggedIn', false);
     Navigator.pushReplacement(
       context,
@@ -36,35 +35,34 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget getSelectedPage() {
-    switch (selectedIndex) {
-      case 0:
-        return Menu();
-      case 1:
-        return Favorites(
-          favoriteItems: [],
-          toggleFavorite: (_) {},
-          isFavorite: (_) => false,
-        );
-      case 2:
-        return Coupons();
-      case 3:
-        return Cart();
-      case 4:
-      default:
-        return accountContent();
-    }
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    Color navBarColor = selectedIndex == 2 ? Color(0xFFF3ECE4) : Color(0xFF0C8C75);
-    Color iconColor = selectedIndex == 2 ? Color(0xFF0C8C75) : Colors.white;
+
+    Widget page;
+    switch (selectedIndex) {
+      case 0:
+        page = Menu();
+        break;
+      case 1:
+        page = Placeholder();
+        break;
+      case 2:
+        page = Cart();
+        break;
+      case 3:
+        page = accountContent();
+        break;
+      default:
+        throw UnimplementedError('Nie znaleziono widoku dla $selectedIndex');
+    }
 
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: getSelectedPage()),
+          Positioned.fill(child: page),
           Positioned(
             left: 16,
             right: 16,
@@ -75,29 +73,45 @@ class _AccountPageState extends State<AccountPage> {
                 elevation: 10,
                 child: Container(
                   height: 60,
-                  color: navBarColor,
+                  color: Color(0xFF0C8C75),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                         icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 0),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 0;
+                          });
+                        },
                       ),
                       IconButton(
                         icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 1),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 1;
+                          });
+                        },
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.local_offer : Icons.local_offer_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 2),
+                        icon: Icon(selectedIndex == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 2;
+                          });
+                        },
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-                        color: iconColor,
-                        onPressed: () => setState(() => selectedIndex = 3),
+                        icon: Icon(selectedIndex == 3 ? Icons.person_2 : Icons.person_2_outlined),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 3;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -142,8 +156,10 @@ class _AccountPageState extends State<AccountPage> {
           buildInfoField("Password", widget.password),
           buildInfoField("Date of Birth", widget.dateOfBirth),
           SizedBox(height: 40),
+
+          // 🔹 Przycisk "Wyloguj"
           ElevatedButton(
-            onPressed: () => logoutUser(context),
+            onPressed:() => logoutUser(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF0C8C75),
               shape: RoundedRectangleBorder(
@@ -153,7 +169,7 @@ class _AccountPageState extends State<AccountPage> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Text(
-                "Sign out",
+                "Wyloguj",
                 style: TextStyle(fontSize: 14, fontFamily: "LeagueSpartan", color: Colors.white),
               ),
             ),
