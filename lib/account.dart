@@ -145,7 +145,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             ),
-          ),
+          ),//s
           SizedBox(height: 20),
           CircleAvatar(
             radius: 40,

@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                  ),
+                  ),//s
                   SizedBox(height: 23),
                   // password
                   Padding(
