@@ -49,13 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final String email = emailController.text.trim();
     final String password = passwordController.text.trim();
 
-    // Znalezienie użytkownika po emailu i haśle
     final userData = users.firstWhere(
           (user) => user['email'] == email && user['password'] == password,
       orElse: () => {},
     );
 
-    // Jeśli nie znaleziono
     if (userData.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -69,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Zaloguj użytkownika i zapisz dane
     box.write('isLoggedIn', true);
     box.write('userName', userData['name']);
     box.write('userEmail', userData['email']);
@@ -79,12 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => AccountPage(
-          name: userData['name'] ?? '',
-          email: userData['email'] ?? '',
-          password: userData['password'] ?? '',
-          dateOfBirth: userData['dateOfBirth'] ?? '',
-        ),
+        builder: (context) => Menu(),
       ),
     );
   }
@@ -105,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
               name: box.read('userName'),
               email: box.read('userEmail'),
               password: box.read('userPassword'),
-              dateOfBirth: '',
+              dateOfBirth: box.read('userDateOfBirth') ?? '', // ✅ Pobranie daty urodzenia
             ),
           ),
         );
@@ -116,13 +108,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
+          // ZIELONY BOX NA DOLE – PRZYKLEJONY
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Container(
               height: 590,
               decoration: BoxDecoration(
@@ -131,15 +123,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(13),
+
+          // FORMULARZ – MOŻE SIĘ PRZEWIJAĆ
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(13),
+            child: SafeArea(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 15),
-                  Padding(padding: EdgeInsets.only(top: 25),
-                  child: Align(
+                  SizedBox(height: 25),
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: InkWell(
                       onTap: () {
@@ -157,8 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  ),
-                  SizedBox(height: 0),
+                  SizedBox(height: 10),
                   Container(
                     width: 120,
                     height: 120,
@@ -170,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  SizedBox(height: 100,),
+                  SizedBox(height: 55),
                   Text(
                     'Log in',
                     style: TextStyle(
@@ -180,6 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
+                  // email
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 13),
                     child: TextFormField(
@@ -197,6 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 23),
+                  // password
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 13),
                     child: TextFormField(
@@ -220,16 +214,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 65,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: isButtonEnabled ? loginUser : () {},
+                        onPressed: isButtonEnabled ? loginUser : () {}, // ✅ Przycisk zawsze widoczny
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
+                          backgroundColor: Colors.black,  // ✅ Zawsze czarne tło
+                          foregroundColor: Colors.white,  // ✅ Biały tekst
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(19),
                           ),
                         ),
+
                         child: Text(
                           'Log in',
-                          style: TextStyle(fontFamily: "LeagueSpartan", color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                              fontFamily: "LeagueSpartan",
+                              color: Colors.white,
+                              fontSize: 20),
                         ),
                       ),
                     ),
@@ -240,14 +239,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Text(
                         "Don't have an account?",
-                        style: TextStyle(fontFamily: "MontSerrat", fontSize: 16, color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: "MontSerrat",
+                            fontSize: 16,
+                            color: Colors.white),
                       ),
                       SizedBox(width: 5),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignUpScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()),
                           );
                         },
                         child: Text(
@@ -262,6 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 40), // dodaj przestrzeń, aby formularz nie zderzał się z dolnym boxem
                 ],
               ),
             ),
@@ -269,5 +273,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+
   }
 }

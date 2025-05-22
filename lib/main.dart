@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'miniatures.dart';
+import 'login.dart';
 import 'cart.dart';
 import 'coupons.dart';
 import 'favorites.dart';
-import 'login.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

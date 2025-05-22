@@ -65,16 +65,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
           // 🔹 Zielony box na dole
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
+          // ZIELONY BOX NA DOLE – PRZYKLEJONY
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Container(
-              height: 720,
+              height: 715,
               decoration: BoxDecoration(
                 color: Color(0xFF0C8C75),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(33)),
@@ -198,63 +198,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 65,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (nameController.text.isEmpty ||
-                              emailController.text.isEmpty ||
-                              passwordController.text.isEmpty ||
-                              selectedDate == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Nie wszystkie pola są wypełnione!", style: TextStyle(color: Color(0xFF0C8C75))),
-                                backgroundColor: Colors.white,
-                              ),
+                          onPressed: () {
+                            if (nameController.text.isEmpty ||
+                                emailController.text.isEmpty ||
+                                passwordController.text.isEmpty ||
+                                selectedDate == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Nie wszystkie pola są wypełnione!", style: TextStyle(color: Color(0xFF0C8C75))),
+                                  backgroundColor: Colors.white,
+                                ),
+                              );
+                              return;
+                            }
+
+                            List<Map<String, String>> users = box.read('users') ?? [];
+
+                            bool emailExists = users.any((user) => user['email'] == emailController.text);
+
+                            if (emailExists) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Ten email już istnieje!", style: TextStyle(color: Color(0xFF0C8C75))),
+                                  backgroundColor: Colors.white,
+                                ),
+                              );
+                              return;
+                            }
+
+                            Map<String, String> newUser = {
+                              'name': nameController.text,
+                              'email': emailController.text,
+                              'password': passwordController.text,
+                              'dateOfBirth': "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}", // ✅ Dodaj zapis daty urodzenia
+                            };
+                            box.write('userDateOfBirth', newUser['dateOfBirth']); // ✅ Zapis daty urodzenia
+
+
+
+                            users.add(newUser);
+                            box.write('users', users);
+                            box.write('isLoggedIn', true);
+                            box.write('userName', newUser['name']);
+                            box.write('userEmail', newUser['email']);
+                            box.write('userPassword', newUser['password']);
+                            box.write('userDateOfBirth', newUser['dateOfBirth']);
+
+                            // 🔁 ZAMIANA AccountPage NA Menu:
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Menu()),
                             );
-                            return;
-                          }
-
-                          List<Map<String, String>> users = box.read('users') ?? [];
-
-                          bool emailExists = users.any((user) => user['email'] == emailController.text);
-
-                          if (emailExists) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Ten email już istnieje!", style: TextStyle(color: Color(0xFF0C8C75))),
-                                backgroundColor: Colors.white,
-                              ),
-                            );
-                            return;
-                          }
-
-                          Map<String, String> newUser = {
-                            'name': nameController.text,
-                            'email': emailController.text,
-                            'password': passwordController.text,
-                            'dateOfBirth': "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
-                          };
-
-                          users.add(newUser);
-                          box.write('users', users);
-                          box.write('isLoggedIn', true);
-                          box.write('userName', newUser['name']);
-                          box.write('userEmail', newUser['email']);
-                          box.write('userPassword', newUser['password']);
-                          box.write('userDateOfBirth', newUser['dateOfBirth']);
-
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountPage(
-                                name: newUser['name']!,
-                                email: newUser['email']!,
-                                password: newUser['password']!,
-                                dateOfBirth: newUser['dateOfBirth']!,
-                              ),
-                            ),
-                          );
-                        }
-                        ,
-
+                          },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black, // ✅ Zawsze czarne tło
                           foregroundColor: Colors.white, // ✅ Tekst zawsze biały
