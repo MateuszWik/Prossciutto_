@@ -36,6 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isButtonEnabled = false;
+  bool isPasswordVisible = false; // ✅ Przechowuje stan widoczności hasła
+
 
   void checkFields() {
     setState(() {
@@ -196,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       controller: passwordController,
                       onChanged: (text) => checkFields(),
-                      obscureText: true,
+                      obscureText: !isPasswordVisible, // ✅ Ukrywa/odsłania hasło
                       decoration: InputDecoration(
                         labelText: 'Password',
                         filled: true,
@@ -204,9 +206,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
+                        suffixIcon: IconButton( // ✅ Ikona "oczko" do podglądu hasła
+                          icon: Icon(
+                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible; // ✅ Zmiana stanu widoczności
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
+
                   SizedBox(height: 80),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 13),

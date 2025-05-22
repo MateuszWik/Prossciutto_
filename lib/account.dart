@@ -25,6 +25,8 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   var selectedIndex = 3; // Ustawiony na 'Account' domyślnie
   final box = GetStorage();
+  bool isPasswordVisible = false; // ✅ Przechowuje stan widoczności hasła
+
 
   void logoutUser(BuildContext context) {
     final box = GetStorage();
@@ -153,7 +155,53 @@ class _AccountPageState extends State<AccountPage> {
           SizedBox(height: 23),
           buildInfoField("Name", widget.name),
           buildInfoField("Email", widget.email),
-          buildInfoField("Password", widget.password),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Password",
+                  style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan", fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 40,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade400, width: 1),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            isPasswordVisible ? widget.password : "●●●●●●●●●●",
+                            style: TextStyle(fontSize: 16, fontFamily: "MontSerrat", color: Colors.black54),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible; // ✅ Zmiana stanu widoczności
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           buildInfoField("Date of Birth", widget.dateOfBirth),
           SizedBox(height: 40),
 
