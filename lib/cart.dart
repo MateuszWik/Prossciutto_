@@ -89,7 +89,7 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     double calculateTotal() {
       double total = 0.0;
-
+      const conditionalCoupons = ["student's", 'user discount', 'all pasta'];
       for (final item in cartItems) {
         final title = item.foodItem.title.toLowerCase();
         final quantity = item.quantity;
@@ -112,43 +112,49 @@ class _CartState extends State<Cart> {
         }
         total += itemTotal;
       }
-
+      var totalDiscount = 0;
       for (final coupon in CouponData.appliedCoupons) {
         for(final item in cartItems) {
           final title = item.foodItem.title.toLowerCase();
           final quantity = item.quantity;
           final discount = coupon.discount;
           final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+
           switch (coupon.title.toLowerCase()) {
             case "student's":
               final age = calculateAge(widget.dateOfBirth);
               if (age != null && age >= 19 && age <= 25) {
-                total = total * (1 - discount / 100);
+                totalDiscount += discount;
               }
               break;
             case 'user discount':
-              total = total * (1 - discount / 100);
+              totalDiscount += discount;
             break;
             case 'all pasta':
               if(title == 'macaroni' || title == 'spaghetti sicily' || title == 'penne all\' arrabbiata') {
-                total = total * (1 - discount / 100);
+                totalDiscount += discount;
               }
             break;
             case '2nd same pizza':
               if(quantity >= 2 && title.contains('pizza')){
+                totalDiscount += discount;
+                int numberOfDiscounted = quantity ~/ 2;
 
-                int numberOfDiscounted = quantity ~/ 2; // Co druga pizza
+                double discountAmount = (numberOfDiscounted * (unitPrice * (1 - discount / 100)))* (1 - (totalDiscount - discount) / 100);
 
-                double discountAmount = numberOfDiscounted * (unitPrice * (1 - discount / 100)); // 50% off
-
-                total -= discountAmount;
+                total = discountAmount;
               }
               break;
           }
         }
       }
+      if (CouponData.appliedCoupons.any((c) =>
+          conditionalCoupons.contains(c.title.toLowerCase()))) {
+        total *= (1 - totalDiscount / 100);
+      }
 
       return total;
+
     }
     return Scaffold(
       body: SafeArea(
@@ -262,7 +268,7 @@ class _CartState extends State<Cart> {
                                     IconButton(
                                       icon: Icon(Icons.remove),
                                       iconSize: MediaQuery.of(context).size.width * 0.04,
-                                      tooltip: 'Usuń',
+                                      tooltip: 'Remove',
                                       color: Colors.white,
                                       onPressed: () {
                                         setState(() {
@@ -285,7 +291,7 @@ class _CartState extends State<Cart> {
                                     IconButton(
                                       icon: Icon(Icons.add),
                                       iconSize: MediaQuery.of(context).size.width * 0.04,
-                                      tooltip: 'Dodaj',
+                                      tooltip: 'Add',
                                       color: Colors.white,
                                       onPressed: () {
                                         setState(() {

@@ -3,15 +3,12 @@ import 'main.dart';
 import 'package:mateusz/coupons_data.dart';
 class Coupons extends StatefulWidget {
   const Coupons({super.key});
-
   @override
   _CouponsState createState() => _CouponsState();
 }
-
 class _CouponsState extends State<Coupons> {
   final Color mainGreen = const Color(0xFF0C8C75);
   final Color mainWhite = const Color(0xFFF3ECE4);
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -100,7 +97,6 @@ class _CouponsState extends State<Coupons> {
       ),
     );
   }
-
   List<Widget> _buildCouponCards(List<Map<String, String>> coupons) {
     return coupons.map((coupon) {
       return _buildCouponCard(
@@ -110,7 +106,6 @@ class _CouponsState extends State<Coupons> {
       );
     }).toList();
   }
-
   Widget _buildCouponGrid(List<Widget> cards) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -120,7 +115,6 @@ class _CouponsState extends State<Coupons> {
         double totalSpacing = spacing * (crossAxisCount - 1);
         double itemWidth = (width - totalSpacing) / crossAxisCount;
         double itemHeight = itemWidth * 0.80/0.8;
-
         return GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -133,10 +127,8 @@ class _CouponsState extends State<Coupons> {
       },
     );
   }
-
   Widget _buildCouponCard({required String title, required String description, required int discount}) {
     bool isApplied = CouponData.appliedCoupons.any((c) => c.title == title);
-
     IconData icon = isApplied ? Icons.check : Icons.add;
     String tooltip = isApplied ? 'Remove coupon' : 'Apply coupon';
     return Container(
@@ -191,7 +183,6 @@ class _CouponsState extends State<Coupons> {
                     tooltip: 'Apply coupon',
                     onPressed: () {
                       final coupon = Coupon(title: title, description: description, discount: discount);
-
                       setState(() {
                         if (isApplied) {
                           CouponData.removeCoupon(coupon);
@@ -199,7 +190,6 @@ class _CouponsState extends State<Coupons> {
                           CouponData.applyCoupon(coupon);
                         }
                       });
-
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
