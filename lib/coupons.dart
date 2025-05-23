@@ -85,7 +85,7 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': '2nd same pizza', 'description': '50% OFF','discount': '50'},
+                      {'title': '2nd same pizza', 'description': '50% OFF\nCannot be combined with other coupons','discount': '50'},
                       {'title': 'All pasta', 'description': '2% OFF','discount': '2'},
                     ])),
                   ],
@@ -172,7 +172,7 @@ class _CouponsState extends State<Coupons> {
                   ),
                 ),
                 Positioned(
-                  top: 10,
+                  bottom: 36,
                   right: 8,
                   child: IconButton(
                     icon: Icon(
@@ -183,26 +183,49 @@ class _CouponsState extends State<Coupons> {
                     tooltip: 'Apply coupon',
                     onPressed: () {
                       final coupon = Coupon(title: title, description: description, discount: discount);
+                      final conditionalCoupons = ['Student\'s', 'User discount'];
+                      final exclusiveCoupon = '2nd same pizza';
+
+                      bool isExclusive = title == exclusiveCoupon;
+                      bool isConditional = conditionalCoupons.contains(title);
+
+                      bool hasExclusive = CouponData.appliedCoupons.any((c) => c.title == exclusiveCoupon);
+                      bool hasConditional = CouponData.appliedCoupons.any((c) => conditionalCoupons.contains(c.title));
+
                       setState(() {
                         if (isApplied) {
                           CouponData.removeCoupon(coupon);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Removed coupon: ${coupon.title}', style: TextStyle(color: Colors.black)),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: mainWhite,
+                            ),
+                          );
+                        } else if ((isExclusive && hasConditional) || (isConditional && hasExclusive)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Cannot combine "$title" with current discount.',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.orange.shade200,
+                            ),
+                          );
                         } else {
                           CouponData.applyCoupon(coupon);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Applied coupon: ${coupon.title}', style: TextStyle(color: Colors.black)),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: mainWhite,
+                            ),
+                          );
                         }
                       });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            isApplied
-                                ? 'Removed coupon: ${coupon.title}'
-                                : 'Applied coupon: ${coupon.title}',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          duration: Duration(seconds: 2),
-                          backgroundColor: mainWhite,
-                        ),
-                      );
                     },
+
                   ),
                 ),
               ],
