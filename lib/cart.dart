@@ -90,6 +90,9 @@ class _CartState extends State<Cart> {
     double calculateTotal() {
       double total = 0.0;
       const conditionalCoupons = ["student's", 'user discount', 'all pasta'];
+      double totalDiscountAmount = 0.0;
+      int totalDiscount = 0;
+
       for (final item in cartItems) {
         final title = item.foodItem.title.toLowerCase();
         final quantity = item.quantity;
@@ -110,11 +113,12 @@ class _CartState extends State<Cart> {
           final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
           itemTotal = unitPrice * quantity;
         }
+
         total += itemTotal;
       }
-      var totalDiscount = 0;
+
       for (final coupon in CouponData.appliedCoupons) {
-        for(final item in cartItems) {
+        for (final item in cartItems) {
           final title = item.foodItem.title.toLowerCase();
           final quantity = item.quantity;
           final discount = coupon.discount;
@@ -127,34 +131,38 @@ class _CartState extends State<Cart> {
                 totalDiscount += discount;
               }
               break;
+
             case 'user discount':
               totalDiscount += discount;
-            break;
+              break;
+
             case 'all pasta':
-              if(title == 'macaroni' || title == 'spaghetti sicily' || title == 'penne all\' arrabbiata') {
+              if (title == 'macaroni' || title == 'spaghetti sicily' || title == 'penne all\' arrabbiata') {
                 totalDiscount += discount;
               }
-            break;
+              break;
+
             case '2nd same pizza':
-              if(quantity >= 2 && title.contains('pizza')){
+              if (quantity >= 2 && title.contains('pizza')) {
                 int numberOfDiscounted = quantity ~/ 2;
-
-                double discountAmount = numberOfDiscounted * (unitPrice * (1 - discount / 100));
-
-                total -= discountAmount;
+                double discountAmount = numberOfDiscounted * unitPrice * (discount / 100);
+                totalDiscountAmount += discountAmount;
               }
               break;
           }
         }
       }
-      if (CouponData.appliedCoupons.any((c) =>
-          conditionalCoupons.contains(c.title.toLowerCase()))) {
+
+
+
+      if (totalDiscount > 0) {
         total *= (1 - totalDiscount / 100);
       }
+      total -= totalDiscountAmount;
 
-      return total;
 
     }
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
