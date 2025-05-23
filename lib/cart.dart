@@ -110,7 +110,8 @@ class _CartState extends State<Cart> {
             itemTotal += 1.99;
           }
         } else {
-          final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+          final unitPrice =
+              double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
           itemTotal = unitPrice * quantity;
         }
 
@@ -122,7 +123,8 @@ class _CartState extends State<Cart> {
           final title = item.foodItem.title.toLowerCase();
           final quantity = item.quantity;
           final discount = coupon.discount;
-          final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+          final unitPrice =
+              double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
 
           switch (coupon.title.toLowerCase()) {
             case "student's":
@@ -137,7 +139,9 @@ class _CartState extends State<Cart> {
               break;
 
             case 'all pasta':
-              if (title == 'macaroni' || title == 'spaghetti sicily' || title == 'penne all\' arrabbiata') {
+              if (title == 'macaroni' ||
+                  title == 'spaghetti sicily' ||
+                  title == "penne all' arrabbiata") {
                 totalDiscount += discount;
               }
               break;
@@ -145,7 +149,8 @@ class _CartState extends State<Cart> {
             case '2nd same pizza':
               if (quantity >= 2 && title.contains('pizza')) {
                 int numberOfDiscounted = quantity ~/ 2;
-                double discountAmount = numberOfDiscounted * unitPrice * (discount / 100);
+                double discountAmount =
+                    numberOfDiscounted * unitPrice * (discount / 100);
                 totalDiscountAmount += discountAmount;
               }
               break;
@@ -153,15 +158,14 @@ class _CartState extends State<Cart> {
         }
       }
 
-
-
       if (totalDiscount > 0) {
         total *= (1 - totalDiscount / 100);
       }
       total -= totalDiscountAmount;
 
-
+      return total; // ✅ This is the fix
     }
+
 
     return Scaffold(
       body: SafeArea(
