@@ -1,8 +1,8 @@
 // summary_page.dart
 import 'package:flutter/material.dart';
 
-class SummaryPage extends StatelessWidget {
-  const SummaryPage({super.key});
+class Order extends StatelessWidget {
+  const Order({super.key});
 
   @override
   Widget build(BuildContext context) {

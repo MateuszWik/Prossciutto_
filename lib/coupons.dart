@@ -174,7 +174,7 @@ class _CouponsState extends State<Coupons> {
                   ),
                 ),
                 Positioned(
-                  bottom: 36,
+                  bottom: 35/0.90,
                   right: 8,
                   child: IconButton(
                     icon: Icon(
