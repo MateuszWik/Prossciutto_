@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isButtonEnabled = false;
-  bool isPasswordVisible = false; // ✅ Przechowuje stan widoczności hasła
+  bool isPasswordVisible = false;
 
 
   void checkFields() {
@@ -89,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    // Automatyczne logowanie, jeśli użytkownik jest już zalogowany
     if (box.read('isLoggedIn') ?? false) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
@@ -99,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               name: box.read('userName'),
               email: box.read('userEmail'),
               password: box.read('userPassword'),
-              dateOfBirth: box.read('userDateOfBirth') ?? '', // ✅ Pobranie daty urodzenia
+              dateOfBirth: box.read('userDateOfBirth') ?? '',
             ),
           ),
         );
@@ -114,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
-          // ZIELONY BOX NA DOLE – PRZYKLEJONY
+
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -126,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          // FORMULARZ – MOŻE SIĘ PRZEWIJAĆ
+
           SingleChildScrollView(
             padding: const EdgeInsets.all(13),
             child: SafeArea(
@@ -198,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       controller: passwordController,
                       onChanged: (text) => checkFields(),
-                      obscureText: !isPasswordVisible, // ✅ Ukrywa/odsłania hasło
+                      obscureText: !isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         filled: true,
@@ -206,14 +205,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        suffixIcon: IconButton( // ✅ Ikona "oczko" do podglądu hasła
+                        suffixIcon: IconButton(
                           icon: Icon(
                             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                             color: Colors.grey,
                           ),
                           onPressed: () {
                             setState(() {
-                              isPasswordVisible = !isPasswordVisible; // ✅ Zmiana stanu widoczności
+                              isPasswordVisible = !isPasswordVisible;
                             });
                           },
                         ),
@@ -228,10 +227,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 65,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: isButtonEnabled ? loginUser : () {}, // ✅ Przycisk zawsze widoczny
+                        onPressed: isButtonEnabled ? loginUser : () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,  // ✅ Zawsze czarne tło
-                          foregroundColor: Colors.white,  // ✅ Biały tekst
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(19),
                           ),
@@ -279,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 40), // dodaj przestrzeń, aby formularz nie zderzał się z dolnym boxem
+                  SizedBox(height: 40),
                 ],
               ),
             ),

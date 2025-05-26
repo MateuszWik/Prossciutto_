@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:mateusz/coupons_data.dart';
 class Coupons extends StatefulWidget {
-  const Coupons({super.key});
-  @override
+  final int? userAge;
+const Coupons({super.key, this.userAge});
+
+@override
   _CouponsState createState() => _CouponsState();
 }
 class _CouponsState extends State<Coupons> {
@@ -181,6 +183,8 @@ class _CouponsState extends State<Coupons> {
                       color: Colors.black,
                     ),
                     tooltip: 'Apply coupon',
+
+
                     onPressed: () {
                       final coupon = Coupon(title: title, description: description, discount: discount);
                       final conditionalCoupons = ['Student\'s', 'User discount'];
@@ -192,6 +196,11 @@ class _CouponsState extends State<Coupons> {
                       bool hasExclusive = CouponData.appliedCoupons.any((c) => c.title == exclusiveCoupon);
                       bool hasConditional = CouponData.appliedCoupons.any((c) => conditionalCoupons.contains(c.title));
 
+                      bool isStudentCoupon = title == "Student's";
+                      bool isUserDiscount = title == "User discount";
+                      bool validStudentAge = widget.userAge != null && widget.userAge! >= 19 && widget.userAge! <= 25;
+                      bool isLoggedIn = widget.userAge != null && widget.userAge! > 0;
+
                       setState(() {
                         if (isApplied) {
                           CouponData.removeCoupon(coupon);
@@ -200,6 +209,22 @@ class _CouponsState extends State<Coupons> {
                               content: Text('Removed coupon: ${coupon.title}', style: TextStyle(color: Colors.black)),
                               duration: Duration(seconds: 2),
                               backgroundColor: mainWhite,
+                            ),
+                          );
+                        } else if (isStudentCoupon && !validStudentAge) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Student coupon valid only for age 19-25'),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.redAccent,
+                            ),
+                          );
+                        } else if (isUserDiscount && !isLoggedIn) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('User discount is only available when logged in.'),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.redAccent,
                             ),
                           );
                         } else if ((isExclusive && hasConditional) || (isConditional && hasExclusive)) {
@@ -225,6 +250,7 @@ class _CouponsState extends State<Coupons> {
                         }
                       });
                     },
+
 
                   ),
                 ),

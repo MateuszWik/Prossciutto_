@@ -5,13 +5,11 @@ import 'main.dart';
 import 'cart.dart';
 import 'favorites.dart';
 import 'coupons.dart';
-
 class AccountPage extends StatefulWidget {
   final String name;
   final String email;
   final String password;
   final String dateOfBirth;
-
   const AccountPage({
     super.key,
     required this.name,
@@ -19,15 +17,34 @@ class AccountPage extends StatefulWidget {
     required this.password,
     required this.dateOfBirth,
   });
+  static int calculateAge(String dateOfBirth) {
+    DateTime birthDate = DateTime.parse(dateOfBirth);
+    DateTime today = DateTime.now();
+    int age = today.year - birthDate.year;
+
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
+  }
+
 
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
-
 class _AccountPageState extends State<AccountPage> {
   int selectedIndex = 4;
   final box = GetStorage();
-  bool isPasswordVisible = false; // ✅ Przechowuje stan widoczności hasła
+  bool isPasswordVisible = false;
+  late int age;
+
+  @override
+  void initState() {
+    super.initState();
+    age = AccountPage.calculateAge(widget.dateOfBirth);
+  }
 
 
   void logoutUser(BuildContext context) {
@@ -37,7 +54,6 @@ class _AccountPageState extends State<AccountPage> {
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
-
   Widget getSelectedPage() {
     switch (selectedIndex) {
       case 0:
@@ -49,7 +65,7 @@ class _AccountPageState extends State<AccountPage> {
           isFavorite: (_) => false,
         );
       case 2:
-        return Coupons();
+        return Coupons(userAge: age);
       case 3:
         return Cart(dateOfBirth: widget.dateOfBirth);
       case 4:
@@ -57,12 +73,10 @@ class _AccountPageState extends State<AccountPage> {
         return accountContent();
     }
   }
-
   @override
   Widget build(BuildContext context) {
     Color navBarColor = selectedIndex == 2 ? Color(0xFFF3ECE4) : Color(0xFF0C8C75);
     Color iconColor = selectedIndex == 2 ? Color(0xFF0C8C75) : Colors.white;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -111,7 +125,6 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
-
   Widget accountContent() {
     return Container(
       color: Color(0xFFF3ECE4),
@@ -176,7 +189,7 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              isPasswordVisible = !isPasswordVisible; // ✅ Zmiana stanu widoczności
+                              isPasswordVisible = !isPasswordVisible;
                             });
                           },
                         ),
@@ -187,7 +200,6 @@ class _AccountPageState extends State<AccountPage> {
               ],
             ),
           ),
-
           buildInfoField("Date of Birth", widget.dateOfBirth),
           SizedBox(height: 40),
           ElevatedButton(
@@ -210,7 +222,6 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
-
   Widget buildInfoField(String label, String value) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),

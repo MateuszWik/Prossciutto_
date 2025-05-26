@@ -33,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController dateOfBirthController = TextEditingController();
   DateTime? selectedDate;
   final box = GetStorage();
-  bool isPasswordVisible = false; // ✅ Przechowuje stan widoczności hasła
+  bool isPasswordVisible = false;
 
 
   void pickDate(BuildContext context) async {
@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isButtonEnabled = nameController.text.isNotEmpty &&
           emailController.text.isNotEmpty &&
           passwordController.text.isNotEmpty &&
-          selectedDate != null; // ✅ Sprawdza, czy użytkownik wybrał datę
+          selectedDate != null;
     });
   }
 
@@ -71,8 +71,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
-          // 🔹 Zielony box na dole
-          // ZIELONY BOX NA DOLE – PRZYKLEJONY
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -158,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: TextFormField(
                       controller: passwordController,
                       onChanged: (text) => checkFields(),
-                      obscureText: !isPasswordVisible, // ✅ Ukrywa/odsłania hasło
+                      obscureText: !isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         filled: true,
@@ -166,14 +164,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        suffixIcon: IconButton( // ✅ Ikona "oczko" do podglądu hasła
+                        suffixIcon: IconButton(
                           icon: Icon(
                             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                             color: Colors.grey,
                           ),
                           onPressed: () {
                             setState(() {
-                              isPasswordVisible = !isPasswordVisible; // ✅ Zmiana stanu widoczności
+                              isPasswordVisible = !isPasswordVisible;
                             });
                           },
                         ),
@@ -183,12 +181,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   SizedBox(height: 23),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 13), // ✅ Odstęp 13px z każdej strony
+                    padding: EdgeInsets.symmetric(horizontal: 13),
                     child: InkWell(
                       onTap: () => pickDate(context),
                       child: Container(
-                        width: double.infinity, // ✅ Pełna szerokość ekranu
-                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 13), // ✅ Dopasowanie do inputów
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 13),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
@@ -244,9 +242,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               'name': nameController.text,
                               'email': emailController.text,
                               'password': passwordController.text,
-                              'dateOfBirth': "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}", // ✅ Dodaj zapis daty urodzenia
+                            'dateOfBirth': selectedDate!.toIso8601String().split('T')[0],
                             };
-                            box.write('userDateOfBirth', newUser['dateOfBirth']); // ✅ Zapis daty urodzenia
+                            box.write('userDateOfBirth', newUser['dateOfBirth']);
 
 
 
@@ -258,15 +256,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             box.write('userPassword', newUser['password']);
                             box.write('userDateOfBirth', newUser['dateOfBirth']);
 
-                            // 🔁 ZAMIANA AccountPage NA Menu:
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => Menu()),
                             );
                           },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black, // ✅ Zawsze czarne tło
-                          foregroundColor: Colors.white, // ✅ Tekst zawsze biały
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
                         ),
                         child: Text(
