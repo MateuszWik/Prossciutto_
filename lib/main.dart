@@ -44,6 +44,10 @@ class Menu extends StatefulWidget {
 }
 
 class _Menu extends State<Menu> {
+  String? userEmail;
+  String? userDateOfBirth;
+  int? userAge;
+
   var selectedIndex = 0;
   String searchQuery = '';
   List<FoodItems> favoriteItems = [];
@@ -53,6 +57,30 @@ class _Menu extends State<Menu> {
       searchQuery = query;
     });
   }
+  void loadUserData() {
+    final box = GetStorage();
+    userEmail = box.read('userEmail');
+    userDateOfBirth = box.read('userDateOfBirth');
+
+    if (userDateOfBirth != null) {
+      final birthDate = DateTime.tryParse(userDateOfBirth!);
+      if (birthDate != null) {
+        final now = DateTime.now();
+        int age = now.year - birthDate.year;
+        if (now.month < birthDate.month || (now.month == birthDate.month && now.day < birthDate.day)) {
+          age--;
+        }
+        userAge = age;
+      }
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+
 
   void toggleFavorite(FoodItems item) {
     setState(() {
@@ -95,8 +123,12 @@ class _Menu extends State<Menu> {
         );
         break;
       case 2:
-        page = Coupons();
+        page = Coupons(
+          userEmail: userEmail,
+          userAge: userAge,
+        );
         break;
+
       case 3:
         page = Cart();
         break;

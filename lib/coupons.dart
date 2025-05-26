@@ -4,8 +4,9 @@ import 'package:mateusz/coupons_data.dart';
 import 'package:get_storage/get_storage.dart';
 
 class Coupons extends StatefulWidget {
+  final String? userEmail;
   final int? userAge;
-  const Coupons({super.key, this.userAge});
+  const Coupons({super.key, this.userAge, this.userEmail});
 
   @override
   _CouponsState createState() => _CouponsState();
