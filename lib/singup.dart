@@ -231,7 +231,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // tutaj walidujemy formularz
                             if (!_formKey.currentState!.validate()) {
                               return;
                             }

@@ -113,11 +113,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false, // WAŻNE!
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
-          // 1. Zielony box – ZAWSZE na dole
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -129,14 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          // 2. Główna zawartość – scrollowalna
           Positioned.fill(
             child: SingleChildScrollView(
               padding: EdgeInsets.only(
                 left: 13,
                 right: 13,
                 top: 25,
-                bottom: bottomInset + 20, // dodaj miejsce na klawiaturę
+                bottom: bottomInset + 20,
               ),
               child: SafeArea(
                 child:Form(

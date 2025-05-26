@@ -15,7 +15,7 @@ class _CouponsState extends State<Coupons> {
   final Color mainGreen = const Color(0xFF0C8C75);
   final Color mainWhite = const Color(0xFFF3ECE4);
 
-  final box = GetStorage(); // tutaj inicjalizujemy GetStorage
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +208,6 @@ class _CouponsState extends State<Coupons> {
                       bool isUserDiscount = title == "User discount";
                       bool validStudentAge = widget.userAge != null && widget.userAge! >= 19 && widget.userAge! <= 25;
 
-                      // Tutaj odczytujemy isLoggedIn z GetStorage:
                       bool isLoggedIn = box.read('isLoggedIn') ?? false;
 
                       setState(() {
