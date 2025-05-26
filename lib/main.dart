@@ -76,7 +76,7 @@ class _Menu extends State<Menu> {
     switch (selectedIndex) {
       case 0:
         page = HomeScreen(
-          onCouponTap: () {
+          onAccTap: () {
             setState(() {
               selectedIndex = 4;
             });
@@ -188,7 +188,7 @@ class _Menu extends State<Menu> {
   }
 }
 class HomeScreen extends StatefulWidget {
-  final VoidCallback onCouponTap;
+  final VoidCallback onAccTap;
   final String searchQuery;
   final ValueChanged<String> onSearchChanged;
   final Function(FoodItems) toggleFavorite;
@@ -196,7 +196,7 @@ class HomeScreen extends StatefulWidget {
 
   const HomeScreen({
     super.key,
-    required this.onCouponTap,
+    required this.onAccTap,
     required this.searchQuery,
     required this.onSearchChanged,
     required this.toggleFavorite,
@@ -281,11 +281,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Hi', style: TextStyle(fontSize: 20)),
                   Spacer(),
                   InkWell(
-                    onTap: widget.onCouponTap,
+                    onTap: widget.onAccTap,
                     child: Icon(
                       Icons.person,
-                      size: 28,           // rozmiar ikony, możesz dostosować
-                      color: Colors.grey, // kolor ikony, też możesz zmienić
+                      size: 28,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
