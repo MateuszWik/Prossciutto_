@@ -37,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool isButtonEnabled = false;
   bool isPasswordVisible = false;
+  final _formKey = GlobalKey<FormState>();
+
 
 
   void checkFields() {
@@ -137,6 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 bottom: bottomInset + 20, // dodaj miejsce na klawiaturę
               ),
               child: SafeArea(
+                child:Form(
+                  key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -188,6 +192,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: emailController,
                         onChanged: (text) => checkFields(),
                         style: TextStyle(fontFamily: "MontSerrat", fontSize: 16),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Email is required';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Email must contain "@"';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           labelText: 'Email',
                           filled: true,
@@ -197,6 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+
                     ),//s
                     SizedBox(height: 23),
                     // password
@@ -235,7 +249,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 65,
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: isButtonEnabled ? loginUser : () {},
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              loginUser();
+                            }
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
@@ -289,6 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 40),
                   ],
                 ),
+                )
               ),
             ),
           )

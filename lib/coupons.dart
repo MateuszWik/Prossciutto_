@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:mateusz/coupons_data.dart';
+import 'package:get_storage/get_storage.dart';
+
 class Coupons extends StatefulWidget {
   final int? userAge;
-const Coupons({super.key, this.userAge});
+  const Coupons({super.key, this.userAge});
 
-@override
+  @override
   _CouponsState createState() => _CouponsState();
 }
+
 class _CouponsState extends State<Coupons> {
   final Color mainGreen = const Color(0xFF0C8C75);
   final Color mainWhite = const Color(0xFFF3ECE4);
+
+  final box = GetStorage(); // tutaj inicjalizujemy GetStorage
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -99,6 +105,7 @@ class _CouponsState extends State<Coupons> {
       ),
     );
   }
+
   List<Widget> _buildCouponCards(List<Map<String, String>> coupons) {
     return coupons.map((coupon) {
       return _buildCouponCard(
@@ -108,6 +115,7 @@ class _CouponsState extends State<Coupons> {
       );
     }).toList();
   }
+
   Widget _buildCouponGrid(List<Widget> cards) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -116,7 +124,7 @@ class _CouponsState extends State<Coupons> {
         double spacing = 20;
         double totalSpacing = spacing * (crossAxisCount - 1);
         double itemWidth = (width - totalSpacing) / crossAxisCount;
-        double itemHeight = itemWidth * 0.80/0.8;
+        double itemHeight = itemWidth * 0.80 / 0.8;
         return GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -129,10 +137,12 @@ class _CouponsState extends State<Coupons> {
       },
     );
   }
+
   Widget _buildCouponCard({required String title, required String description, required int discount}) {
     bool isApplied = CouponData.appliedCoupons.any((c) => c.title == title);
     IconData icon = isApplied ? Icons.check : Icons.add;
     String tooltip = isApplied ? 'Remove coupon' : 'Apply coupon';
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -174,7 +184,7 @@ class _CouponsState extends State<Coupons> {
                   ),
                 ),
                 Positioned(
-                  bottom: 35/0.90,
+                  bottom: 35 / 0.90,
                   right: 8,
                   child: IconButton(
                     icon: Icon(
@@ -182,9 +192,7 @@ class _CouponsState extends State<Coupons> {
                       size: 28,
                       color: Colors.black,
                     ),
-                    tooltip: 'Apply coupon',
-
-
+                    tooltip: tooltip,
                     onPressed: () {
                       final coupon = Coupon(title: title, description: description, discount: discount);
                       final conditionalCoupons = ['Student\'s', 'User discount'];
@@ -199,7 +207,9 @@ class _CouponsState extends State<Coupons> {
                       bool isStudentCoupon = title == "Student's";
                       bool isUserDiscount = title == "User discount";
                       bool validStudentAge = widget.userAge != null && widget.userAge! >= 19 && widget.userAge! <= 25;
-                      bool isLoggedIn = widget.userAge != null && widget.userAge! > 0;
+
+                      // Tutaj odczytujemy isLoggedIn z GetStorage:
+                      bool isLoggedIn = box.read('isLoggedIn') ?? false;
 
                       setState(() {
                         if (isApplied) {
@@ -207,23 +217,23 @@ class _CouponsState extends State<Coupons> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Removed coupon: ${coupon.title}', style: TextStyle(color: Colors.black)),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                               backgroundColor: mainWhite,
                             ),
                           );
                         } else if (isStudentCoupon && !validStudentAge) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Student coupon valid only for age 19-25'),
-                              duration: Duration(seconds: 2),
+                              content: const Text('Student coupon valid only for age 19-25'),
+                              duration: const Duration(seconds: 2),
                               backgroundColor: Colors.redAccent,
                             ),
                           );
                         } else if (isUserDiscount && !isLoggedIn) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('User discount is only available when logged in.'),
-                              duration: Duration(seconds: 2),
+                              content: const Text('User discount is only available when logged in.'),
+                              duration: const Duration(seconds: 2),
                               backgroundColor: Colors.redAccent,
                             ),
                           );
@@ -232,9 +242,9 @@ class _CouponsState extends State<Coupons> {
                             SnackBar(
                               content: Text(
                                 'Cannot combine "$title" with current discount.',
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                               backgroundColor: Colors.orange.shade200,
                             ),
                           );
@@ -243,15 +253,13 @@ class _CouponsState extends State<Coupons> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Applied coupon: ${coupon.title}', style: TextStyle(color: Colors.black)),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                               backgroundColor: mainWhite,
                             ),
                           );
                         }
                       });
                     },
-
-
                   ),
                 ),
               ],
