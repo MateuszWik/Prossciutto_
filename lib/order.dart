@@ -9,7 +9,7 @@ class Order extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          'Dziekujemy za zlozenie zamowienia w naszej aplikacji!',
+          'Thank You for your order!',
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 24,
