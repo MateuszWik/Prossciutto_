@@ -108,12 +108,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false, // WAŻNE!
       backgroundColor: Color(0xFFF3ECE4),
       body: Stack(
         children: [
-
+          // 1. Zielony box – ZAWSZE na dole
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -125,164 +127,171 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(13),
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 25),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => Menu()),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          "assets/images/left_arrow.png",
-                          width: 24,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/logo.png'),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  SizedBox(height: 55),
-                  Text(
-                    'Log in',
-                    style: TextStyle(
-                      fontFamily: "LeagueSpartan",
-                      fontSize: 35,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  // email
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 13),
-                    child: TextFormField(
-                      controller: emailController,
-                      onChanged: (text) => checkFields(),
-                      style: TextStyle(fontFamily: "MontSerrat", fontSize: 16),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    ),
-                  ),//s
-                  SizedBox(height: 23),
-                  // password
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 13),
-                    child: TextFormField(
-                      controller: passwordController,
-                      onChanged: (text) => checkFields(),
-                      obscureText: !isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 80),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 13),
-                    child: SizedBox(
-                      height: 65,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: isButtonEnabled ? loginUser : () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(19),
-                          ),
-                        ),
-
-                        child: Text(
-                          'Log in',
-                          style: TextStyle(
-                              fontFamily: "LeagueSpartan",
-                              color: Colors.white,
-                              fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have an account?",
-                        style: TextStyle(
-                            fontFamily: "MontSerrat",
-                            fontSize: 16,
-                            color: Colors.white),
-                      ),
-                      SizedBox(width: 5),
-                      GestureDetector(
+          // 2. Główna zawartość – scrollowalna
+          Positioned.fill(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                left: 13,
+                right: 13,
+                top: 25,
+                bottom: bottomInset + 20, // dodaj miejsce na klawiaturę
+              ),
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 25),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpScreen()),
+                            MaterialPageRoute(builder: (context) => Menu()),
                           );
                         },
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            fontFamily: "MontSerrat",
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/left_arrow.png",
+                            width: 24,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 40),
-                ],
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/logo.png'),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    SizedBox(height: 55),
+                    Text(
+                      'Log in',
+                      style: TextStyle(
+                        fontFamily: "LeagueSpartan",
+                        fontSize: 35,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    // email
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      child: TextFormField(
+                        controller: emailController,
+                        onChanged: (text) => checkFields(),
+                        style: TextStyle(fontFamily: "MontSerrat", fontSize: 16),
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                      ),
+                    ),//s
+                    SizedBox(height: 23),
+                    // password
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      child: TextFormField(
+                        controller: passwordController,
+                        onChanged: (text) => checkFields(),
+                        obscureText: !isPasswordVisible,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 80),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      child: SizedBox(
+                        height: 65,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: isButtonEnabled ? loginUser : () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(19),
+                            ),
+                          ),
+
+                          child: Text(
+                            'Log in',
+                            style: TextStyle(
+                                fontFamily: "LeagueSpartan",
+                                color: Colors.white,
+                                fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                              fontFamily: "MontSerrat",
+                              fontSize: 16,
+                              color: Colors.white),
+                        ),
+                        SizedBox(width: 5),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()),
+                            );
+                          },
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              fontFamily: "MontSerrat",
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                  ],
+                ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );

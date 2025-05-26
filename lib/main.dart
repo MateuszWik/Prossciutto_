@@ -101,8 +101,18 @@ class _Menu extends State<Menu> {
         page = Cart();
         break;
       case 4:
-        page = LoginScreen();
+        Future.microtask(() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => LoginScreen()),
+          );
+          setState(() {
+            selectedIndex = 0;
+          });
+        });
+        page = SizedBox.shrink();
         break;
+
       default:
         throw UnimplementedError('No widget for $selectedIndex');
     }
