@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mateusz/cart_data.dart';
 import 'package:mateusz/coupons_data.dart';
-import 'order.dart';
+import 'order.dart ';
 
 class Cart extends StatefulWidget {
   final String? dateOfBirth;
@@ -44,7 +44,6 @@ class _CartState extends State<Cart> {
       }
       return age;
     } catch (e) {
-      print("Failed to parse date: $dateOfBirth");
       return null;
     }
   }
@@ -57,7 +56,7 @@ class _CartState extends State<Cart> {
   void loadNumber() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      number = prefs.getInt('ilosc') ?? 1;
+      number = prefs.getInt('number') ?? 0;
     });
   }
 
@@ -66,20 +65,19 @@ class _CartState extends State<Cart> {
       equal = number * value.toDouble();
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('wynik', equal);
+    prefs.setDouble('equal', equal);
   }
 
   void loadTotal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      equal = prefs.getDouble('wynik') ?? 0.0;
+      equal = prefs.getDouble('equal') ?? 0.0;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    print("Received date of birth: ${widget.dateOfBirth}");
     loadNumber();
     loadTotal();
   }

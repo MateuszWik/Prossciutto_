@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'miniatures.dart';
-import 'account.dart';
 import 'login.dart';
 import 'cart.dart';
 import 'coupons.dart';

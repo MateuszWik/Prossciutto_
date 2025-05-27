@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import './main.dart';
 import './cart_data.dart';
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Menu(),
-  ));
-}
+
 class FoodItem {
   final String title;
   final String price;
