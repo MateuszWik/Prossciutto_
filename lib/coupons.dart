@@ -51,7 +51,7 @@ class _CouponsState extends State<Coupons> {
                     "Coupons",
                     style: TextStyle(
                       fontSize: 20,
-                      fontFamily: 'League Spartan',
+                      fontFamily: 'LeagueSpartan',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -76,6 +76,7 @@ class _CouponsState extends State<Coupons> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
+                        fontFamily: "LeagueSpartan",
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -90,6 +91,7 @@ class _CouponsState extends State<Coupons> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
+                        fontFamily: 'LegaueSpartan',
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -164,7 +166,7 @@ class _CouponsState extends State<Coupons> {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                fontFamily: 'League Spartan',
+                fontFamily: 'LeagueSpartan',
               ),
             ),
           ),
@@ -245,7 +247,7 @@ class _CouponsState extends State<Coupons> {
                                 style: const TextStyle(color: Colors.black),
                               ),
                               duration: const Duration(seconds: 2),
-                              backgroundColor: Colors.orange.shade200,
+                              backgroundColor: Colors.redAccent,
                             ),
                           );
                         } else {
