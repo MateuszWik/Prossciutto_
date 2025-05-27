@@ -11,7 +11,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   final box = GetStorage();
-  List<Map<String, String>> users = box.read('users') ?? [];
+  List<dynamic> dynamicList = box.read('users') ?? [];
+  List<Map<String, String>> users = dynamicList.map((e) => Map<String, String>.from(e)).toList();
   runApp(MyApp());
 }
 
