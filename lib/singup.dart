@@ -98,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => Menu()),
+                              MaterialPageRoute(builder: (context) =>  Menu()),
                             );
                           },
                           child: const Padding(
@@ -275,7 +275,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => Menu()),
+                              MaterialPageRoute(builder: (context) =>  Menu()),
                             );
                           }
                               : null,
