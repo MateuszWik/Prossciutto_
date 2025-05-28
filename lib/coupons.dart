@@ -96,7 +96,7 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': '2nd same pizza', 'description': '50% OFF\nCannot be combined with other coupons','discount': '50'},
+                      {'title': '2nd same pizza', 'description': '50% OFF\nCannot be combined\nwith other coupons','discount': '50'},
                       {'title': 'All pasta', 'description': '2% OFF','discount': '2'},
                     ])),
                   ],

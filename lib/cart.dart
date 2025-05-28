@@ -119,7 +119,7 @@ class _CartState extends State<Cart> {
           final title = item.foodItem.title.toLowerCase();
           final quantity = item.quantity;
           final discount = coupon.discount;
-          final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+          var unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
 
           switch (coupon.title.toLowerCase()) {
             case "student's":
@@ -146,6 +146,7 @@ class _CartState extends State<Cart> {
                 totalDiscountAmount += discountAmount;
               }
               break;
+
           }
         }
       }
