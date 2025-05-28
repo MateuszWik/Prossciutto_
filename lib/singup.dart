@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'main.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,8 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: SignUpScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -27,16 +28,19 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController dateOfBirthController = TextEditingController();
+
   DateTime? selectedDate;
   final box = GetStorage();
+
   bool isPasswordVisible = false;
+  bool isButtonEnabled = false;
 
   void pickDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
@@ -47,10 +51,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       setState(() {
         selectedDate = pickedDate;
       });
+      checkFields();
     }
   }
-
-  bool isButtonEnabled = false;
 
   void checkFields() {
     setState(() {
@@ -65,14 +68,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFFF3ECE4),
+      backgroundColor: const Color(0xFFF3ECE4),
       body: Stack(
         children: [
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 715,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFF0C8C75),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(33)),
               ),
@@ -86,9 +89,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Padding(
-                      padding: EdgeInsets.only(top: 25),
+                      padding: const EdgeInsets.only(top: 25),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: InkWell(
@@ -98,18 +101,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               MaterialPageRoute(builder: (context) => Menu()),
                             );
                           },
-                          child: Padding(
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              "assets/images/left_arrow.png",
+                            child: Image(
+                              image: AssetImage("assets/images/left_arrow.png"),
                               width: 24,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 80),
-                    Text(
+                    const SizedBox(height: 80),
+                    const Text(
                       'Sign Up',
                       style: TextStyle(
                         fontFamily: "LeagueSpartan",
@@ -117,78 +120,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
+
+                    // Name Field
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: TextFormField(
                         controller: nameController,
-                        onChanged: (text) => checkFields(),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          return null;
-                        },
+                        onChanged: (_) => checkFields(),
+                        validator: (value) =>
+                        value == null || value.isEmpty ? 'Please enter your name' : null,
                         decoration: InputDecoration(
                           labelText: 'Name',
                           filled: true,
                           fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                       ),
                     ),
-                    SizedBox(height: 23),
+                    const SizedBox(height: 23),
+
+                    // Email Field
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: TextFormField(
                         controller: emailController,
-                        onChanged: (text) => checkFields(),
+                        onChanged: (_) => checkFields(),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          if (!value.contains('@')) {
-                            return 'Email must contain "@"';
-                          }
+                          if (value == null || value.isEmpty) return 'Please enter your email';
+                          if (!value.contains('@')) return 'Email must contain "@"';
                           return null;
                         },
                         decoration: InputDecoration(
                           labelText: 'Email',
                           filled: true,
                           fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                       ),
                     ),
-                    SizedBox(height: 23),
+                    const SizedBox(height: 23),
+
+                    // Password Field
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: TextFormField(
                         controller: passwordController,
-                        onChanged: (text) => checkFields(),
+                        onChanged: (_) => checkFields(),
                         obscureText: !isPasswordVisible,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                        value == null || value.isEmpty ? 'Please enter your password' : null,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           filled: true,
                           fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                              isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                               color: Colors.grey,
                             ),
                             onPressed: () {
@@ -200,14 +189,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 23),
+                    const SizedBox(height: 23),
+
+                    // Date of Birth Picker
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: InkWell(
                         onTap: () => pickDate(context),
                         child: Container(
                           width: double.infinity,
-                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 13),
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 13),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
@@ -216,54 +207,63 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: Text(
                             selectedDate == null
                                 ? "Select Date of Birth"
-                                : "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
-                            style: TextStyle(fontFamily: "MontSerrat", fontSize: 16),
+                                : "${selectedDate!.year}-${selectedDate!.month.toString().padLeft(2, '0')}-${selectedDate!.day.toString().padLeft(2, '0')}",
+                            style: const TextStyle(fontFamily: "MontSerrat", fontSize: 16),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 80),
+                    const SizedBox(height: 80),
+
+                    // Sign Up Button
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 13),
+                      padding: const EdgeInsets.symmetric(horizontal: 13),
                       child: SizedBox(
                         height: 65,
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (!_formKey.currentState!.validate()) {
-                              return;
-                            }
+                          onPressed: isButtonEnabled
+                              ? () {
+                            if (!_formKey.currentState!.validate()) return;
+
                             if (selectedDate == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Please select your date of birth", style: TextStyle(color: Color(0xFF0C8C75))),
+                                const SnackBar(
+                                  content: Text(
+                                    "Please select your date of birth",
+                                    style: TextStyle(color: Color(0xFF0C8C75)),
+                                  ),
                                   backgroundColor: Colors.white,
                                 ),
                               );
                               return;
                             }
 
-                            List<Map<String, String>> users = box.read('users') ?? [];
+                            List<Map<String, String>> users =
+                                box.read('users')?.cast<Map<String, String>>() ?? [];
 
-                            bool emailExists = users.any((user) => user['email'] == emailController.text);
+                            bool emailExists = users.any(
+                                  (user) => user['email'] == emailController.text.trim(),
+                            );
 
                             if (emailExists) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Ten email już istnieje!", style: TextStyle(color: Color(0xFF0C8C75))),
+                                const SnackBar(
+                                  content: Text("Ten email już istnieje!",
+                                      style: TextStyle(color: Color(0xFF0C8C75))),
                                   backgroundColor: Colors.white,
                                 ),
                               );
                               return;
                             }
 
-                            Map<String, String> newUser = {
-                              'name': nameController.text,
-                              'email': emailController.text,
-                              'password': passwordController.text,
-                              'dateOfBirth': selectedDate!.toIso8601String().split('T')[0],
+                            final newUser = {
+                              'name': nameController.text.trim(),
+                              'email': emailController.text.trim(),
+                              'password': passwordController.text.trim(),
+                              'dateOfBirth':
+                              selectedDate!.toIso8601String().split('T').first,
                             };
-                            box.write('userDateOfBirth', newUser['dateOfBirth']);
 
                             users.add(newUser);
                             box.write('users', users);
@@ -277,36 +277,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               context,
                               MaterialPageRoute(builder: (context) => Menu()),
                             );
-                          },
+                          }
+                              : null,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
+                            backgroundColor: isButtonEnabled ? Colors.black : Colors.grey,
                             foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(19),
+                            ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Sign Up',
-                            style: TextStyle(fontFamily: "LeagueSpartan", color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                              fontFamily: "LeagueSpartan",
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
+
+                    // Switch to Login
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Already have an account?",
-                          style: TextStyle(fontFamily: "MontSerrat", fontSize: 16, color: Colors.white),
+                          style: TextStyle(
+                            fontFamily: "MontSerrat",
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),
+                              MaterialPageRoute(builder: (context) => const LoginScreen()),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             "Log in",
                             style: TextStyle(
                               fontFamily: "MontSerrat",

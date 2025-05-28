@@ -5,11 +5,13 @@ import 'main.dart';
 import 'cart.dart';
 import 'favorites.dart';
 import 'coupons.dart';
+
 class AccountPage extends StatefulWidget {
   final String name;
   final String email;
   final String password;
   final String dateOfBirth;
+
   const AccountPage({
     super.key,
     required this.name,
@@ -17,6 +19,7 @@ class AccountPage extends StatefulWidget {
     required this.password,
     required this.dateOfBirth,
   });
+
   static int calculateAge(String dateOfBirth) {
     DateTime birthDate = DateTime.parse(dateOfBirth);
     DateTime today = DateTime.now();
@@ -30,10 +33,10 @@ class AccountPage extends StatefulWidget {
     return age;
   }
 
-
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
+
 class _AccountPageState extends State<AccountPage> {
   int selectedIndex = 4;
   final box = GetStorage();
@@ -46,7 +49,6 @@ class _AccountPageState extends State<AccountPage> {
     age = AccountPage.calculateAge(widget.dateOfBirth);
   }
 
-
   void logoutUser(BuildContext context) {
     box.write('isLoggedIn', false);
     Navigator.pushReplacement(
@@ -54,6 +56,7 @@ class _AccountPageState extends State<AccountPage> {
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
+
   Widget getSelectedPage() {
     switch (selectedIndex) {
       case 0:
@@ -73,10 +76,13 @@ class _AccountPageState extends State<AccountPage> {
         return accountContent();
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    Color navBarColor = selectedIndex == 2 ? Color(0xFFF3ECE4) : Color(0xFF0C8C75);
-    Color iconColor = selectedIndex == 2 ? Color(0xFF0C8C75) : Colors.white;
+    Color navBarColor =
+    selectedIndex == 2 ? const Color(0xFFF3ECE4) : const Color(0xFF0C8C75);
+    Color iconColor = selectedIndex == 2 ? const Color(0xFF0C8C75) : Colors.white;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -96,22 +102,29 @@ class _AccountPageState extends State<AccountPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
+                        icon: Icon(
+                            selectedIndex == 0 ? Icons.home : Icons.home_outlined),
                         color: iconColor,
                         onPressed: () => setState(() => selectedIndex = 0),
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 1 ? Icons.favorite : Icons.favorite_border_outlined),
+                        icon: Icon(selectedIndex == 1
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined),
                         color: iconColor,
                         onPressed: () => setState(() => selectedIndex = 1),
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 2 ? Icons.local_offer : Icons.local_offer_outlined),
+                        icon: Icon(selectedIndex == 2
+                            ? Icons.local_offer
+                            : Icons.local_offer_outlined),
                         color: iconColor,
                         onPressed: () => setState(() => selectedIndex = 2),
                       ),
                       IconButton(
-                        icon: Icon(selectedIndex == 3 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                        icon: Icon(selectedIndex == 3
+                            ? Icons.shopping_cart
+                            : Icons.shopping_cart_outlined),
                         color: iconColor,
                         onPressed: () => setState(() => selectedIndex = 3),
                       ),
@@ -125,12 +138,13 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
   Widget accountContent() {
     return Container(
-      color: Color(0xFFF3ECE4),
+      color: const Color(0xFFF3ECE4),
       child: Column(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 40),
             child: Align(
               alignment: Alignment.topCenter,
@@ -144,26 +158,30 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             ),
-          ),//s
-          SizedBox(height: 20),
-          CircleAvatar(
+          ),
+          const SizedBox(height: 20),
+          const CircleAvatar(
             radius: 40,
             backgroundColor: Colors.grey,
             backgroundImage: AssetImage('assets/images/kotek.png'),
           ),
-          SizedBox(height: 23),
+          const SizedBox(height: 23),
           buildInfoField("Name", widget.name),
           buildInfoField("Email", widget.email),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Password",
-                  style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan", fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: "LeagueSpartan",
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   height: 40,
                   width: double.infinity,
@@ -173,18 +191,24 @@ class _AccountPageState extends State<AccountPage> {
                     border: Border.all(color: Colors.grey.shade400, width: 1),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
                             isPasswordVisible ? widget.password : "●●●●●●●●●●",
-                            style: TextStyle(fontSize: 16, fontFamily: "MontSerrat", color: Colors.black54),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: "MontSerrat",
+                              color: Colors.black54,
+                            ),
                           ),
                         ),
                         IconButton(
                           icon: Icon(
-                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                            isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: Colors.grey,
                           ),
                           onPressed: () {
@@ -201,20 +225,24 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           buildInfoField("Date of Birth", widget.dateOfBirth),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           ElevatedButton(
             onPressed: () => logoutUser(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF0C8C75),
+              backgroundColor: const Color(0xFF0C8C75),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Text(
                 "Sign out",
-                style: TextStyle(fontSize: 14, fontFamily: "LeagueSpartan", color: Colors.white),
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: "LeagueSpartan",
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -222,17 +250,22 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
   Widget buildInfoField(String label, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 16, fontFamily: "LeagueSpartan", fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 16,
+              fontFamily: "LeagueSpartan",
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             height: 40,
             width: double.infinity,
@@ -242,12 +275,16 @@ class _AccountPageState extends State<AccountPage> {
               border: Border.all(color: Colors.grey.shade400, width: 1),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   value,
-                  style: TextStyle(fontSize: 16, fontFamily: "MontSerrat", color: Colors.black54),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: "MontSerrat",
+                    color: Colors.black54,
+                  ),
                 ),
               ),
             ),
