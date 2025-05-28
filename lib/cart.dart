@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mateusz/cart_data.dart';
 import 'package:mateusz/coupons_data.dart';
-import 'order.dart ';
+import 'order.dart';
 
 class Cart extends StatefulWidget {
   final String? dateOfBirth;

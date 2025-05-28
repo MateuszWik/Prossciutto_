@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Niepoprawny email lub hasło.",
+            "Incorrect email or password.",
             style: TextStyle(color: Color(0xFF0C8C75)),
           ),
           backgroundColor: Colors.white,
