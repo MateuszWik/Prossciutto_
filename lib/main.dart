@@ -44,6 +44,7 @@ class Menu extends StatefulWidget {
 }
 
 class _Menu extends State<Menu> {
+  String? userName;
   String? userEmail;
   String? userDateOfBirth;
   int? userAge;
@@ -61,6 +62,7 @@ class _Menu extends State<Menu> {
     final box = GetStorage();
     userEmail = box.read('userEmail');
     userDateOfBirth = box.read('userDateOfBirth');
+    userName = box.read('userName'); // <-- nowa linia
 
     if (userDateOfBirth != null) {
       final birthDate = DateTime.tryParse(userDateOfBirth!);
@@ -74,6 +76,7 @@ class _Menu extends State<Menu> {
       }
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -113,7 +116,9 @@ class _Menu extends State<Menu> {
           onSearchChanged: updateSearch,
           toggleFavorite: toggleFavorite,
           isFavorite: isFavorite,
+          userName: userName,
         );
+
         break;
       case 1:
         page = Favorites(
@@ -225,6 +230,7 @@ class HomeScreen extends StatefulWidget {
   final ValueChanged<String> onSearchChanged;
   final Function(FoodItems) toggleFavorite;
   final bool Function(String) isFavorite;
+  final String? userName;
 
   const HomeScreen({
     super.key,
@@ -233,7 +239,9 @@ class HomeScreen extends StatefulWidget {
     required this.onSearchChanged,
     required this.toggleFavorite,
     required this.isFavorite,
+    this.userName,
   });
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -310,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Row(
                 children: [
-                  Text('Hi', style: TextStyle(fontSize: 20)),
+                  Text('Hi${widget.userName != null ? ' ${widget.userName}' : ''}', style: TextStyle(fontSize: 20)),
                   Spacer(),
                   InkWell(
                     onTap: widget.onAccTap,
