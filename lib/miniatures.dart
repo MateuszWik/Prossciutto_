@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './main.dart';
 import './cart_data.dart';
-
+import './cart.dart';
 class FoodItem {
   final String title;
   final String price;
@@ -190,18 +190,29 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                 }
                               });
                               ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                        'Added to Cart',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      duration: const Duration(seconds: 3),
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: const Color(0xFFF3ECE4),
-                                    ),
-                                  );
-
-                              },
+                                SnackBar(
+                                  content: const Text(
+                                    'Added to Cart',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  duration: const Duration(seconds: 3),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: const Color(0xFFF3ECE4),
+                                  action: SnackBarAction(
+                                    label: 'Go to Cart',
+                                    textColor: Colors.black,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Cart(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFF1ECE3),
                               foregroundColor: Colors.black,
