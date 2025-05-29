@@ -264,7 +264,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    food.price,
+                    calculateTotalPrice(food, quantity),
                     style: const TextStyle(
                       fontSize: 18,
                       fontFamily: 'LeagueSpartan',
