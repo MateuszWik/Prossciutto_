@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 9),
                     Padding(
                       padding: const EdgeInsets.only(top: 25),
                       child: Align(

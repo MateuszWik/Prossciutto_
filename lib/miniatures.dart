@@ -233,14 +233,23 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => Menu()),
-                          );
-                        },
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Menu()),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              "assets/images/left_arrow.png",
+                              width: 24,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
