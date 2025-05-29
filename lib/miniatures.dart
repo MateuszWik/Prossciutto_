@@ -237,10 +237,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                         alignment: Alignment.centerLeft,
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Menu()),
-                            );
+                            Navigator.pop(context);
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
