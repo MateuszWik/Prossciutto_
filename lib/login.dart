@@ -240,13 +240,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 65,
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: isButtonEnabled ? () {
                               if (_formKey.currentState!.validate()) {
                                 loginUser();
                               }
-                            },
+                            }
+                            :null,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
+                              backgroundColor: Colors.black ,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(19),

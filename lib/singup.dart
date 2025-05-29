@@ -128,8 +128,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: TextFormField(
                         controller: nameController,
                         onChanged: (_) => checkFields(),
-                        validator: (value) =>
-                        value == null || value.isEmpty ? 'Please enter your name' : null,
                         decoration: InputDecoration(
                           labelText: 'Name',
                           filled: true,
@@ -147,8 +145,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: emailController,
                         onChanged: (_) => checkFields(),
                         validator: (value) {
-                          if (value == null || value.isEmpty) return 'Please enter your email';
-                          if (!value.contains('@')) return 'Email must contain "@"';
+                          if (value == null || value.isEmpty || !value.contains('@')) {
+                            return 'Email must contain "@"';
+                          }
                           return null;
                         },
                         decoration: InputDecoration(
@@ -168,8 +167,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: passwordController,
                         onChanged: (_) => checkFields(),
                         obscureText: !isPasswordVisible,
-                        validator: (value) =>
-                        value == null || value.isEmpty ? 'Please enter your password' : null,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           filled: true,
@@ -226,19 +223,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ? () {
                             if (!_formKey.currentState!.validate()) return;
 
-                            if (selectedDate == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    "Please select your date of birth",
-                                    style: TextStyle(color: Color(0xFF0C8C75)),
-                                  ),
-                                  backgroundColor: Colors.white,
-                                ),
-                              );
-                              return;
-                            }
-
                             List<Map<String, String>> users =
                                 box.read('users')?.cast<Map<String, String>>() ?? [];
 
@@ -280,7 +264,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                               : null,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isButtonEnabled ? Colors.black : Colors.grey,
+                            backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(19),
