@@ -28,22 +28,25 @@ class Order extends StatelessWidget {
               endIndent: 40,
             ),
             SizedBox(height: 16),
-            InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Menu()),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Back to Home Screen",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child:  ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Menu()));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0C8C75),
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
+                ),
+                child:  Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Text('Back to Home Screen', style: TextStyle(color: Colors.white),),
                 ),
               ),
             ),
