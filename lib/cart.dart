@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mateusz/cart_data.dart';
 import 'package:mateusz/coupons_data.dart';
-import 'order.dart';
+import 'package:mateusz/order.dart';
 
 class Cart extends StatefulWidget {
   final String? dateOfBirth;
@@ -11,7 +10,6 @@ class Cart extends StatefulWidget {
 
   @override
   State<Cart> createState() => _CartState();
-
 }
 
 class FoodItem {
@@ -29,9 +27,6 @@ class FoodItem {
 }
 
 class _CartState extends State<Cart> {
-  int number = 1;
-  int value = 20;
-  double equal = 0;
 
   int? calculateAge(String? dateOfBirth) {
     if (dateOfBirth == null || dateOfBirth.isEmpty) return null;
@@ -49,45 +44,10 @@ class _CartState extends State<Cart> {
     }
   }
 
-  void saveNumber() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('number', number);
-  }
-
-  void loadNumber() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      number = prefs.getInt('number') ?? 0;
-    });
-  }
-
-  void total() async {
-    setState(() {
-      equal = number * value.toDouble();
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('equal', equal);
-  }
-
-  void loadTotal() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      equal = prefs.getDouble('equal') ?? 0.0;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadNumber();
-    loadTotal();
-  }
-
   @override
   Widget build(BuildContext context) {
     double calculateTotal() {
       double total = 0.0;
-      const conditionalCoupons = ["student's", 'user discount', 'all pasta'];
       double totalDiscountAmount = 0.0;
       int totalDiscount = 0;
 
@@ -120,7 +80,7 @@ class _CartState extends State<Cart> {
           final title = item.foodItem.title.toLowerCase();
           final quantity = item.quantity;
           final discount = coupon.discount;
-          var unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
+          final unitPrice = double.tryParse(item.foodItem.price.replaceAll('\$', '')) ?? 0.0;
 
           switch (coupon.title.toLowerCase()) {
             case "student's":
@@ -147,7 +107,6 @@ class _CartState extends State<Cart> {
                 totalDiscountAmount += discountAmount;
               }
               break;
-
           }
         }
       }
@@ -182,7 +141,7 @@ class _CartState extends State<Cart> {
                 left: 15,
                 top: MediaQuery.of(context).size.height * 0.12,
                 right: 25,
-                bottom: MediaQuery.of(context).size.height * 0.15, // miejsce na przycisk "Next"
+                bottom: MediaQuery.of(context).size.height * 0.15,
                 child: SingleChildScrollView(
                   padding: EdgeInsets.only(bottom: 90),
                   child: Column(
@@ -219,6 +178,7 @@ class _CartState extends State<Cart> {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.2),
                             child: Row(
+                              // Blok produktu
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
@@ -259,6 +219,7 @@ class _CartState extends State<Cart> {
                                 ),
                                 SizedBox(width: 6.4),
                                 Container(
+                                  // blok -1+
                                   height: 40,
                                   width: MediaQuery.of(context).size.width * 0.31,
                                   decoration: BoxDecoration(
@@ -312,10 +273,12 @@ class _CartState extends State<Cart> {
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Divider(
+                        // linia pozioma
                         thickness: 1,
                         color: Colors.grey,
                       ),
                       Row(
+                        // total i kupony
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -342,6 +305,7 @@ class _CartState extends State<Cart> {
                 ),
               ),
               Positioned(
+                // blok Next
                 top: MediaQuery.of(context).size.height * 0.68,
                 left: 5,
                 child: TextButton(

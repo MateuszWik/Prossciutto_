@@ -393,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   Widget _buildFoodCard({required FoodItems item, required bool isFavorited}) {
     return Container(
-      width: 140,
+      width: 150,
       height: 180,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(

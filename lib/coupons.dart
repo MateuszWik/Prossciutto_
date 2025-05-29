@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:mateusz/main.dart';
 import 'package:mateusz/coupons_data.dart';
 import 'package:get_storage/get_storage.dart';
 

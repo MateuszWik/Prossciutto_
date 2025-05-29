@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './main.dart';
 import './cart_data.dart';
-import 'cart.dart';
 
 class FoodItem {
   final String title;

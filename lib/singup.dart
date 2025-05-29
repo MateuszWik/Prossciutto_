@@ -83,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(13.0),
+              padding: const EdgeInsets.all(16.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -249,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             if (emailExists) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("This email already exists.",
+                                  content: Text("Ten email już istnieje!",
                                       style: TextStyle(color: Color(0xFF0C8C75))),
                                   backgroundColor: Colors.white,
                                 ),
@@ -277,10 +277,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               context,
                               MaterialPageRoute(builder: (context) =>  Menu()),
                             );
-                          } : null,
-
+                          }
+                              : null,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
+                            backgroundColor: isButtonEnabled ? Colors.black : Colors.grey,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(19),
