@@ -96,7 +96,7 @@ class _CouponsState extends State<Coupons> {
                     ),
                     const SizedBox(height: 10),
                     _buildCouponGrid(_buildCouponCards([
-                      {'title': '2nd same pizza', 'description': '50% OFF\nCannot be combined\nwith other coupons','discount': '50'},
+                      {'title': '2nd same pizza', 'description': '50% OFF\nCannot be combined\nwith permanent coupons','discount': '50'},
                       {'title': 'All pasta', 'description': '2% OFF','discount': '2'},
                     ])),
                   ],
@@ -127,7 +127,7 @@ class _CouponsState extends State<Coupons> {
         double spacing = 20;
         double totalSpacing = spacing * (crossAxisCount - 1);
         double itemWidth = (width - totalSpacing) / crossAxisCount;
-        double itemHeight = itemWidth * 0.80 / 0.8;
+        double itemHeight = itemWidth * 0.8 / 0.8;
         return GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
