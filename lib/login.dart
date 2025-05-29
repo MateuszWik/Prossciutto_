@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 loginUser();
                               }
                             }
-                            :null,
+                                :null,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black ,
                               foregroundColor: Colors.white,

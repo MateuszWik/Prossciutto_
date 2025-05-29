@@ -44,7 +44,6 @@ class Menu extends StatefulWidget {
 }
 
 class _Menu extends State<Menu> {
-  String? userName;
   String? userEmail;
   String? userDateOfBirth;
   int? userAge;
@@ -58,12 +57,15 @@ class _Menu extends State<Menu> {
       searchQuery = query;
     });
   }
+  bool isLoggedIn = false;
+  String? userName;
+
   void loadUserData() {
     final box = GetStorage();
-    userEmail = box.read('userEmail');
-    userDateOfBirth = box.read('userDateOfBirth');
-    userName = box.read('userName'); // <-- nowa linia
+    isLoggedIn = box.read('isLoggedIn') ?? false;
+    userName = isLoggedIn ? box.read('userName') : null;
 
+    userDateOfBirth = box.read('userDateOfBirth');
     if (userDateOfBirth != null) {
       final birthDate = DateTime.tryParse(userDateOfBirth!);
       if (birthDate != null) {
@@ -76,6 +78,7 @@ class _Menu extends State<Menu> {
       }
     }
   }
+
 
   @override
   void initState() {
@@ -258,7 +261,6 @@ class _HomeScreenState extends State<HomeScreen> {
       widget.onSearchChanged(searchController.text);
     });
   }
-
   @override
   void didUpdateWidget(HomeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -318,7 +320,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Row(
                 children: [
-                  Text('Hi${widget.userName != null ? ' ${widget.userName}' : ''}', style: TextStyle(fontSize: 20)),
+                  Text(
+                    'Hi${widget.userName != null ? ' ${widget.userName}' : ''}',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   Spacer(),
                   InkWell(
                     onTap: widget.onAccTap,
@@ -330,6 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
+
 
               SizedBox(height: 12),
               RichText(
@@ -459,3 +465,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
+
+
+
+
