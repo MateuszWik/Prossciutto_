@@ -42,6 +42,7 @@ class Favorites extends StatelessWidget {
                 ),
               )
                   : ListView.builder(
+                padding: const EdgeInsets.only(bottom: 100),
                 itemCount: favoriteItems.length,
                 itemBuilder: (context, index) {
                   final item = favoriteItems[index];

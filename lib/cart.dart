@@ -5,8 +5,8 @@ import 'package:mateusz/order.dart';
 
 class Cart extends StatefulWidget {
   final String? dateOfBirth;
-
-  const Cart({super.key, this.dateOfBirth});
+final bool isRoutedFromProduct;
+  const Cart({super.key, this.dateOfBirth, this.isRoutedFromProduct = false});
 
   @override
   State<Cart> createState() => _CartState();
@@ -102,7 +102,6 @@ class _CartState extends State<Cart> {
 
       return total;
     }
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -121,13 +120,30 @@ class _CartState extends State<Cart> {
               ),
             ),
             if (cartItems.isNotEmpty) ...[
+              if(widget.isRoutedFromProduct)
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/images/left_arrow.png",
+                        width: 24,
+                      ),
+                    ),
+                  ),
+                ),
+
               Positioned(
                 left: 15,
                 top: MediaQuery.of(context).size.height * 0.12,
                 right: 25,
                 bottom: MediaQuery.of(context).size.height * 0.15,
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(bottom: 90),
+                  padding: EdgeInsets.only(bottom: 100),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -257,12 +273,10 @@ class _CartState extends State<Cart> {
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Divider(
-                        // linia pozioma
                         thickness: 1,
                         color: Colors.grey,
                       ),
                       Row(
-                        // total i kupony
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -274,7 +288,7 @@ class _CartState extends State<Cart> {
                           ),
                           Flexible(
                             child: Text(
-                              'Used coupons: ${CouponData.appliedCoupons.map((c) => c.title).join(', \n')}',
+                              'Used coupons: \n${CouponData.appliedCoupons.map((c) => c.title).join(', \n')}',
                               style: TextStyle(
                                 fontFamily: 'LeagueSpartan',
                                 fontSize: 16,
@@ -289,7 +303,6 @@ class _CartState extends State<Cart> {
                 ),
               ),
               Positioned(
-                // blok Next
                 top: MediaQuery.of(context).size.height * 0.68,
                 left: 5,
                 child: TextButton(

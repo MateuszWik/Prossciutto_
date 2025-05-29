@@ -202,10 +202,11 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                     label: 'Go to Cart',
                                     textColor: Colors.black,
                                     onPressed: () {
+                                      // Przechodzimy do Cart z parametrem `isRoutedFromFoodDetail = true`
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const Cart(),
+                                          builder: (context) => Cart(isRoutedFromProduct: true),
                                         ),
                                       );
                                     },

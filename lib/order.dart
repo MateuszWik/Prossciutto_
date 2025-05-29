@@ -8,7 +8,7 @@ class Order extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF3ece4),
-      body: Center( // ← tutaj było: child: Center(
+      body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
