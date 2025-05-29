@@ -65,18 +65,6 @@ class _Menu extends State<Menu> {
     isLoggedIn = box.read('isLoggedIn') ?? false;
     userName = isLoggedIn ? box.read('userName') : null;
 
-    userDateOfBirth = box.read('userDateOfBirth');
-    if (userDateOfBirth != null) {
-      final birthDate = DateTime.tryParse(userDateOfBirth!);
-      if (birthDate != null) {
-        final now = DateTime.now();
-        int age = now.year - birthDate.year;
-        if (now.month < birthDate.month || (now.month == birthDate.month && now.day < birthDate.day)) {
-          age--;
-        }
-        userAge = age;
-      }
-    }
   }
 
 

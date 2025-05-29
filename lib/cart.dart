@@ -28,21 +28,7 @@ class FoodItem {
 
 class _CartState extends State<Cart> {
 
-  int? calculateAge(String? dateOfBirth) {
-    if (dateOfBirth == null || dateOfBirth.isEmpty) return null;
 
-    try {
-      final birthDate = DateTime.parse(dateOfBirth);
-      final today = DateTime.now();
-      int age = today.year - birthDate.year;
-      if (today.month < birthDate.month || (today.month == birthDate.month && today.day < birthDate.day)) {
-        age--;
-      }
-      return age;
-    } catch (e) {
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +70,8 @@ class _CartState extends State<Cart> {
 
           switch (coupon.title.toLowerCase()) {
             case "student's":
-              final age = calculateAge(widget.dateOfBirth);
-              if (age != null && age >= 19 && age <= 25) {
                 totalDiscount += discount;
-              }
+
               break;
 
             case 'user discount':
